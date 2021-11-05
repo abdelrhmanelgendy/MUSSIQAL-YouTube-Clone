@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+
+        <variable
+            name="playListTittle"
+            type="String" />
+
+        <variable
+            name="playListDescription"
+            type="String" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/_6sdp"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_155sdp">
+
+            <ImageView
+                android:id="@+id/specialRecyclerViewItem_NoBorder_imagePlayList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/maxresdefault" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/def_constraint1"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+
+                android:alpha=".7"
+                android:background="@color/black"
+                android:orientation="vertical" />
+
+            <TextView
+                android:id="@+id/specialRecyclerViewItem_NoBorder__TV_PlayListName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/def_constraint1"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:maxLines="2"
+                android:text="@{playListTittle}"
+
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_small_x" />
+
+            <TextView
+                android:id="@+id/specialRecyclerViewItem_NoBorder__TV_PlayListDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/specialRecyclerViewItem_NoBorder__TV_PlayListName"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:maxLines="2"
+                android:text="@{playListDescription}"
+                android:textColor="@color/white_gray"
+                android:textSize="@dimen/text_size_small"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

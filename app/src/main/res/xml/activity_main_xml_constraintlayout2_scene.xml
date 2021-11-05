@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@id/start"
+        motion:duration="100">
+
+
+        <KeyFrameSet>
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_imgDismiss" />
+<!--            <KeyAttribute-->
+<!--                android:alpha="0"-->
+<!--                motion:framePosition="10"-->
+<!--                motion:motionTarget="@+id/mediaPlayerItem_viewPagerSongImage" />-->
+<!--            <KeyAttribute-->
+<!--                android:alpha="0"-->
+<!--                motion:framePosition="90"-->
+<!--                motion:motionTarget="@+id/mediaPlayerItem_viewPagerSongImage" />-->
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_TV_nowPlayText" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="96"
+                motion:motionTarget="@+id/mediaPlayerItem_Imag_SongImage" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="80"
+                motion:motionTarget="@+id/mediaPlayerItem_TV_nowPlayText" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_imgLyrics" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_imgAddFavorite" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_imgDownload" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_mediaPlayerSeekBar" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_TV_txtRemainingTimeInMinutes" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_TV_txtPlayedTimeInMinutes" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_imgShuffle" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_imgPlayRepeatMode" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="90"
+                motion:motionTarget="@+id/mediaPlayerItem_imgPlayPause" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="90"
+                motion:motionTarget="@+id/mediaPlayerItem_imgNext" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="90"
+                motion:motionTarget="@+id/mediaPlayerItem_imgPrevious" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="90"
+                motion:motionTarget="@+id/mediaPlayerItem_imgPlayPauseButtom" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_TV_songName" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_imgPlayPause" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="97"
+                motion:motionTarget="@+id/mediaPlayerItem_TV_songName" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="94"
+                motion:motionTarget="@+id/mediaPlayerItem_imgPrevious" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="94"
+                motion:motionTarget="@+id/mediaPlayerItem_imgNext" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="94"
+                motion:motionTarget="@+id/mediaPlayerItem_imgPlayPauseButtom" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_imgPrevious" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_imgNext" />
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="1"
+                motion:motionTarget="@+id/mediaPlayerItem_imgPlayPauseButtom" />
+
+
+        </KeyFrameSet>
+<!--        <OnClick motion:targetId="@+id/mediaPlayerItem_imgDismiss" />-->
+
+<!--        <OnSwipe-->
+<!--            motion:touchAnchorId="@+id/mediaPlayerItem_viewPagerSongImage"-->
+<!--            motion:dragDirection="dragDown"-->
+<!--            motion:touchAnchorSide="bottom" />-->
+
+
+    </Transition>
+
+    <ConstraintSet android:id="@+id/start">
+
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+
+
+<!--        <Constraint-->
+<!--            android:id="@+id/main_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/_50sdp"-->
+<!--            motion:layout_constraintBottom_toTopOf="@id/mainActivityBottomNavigation"-->
+<!--            motion:layout_constraintEnd_toEndOf="parent" />-->
+        <Constraint
+            android:id="@+id/mediaPlayerItem_TV_nowPlayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            motion:layout_constraintEnd_toStartOf="@id/mediaPlayerItem_imgLyrics"
+            motion:layout_constraintStart_toEndOf="@id/mediaPlayerItem_imgDismiss"
+            motion:layout_constraintTop_toTopOf="@id/mediaPlayerItem_imgDismiss" />
+        <Constraint
+            android:id="@+id/mediaPlayerItem_imgLyrics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:alpha="0"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@+id/mediaPlayerItem_imgDismiss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:alpha="0"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@+id/mediaPlayerItem_imgDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:alpha="0"
+            motion:layout_constraintBottom_toTopOf="@id/mediaPlayerItem_mediaPlayerSeekBar"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/mediaPlayerItem_imgAddFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:alpha="0"
+            motion:layout_constraintBottom_toTopOf="@id/mediaPlayerItem_mediaPlayerSeekBar"
+            motion:layout_constraintEnd_toEndOf="parent" />
+        <Constraint
+            android:id="@+id/mediaPlayerItem_mediaPlayerSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:alpha="0"
+            motion:layout_constraintBottom_toTopOf="@id/mediaPlayerItem_imgPlayPause"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent" />
+        <Constraint
+            android:id="@+id/mediaPlayerItem_TV_txtPlayedTimeInMinutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:alpha="0"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/mediaPlayerItem_mediaPlayerSeekBar" />
+        <Constraint
+            android:id="@+id/mediaPlayerItem_TV_txtRemainingTimeInMinutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:alpha="0"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/mediaPlayerItem_mediaPlayerSeekBar" />
+        <Constraint
+            android:id="@+id/mediaPlayerItem_imgShuffle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:alpha="0"
+            motion:layout_constraintBottom_toBottomOf="@id/mediaPlayerItem_imgPrevious"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="@id/mediaPlayerItem_imgPrevious" />
+        <Constraint
+            android:id="@+id/mediaPlayerItem_imgPlayRepeatMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_30sdp"
+            android:alpha="0"
+            motion:layout_constraintBottom_toBottomOf="@id/mediaPlayerItem_imgNext"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintTop_toTopOf="@id/mediaPlayerItem_imgNext" />
+        <Constraint
+            android:id="@+id/mediaPlayerItem_imgPlayPause"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginBottom="@dimen/_40sdp"
+            android:alpha="0"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toStartOf="@id/mediaPlayerItem_imgNext"
+            motion:layout_constraintStart_toEndOf="@id/mediaPlayerItem_imgPrevious" />
+        <Constraint
+            android:id="@+id/mainActivityBottomNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="1"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:visibility="visible"
+            motion:layout_constraintStart_toStartOf="parent" />
+<!--        <Constraint-->
+<!--            android:id="@+id/main_container"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/_40sdp"-->
+<!--            motion:layout_constraintBottom_toTopOf="@id/mainActivityBottomNavigation"-->
+<!--            motion:layout_constraintEnd_toEndOf="parent" />-->
+
+
+
+<!--            />-->
+        <Constraint
+            android:id="@+id/mediaPlayerItem_viewPagerSongImage"
+     />
+
+        <Constraint
+            android:id="@+id/mediaPlayerItem_Imag_SongImage"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:alpha="1"
+            motion:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            motion:layout_constraintTop_toTopOf="parent" />
+
+
+        <Constraint
+            android:id="@+id/mediaPlayerItem_TV_songName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            motion:layout_constraintEnd_toStartOf="@id/mediaPlayerItem_imgPrevious"
+            motion:layout_constraintStart_toEndOf="@id/mediaPlayerItem_Imag_SongImage"
+
+            motion:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+
+
+            />
+        <Constraint
+            android:id="@+id/mediaPlayerItem_imgPrevious"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            motion:layout_constraintTop_toTopOf="parent"
+
+            motion:layout_constraintEnd_toStartOf="@id/mediaPlayerItem_imgPlayPauseButtom"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            />
+        <Constraint
+            android:id="@+id/mediaPlayerItem_imgPlayPauseButtom"
+
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            motion:layout_constraintTop_toTopOf="parent"
+
+            motion:layout_constraintEnd_toStartOf="@id/mediaPlayerItem_imgNext"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+
+            />
+        <Constraint
+            android:id="@+id/mediaPlayerItem_imgNext"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            motion:layout_constraintTop_toTopOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/_4sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            />
+
+
+
+    </ConstraintSet>
+</MotionScene>

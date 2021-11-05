@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.musiqal">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application
+        android:name=".util.BaseApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MUSIQAL"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".search.SearchActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.Test"
+            android:exported="true" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <service
+            android:name=".customeMusicPlayer.musicNotification.NotificationService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".customeMusicPlayer.musicNotification.NotificationReciever"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="action_play" />
+                <action android:name="action_next" />
+                <action android:name="action_previous" />
+                <action android:name="finish_playing" />
+<!--                <action android:name="android.intent.action.MEDIA_BUTTON"/>-->
+<!--                <action android:name="android.media.AUDIO_BECOMING_NOISY" />-->
+            </intent-filter>
+        </receiver>
+<!--        <receiver android:enabled="true" android:exported="true"-->
+<!--            android:name="androidx.media.session.MediaButtonReceiver" >-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MEDIA_BUTTON" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
+    </application>
+
+</manifest>

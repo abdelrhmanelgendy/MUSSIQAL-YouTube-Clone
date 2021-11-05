@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:fitsSystemWindows="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:background="@color/black"
+
+            android:fitsSystemWindows="true">
+
+            <View
+                android:id="@+id/homeFragment_viewToolBarPlaceholder2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/homeFragment_imgLogo2"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+
+                android:scaleType="centerCrop"
+
+                android:src="@drawable/musiqal_logo_large"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/homeFragment_viewToolBarPlaceholder2" />
+
+            <TextView
+                android:id="@+id/homeFragment_TV_appName2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
+
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15sdp"
+                app:layout_constraintBottom_toBottomOf="@id/homeFragment_imgLogo2"
+                app:layout_constraintStart_toEndOf="@id/homeFragment_imgLogo2"
+                app:layout_constraintTop_toTopOf="@id/homeFragment_imgLogo2" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/homeFragment_imgUserProfilePicture2"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/demmo_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/homeFragment_viewToolBarPlaceholder2" />
+
+            <ImageView
+                android:id="@+id/homeFragment_imgSearch2"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/ic_baseline_search_24"
+                app:layout_constraintEnd_toStartOf="@id/homeFragment_imgUserProfilePicture2"
+                app:layout_constraintTop_toBottomOf="@+id/homeFragment_viewToolBarPlaceholder2" />
+
+            <ImageView
+                android:id="@+id/homeFragment_imgSuffle2"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:src="@drawable/ic_shuffle_icon"
+                app:layout_constraintEnd_toStartOf="@id/homeFragment_imgSearch2"
+                app:layout_constraintTop_toBottomOf="@id/homeFragment_viewToolBarPlaceholder2"
+                app:tint="@color/white" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/homeFragment_appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_280sdp"
+            android:background="@drawable/classic"
+            android:fitsSystemWindows="true"
+
+            android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:fitsSystemWindows="true"
+                app:contentScrim="@color/black"
+                app:layout_scrollFlags="scroll">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:alpha=".4"
+                    android:background="@color/black"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginTop="@dimen/_80sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/homeFragment_TV_PlayListTittle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:paddingStart="@dimen/_10sdp"
+                        android:text="MIXED FOR YOU"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/homeFragment_TV_movtivationTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/_10sdp"
+
+                        android:text="FOR YOUR WORKOUT"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_17sdp"
+                        android:textStyle="bold"
+
+                        />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/homeFragment_recyclerViewSpecialRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:background="@drawable/gradient_background_black"
+                        android:paddingStart="@dimen/_4sdp"
+                        tools:listitem="@layout/special_recycler_view_playlist_items" />
+
+
+                </LinearLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:fitsSystemWindows="true">
+
+                    <View
+                        android:id="@+id/homeFragment_viewToolBarPlaceholder"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_10sdp"
+
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/homeFragment_imgLogo"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
+
+                        android:scaleType="centerCrop"
+
+                        android:src="@drawable/musiqal_logo_small"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/homeFragment_viewToolBarPlaceholder" />
+
+                    <TextView
+                        android:id="@+id/homeFragment_TV_appName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:fontFamily="@font/aclonica"
+                        android:text="@string/app_name"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_15sdp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/homeFragment_imgLogo"
+                        app:layout_constraintStart_toEndOf="@id/homeFragment_imgLogo"
+                        app:layout_constraintTop_toTopOf="@id/homeFragment_imgLogo" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/homeFragment_imgUserProfilePicture"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:src="@drawable/demmo_profile"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/homeFragment_viewToolBarPlaceholder" />
+
+                    <ImageView
+                        android:id="@+id/homeFragment_imgSearch"
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:src="@drawable/ic_baseline_search_24"
+                        app:layout_constraintEnd_toStartOf="@id/homeFragment_imgUserProfilePicture"
+                        app:layout_constraintTop_toBottomOf="@+id/homeFragment_viewToolBarPlaceholder" />
+
+                    <ImageView
+                        android:id="@+id/homeFragment_imgSuffle"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:src="@drawable/ic_shuffle_icon"
+                        app:layout_constraintEnd_toStartOf="@id/homeFragment_imgSearch"
+                        app:layout_constraintTop_toBottomOf="@id/homeFragment_viewToolBarPlaceholder"
+                        app:tint="@color/white" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_60sdp"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:orientation="vertical">
+
+                <include
+
+                    android:id="@+id/playListLatestMusic"
+                    layout="@layout/recycler_view_items_of_othe_recycler_view"
+                    />
+                <include
+
+                    android:id="@+id/playListMixedMusic"
+                    layout="@layout/recycler_view_items_of_othe_recycler_view"
+                    />
+                <include
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:id="@+id/playListHistoryMusic"
+                    layout="@layout/recycler_view_items_of_othe_recycler_view"
+                    />
+                <include
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:id="@+id/playListFavoriteMusic"
+                    layout="@layout/recycler_view_items_of_othe_recycler_view"
+                    />
+                <include
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:id="@+id/playListAnySingerOneMusic"
+                    layout="@layout/recycler_view_items_of_othe_recycler_view"
+                    />
+                <include
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:id="@+id/playListAnySingerTwoMusic"
+                    layout="@layout/recycler_view_items_of_othe_recycler_view"
+                    />
+
+
+
+
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

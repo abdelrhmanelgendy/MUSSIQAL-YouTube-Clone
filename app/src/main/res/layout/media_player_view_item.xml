@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:fitsSystemWindows="true"
+        android:foregroundGravity="bottom">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/MainActiviyt_MotionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+
+            >
+
+
+            <ImageView
+                android:id="@+id/mediaPlayerItem_imgDismiss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/mediaPlayerItem_TV_nowPlayText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nowPlay"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_17sdp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/mediaPlayerItem_imgLyrics"
+                app:layout_constraintStart_toEndOf="@id/mediaPlayerItem_imgDismiss"
+                app:layout_constraintTop_toTopOf="@id/mediaPlayerItem_imgDismiss" />
+
+            <ImageView
+                android:id="@+id/mediaPlayerItem_imgLyrics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:src="@drawable/ic_options"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mediaPlayerItem_Imag_SongImage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_250sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_108sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:alpha="0"
+                android:backgroundTint="@color/black"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+
+                    android:id="@+id/mediaPlayerItem_Imag_SongImage2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:background="@color/black"
+                    android:scaleType="centerCrop"
+
+                    android:src="@drawable/img_car_demmo" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/mediaPlayerItem_viewPagerSongImage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_250sdp"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/_108sdp"
+                android:clipToPadding="false"
+                android:foregroundGravity="center"
+                android:overScrollMode="never"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/mediaPlayerItem_TV_songName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_44sdp"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:maxEms="3"
+
+
+                android:paddingStart="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_2sdp"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="@string/dummySongName"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintBottom_toTopOf="@id/mediaPlayerItem_mediaPlayerSeekBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/mediaPlayerItem_imgDownload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_120sdp"
+
+                android:layout_marginTop="@dimen/_10sdp"
+                android:src="@drawable/ic_baseline_arrow_downward_24"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mediaPlayerItem_viewPagerSongImage" />
+
+            <ImageView
+                android:id="@+id/mediaPlayerItem_imgAddFavorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_120sdp"
+                android:src="@drawable/ic_baseline_favorite_24"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mediaPlayerItem_viewPagerSongImage" />
+
+            <SeekBar
+                android:id="@+id/mediaPlayerItem_mediaPlayerSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_25sdp"
+
+
+                android:theme="@style/MediaPlayerSeekBar"
+                app:layout_constraintBottom_toTopOf="@id/mediaPlayerItem_imgPlayPause"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/mediaPlayerItem_TV_txtPlayedTimeInMinutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="0:00"
+                android:textColor="@color/gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mediaPlayerItem_mediaPlayerSeekBar" />
+
+            <TextView
+                android:id="@+id/mediaPlayerItem_TV_txtRemainingTimeInMinutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:text="0:00"
+                android:textColor="@color/gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mediaPlayerItem_mediaPlayerSeekBar" />
+
+            <ImageView
+                android:id="@+id/mediaPlayerItem_imgShuffle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:src="@drawable/ic_shuffle_icon"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlayerItem_imgPrevious"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/mediaPlayerItem_imgPrevious" />
+
+            <ImageView
+                android:id="@+id/mediaPlayerItem_imgPlayRepeatMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginEnd="@dimen/_30sdp"
+
+                android:src="@drawable/ic_baseline_repeat_all"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlayerItem_imgNext"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/mediaPlayerItem_imgNext" />
+
+
+            <ImageView
+                android:id="@+id/mediaPlayerItem_imgPrevious"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_30sdp"
+
+                android:src="@drawable/ic_previous_24"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlayerItem_imgPlayPause"
+                app:layout_constraintStart_toEndOf="@id/mediaPlayerItem_imgShuffle"
+                app:layout_constraintTop_toTopOf="@id/mediaPlayerItem_imgPlayPause" />
+
+            <ImageView
+                android:id="@+id/mediaPlayerItem_imgNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_30sdp"
+
+                android:src="@drawable/ic_next_24"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlayerItem_imgPlayPause"
+                app:layout_constraintEnd_toStartOf="@id/mediaPlayerItem_imgPlayRepeatMode"
+                app:layout_constraintTop_toTopOf="@id/mediaPlayerItem_imgPlayPause" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/mediaPlayerItem_imgPlayPause"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_marginBottom="@dimen/_70sdp"
+                android:src="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/mediaPlayerItem_imgNext"
+                app:layout_constraintStart_toEndOf="@id/mediaPlayerItem_imgPrevious" />
+
+            <ImageView
+                android:id="@+id/mediaPlayerItem_imgPlayPauseButtom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_play_arrow_24"
+                app:layout_constraintBottom_toBottomOf="@id/mediaPlayerItem_imgPlayPause"
+                app:layout_constraintEnd_toEndOf="@id/mediaPlayerItem_imgPlayPause"
+                app:layout_constraintStart_toStartOf="@id/mediaPlayerItem_imgPlayPause"
+                app:layout_constraintTop_toTopOf="@id/mediaPlayerItem_imgPlayPause" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

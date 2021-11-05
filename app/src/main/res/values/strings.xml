@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">MUSIQAL</string>
+
+
+    <string-array name="api_keys">
+        <item>AIzaSyCagAeYVeR6bxTtXUEvjKgsx7UBIO1TAlo</item>
+        <item>AIzaSyBHiLLb58qpo9Ze2U1i6kxT-blwNqgPJLM</item>
+        <item>AIzaSyATskn_B0gM6QL7jEj2SeaxOBYfl4_GUIg</item>
+        <item>AIzaSyB1etbsm8jhwJhDb1V9vMnlzyC3vCPrWHY</item>
+        <item>AIzaSyAm3lqAoY9RT6awSWWiPrW5hwxBKUbGog0</item>
+        <item>AIzaSyAjdGENnb9PhF6sP1UpFg1sKFEBMJsDNak</item>
+        <item>AIzaSyAZ-b9O3q_MBadbdb-0bq-F01echKQSkEE</item>
+        <item>AIzaSyBu_Jx6ZGddoxalFWXJtzNofBzr2InbIxg</item>
+        <item>AIzaSyAjEj8zP3qTwRxcaAMXE81JMD6gDODeOFs</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="playAll">Play All</string>
+    <string name="shuffle">Shuffle</string>
+    <string name="dummySongName">Daneliya Tuleshova - Tears of Gold Tears of Gold</string>
+    <string name="nowPlay">Now playing</string>
+    <string name="searchHint">Search Youtube</string>
+    <string name="dummySongName2">dummySongNamedummySongNamedummySongNamedummySongNamedummySongName</string>
+
+
+</resources>

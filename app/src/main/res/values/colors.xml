@@ -17,6 +17,6 @@
     <color name="dark_gray">#212121</color>
     <color name="colorActiveIcon">#545</color>
     <color name="light_gray">#6DEDEDED</color>
-
+<color name="dark_blue">#001C3B</color>
 
 </resources>

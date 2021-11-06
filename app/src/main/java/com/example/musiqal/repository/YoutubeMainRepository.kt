@@ -17,7 +17,6 @@ import javax.inject.Inject
 
 class YoutubeMainRepository @Inject constructor(
     val youtubeApi: YoutubeApi,
-    val lyricsApiSource: LyricsApiSource,
     val randomPlaylistsDao: RandomPlaylistsDao,
     val historyOfPlayedItemDao: HistoryOfPlayedItemDao,
     val youtubeToMp3ApiConverter: YoutubeToMp3ApiConverter,
@@ -78,22 +77,6 @@ class YoutubeMainRepository @Inject constructor(
     }
 
 
-    override suspend fun getSongLyrice(artistName: String, songName: String): Resource<LyricsData> {
-        return try {
-            val searchForLyrics = lyricsApiSource.getMusicLyrics(
-                artistName, songName
-            )
-            if (searchForLyrics.isSuccessful) {
-                return Resource.Success(searchForLyrics.body()!!)
-            } else {
-                return Resource.Failed(searchForLyrics.message().toString())
-            }
-
-
-        } catch (e: Exception) {
-            Resource.Failed(e.message.toString())
-        }
-    }
 
 
     override suspend fun getYoutubeCategoryId(

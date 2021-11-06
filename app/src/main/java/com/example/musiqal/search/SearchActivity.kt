@@ -146,7 +146,7 @@ class SearchActivity : AppCompatActivity(), OnHistoryDataClickListener,
                     val searchText = v?.editableText.toString()
                     val searchTimInMillis = System.currentTimeMillis().toString()
                     if (searchText.length > 0) {
-//                        saveSearchData(searchText, searchTimInMillis)
+                        searchYoutubeQuery(searchText)
                     }
                     return true
                 }
@@ -185,18 +185,18 @@ class SearchActivity : AppCompatActivity(), OnHistoryDataClickListener,
 
     override fun onDataSearchClick(searchHistoryData: SearchHistoryData, position: Int) {
         Log.d(TAG, "onActivityResult 2: " + searchHistoryData.searchTitle)
-        saveSearchData(searchHistoryData.searchTitle, System.currentTimeMillis().toString())
-
-        val searchedIntent = Intent(applicationContext, MainActivity::class.java)
-        searchedIntent.putExtra(SEARCH_TITLE_KEY, searchHistoryData.searchTitle)
-        setResult(RESULT_OK, searchedIntent)
-        finish()
+        searchYoutubeQuery(searchHistoryData.searchTitle)
 
 
     }
 
     private fun searchYoutubeQuery(searchQuery: String) {
+        saveSearchData(searchQuery, System.currentTimeMillis().toString())
 
+        val searchedIntent = Intent(applicationContext, MainActivity::class.java)
+        searchedIntent.putExtra(SEARCH_TITLE_KEY, searchQuery)
+        setResult(RESULT_OK, searchedIntent)
+        finish()
 
     }
 
@@ -222,8 +222,7 @@ class SearchActivity : AppCompatActivity(), OnHistoryDataClickListener,
 
 
         CoroutineScope(Dispatchers.Main).launch {
-            savedLististoryData.toMutableList().remove(searchHistoryData)
-            youtubeSearchAdapter.setList(savedLististoryData)
+            retreiveSavedData()
         }
 
     }
@@ -260,15 +259,18 @@ class SearchActivity : AppCompatActivity(), OnHistoryDataClickListener,
     }
 
     fun deleteItemDialog(position: Int) {
-        val searchHistoryData = savedLististoryData.get(position)
-        simpleYesOrNoDialog.intialize(
-            searchHistoryData.searchTitle,
-            dialogSubText,
-            dialogPositiveText,
-            dialogNegativeText,
-            position
-        )
-        simpleYesOrNoDialog.show(false)
+        if (!youtubeSearchAdapter.listOfHistoryData.get(position).searchHistory.equals("-1"))
+        {
+            val searchHistoryData = savedLististoryData.get(position)
+            simpleYesOrNoDialog.intialize(
+                searchHistoryData.searchTitle,
+                dialogSubText,
+                dialogPositiveText,
+                dialogNegativeText,
+                position
+            )
+            simpleYesOrNoDialog.show(false)
+        }
     }
 
     private fun setUpViewModelStateHistoryStateFlow() {

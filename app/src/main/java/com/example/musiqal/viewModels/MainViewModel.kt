@@ -3,6 +3,7 @@ package com.example.musiqal.viewModels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.musiqal.lyrics.mvi.LyricsViewState
 import com.example.musiqal.models.youtubeItemInList.Item
 import com.example.musiqal.repository.YoutubeMainRepository
 import com.example.musiqal.util.CustomeMusicPlayback
@@ -23,10 +24,6 @@ class MainViewModel @Inject constructor(private val mainRepository: YoutubeMainR
     private var _youtubeCategoryStateFlow: MutableStateFlow<YoutubeCategoryViewState> =
         MutableStateFlow(YoutubeCategoryViewState.Idel)
     val youtubeCategoryStateFlow: StateFlow<YoutubeCategoryViewState> = _youtubeCategoryStateFlow
-
-    private var _songLyricsStateFlow: MutableStateFlow<LyricsViewState> =
-        MutableStateFlow(LyricsViewState.Idel)
-    val songLyricsStateFlow: StateFlow<LyricsViewState> = _songLyricsStateFlow
 
 
     private var _itemInPlayLitsStateFlow: MutableStateFlow<VideosInPlayListViewState> =
@@ -71,18 +68,7 @@ class MainViewModel @Inject constructor(private val mainRepository: YoutubeMainR
         }
     }
 
-    fun searchForSongLyrics(artistName: String, songName: String) {
-        _songLyricsStateFlow.value = LyricsViewState.Loading
-        viewModelScope.launch(Dispatchers.IO) {
-            val songLyricsResource = mainRepository.getSongLyrice(artistName, songName)
-            when (songLyricsResource) {
-                is Resource.Success -> _songLyricsStateFlow.value =
-                    LyricsViewState.Success(songLyricsResource.data?.lyrics!!)
-                is Resource.Failed -> _songLyricsStateFlow.value =
-                    LyricsViewState.Failed(songLyricsResource.message!!)
-            }
-        }
-    }
+
 
 
     fun getVideosInsidePlaylist(

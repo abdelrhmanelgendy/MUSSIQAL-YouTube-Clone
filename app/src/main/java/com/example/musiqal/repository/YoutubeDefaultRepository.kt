@@ -41,7 +41,7 @@ interface YoutubeDefaultRepository {
     ): Resource<YoutubeMp3ConverterData>
 
 
-    suspend fun getSongLyrice(artistName: String, songName: String): Resource<LyricsData>
+
 
     suspend fun deleteYoutubePlayList(id: Int)
     suspend fun insertYoutubePlayList(youtubeApiSearchForPlayListRequest: YoutubeApiSearchForPlayListRequest)

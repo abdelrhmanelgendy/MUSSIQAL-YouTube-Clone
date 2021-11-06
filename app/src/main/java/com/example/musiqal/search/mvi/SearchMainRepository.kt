@@ -14,11 +14,12 @@ class SearchMainRepository @Inject constructor(
 ) : SearchDefaultRepository {
 
     override suspend fun insertHistory(searchHistoryData: SearchHistoryData) {
+        searchingDao.deleteHistoryByItsTitle(searchHistoryData.searchTitle)
         searchingDao.insertHistory(searchHistoryData)
     }
 
     override suspend fun deleteHistory(searchHistoryData: SearchHistoryData) {
-        searchingDao.deleteHistory(searchHistoryData)
+        searchingDao.deleteHistoryByItsTitle(searchHistoryData.searchTitle)
     }
 
     override suspend fun getAllHistoryHistory(): Resource<List<SearchHistoryData>> {

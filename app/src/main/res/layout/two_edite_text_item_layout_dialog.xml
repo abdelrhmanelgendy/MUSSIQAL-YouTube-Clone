@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:background="@color/white_gray_003"
+            android:padding="@dimen/_10sdp">
+
+            <TextView
+                android:id="@+id/twoETDialog_TV_anotherWay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:text="@string/anotherWay"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/twoETDialog_TV_ArtistName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:text="@string/ArtistName"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/twoETDialog_TV_anotherWay" />
+
+            <EditText
+                android:id="@+id/twoETDialog_Et_mainET"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:background="@drawable/rounded_gray_et"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white_gray"
+                android:textSize="@dimen/_14sdp"
+                android:theme="@style/GrayET"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toBottomOf="@id/twoETDialog_TV_ArtistName" />
+
+
+            <TextView
+                android:id="@+id/twoETDialog_TV_SongName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:text="@string/SongName"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/twoETDialog_Et_mainET" />
+
+            <EditText
+                android:id="@+id/twoETDialog_Et_subET"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:background="@drawable/rounded_gray_et"
+
+                android:maxLines="1"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white_gray"
+                android:textSize="@dimen/_14sdp"
+                android:theme="@style/GrayET"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/twoETDialog_TV_SongName" />
+
+            <Button
+                android:id="@+id/twoETDialog_btn_positiveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="?android:selectableItemBackground"
+                android:text="@string/search"
+                android:textColor="@color/white"
+
+                android:theme="@style/GrayButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/twoETDialog_Et_subET" />
+
+            <ProgressBar
+                android:id="@+id/twoETDialog_btn_ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="?android:selectableItemBackground"
+                android:text="@string/search"
+                android:textColor="@color/white"
+android:visibility="gone"
+                android:theme="@style/GrayButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/twoETDialog_Et_subET" />
+
+            <Button
+                android:id="@+id/twoETDialog_btn_negativeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:background="@android:color/transparent"
+                android:text="@string/cancel"
+                android:textColor="@color/white"
+                android:theme="@style/GrayButton"
+                app:layout_constraintEnd_toStartOf="@id/twoETDialog_btn_positiveButton"
+                app:layout_constraintTop_toBottomOf="@id/twoETDialog_Et_subET" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</layout>

@@ -16,20 +16,16 @@ import com.example.musiqal.util.*
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import android.annotation.SuppressLint
-import android.app.appsearch.SearchResult
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.view.View
+import android.widget.Toast
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.palette.graphics.Palette
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.example.musiqal.customeMusicPlayer.*
 import com.example.musiqal.customeMusicPlayer.musicNotification.MusicNotificationReceiverListener
 import com.example.musiqal.customeMusicPlayer.musicNotification.NotificationHelper
@@ -40,9 +36,10 @@ import com.example.musiqal.customeMusicPlayer.util.MusicPlayerEvents
 import com.example.musiqal.customeMusicPlayer.util.RepeateMode
 import com.example.musiqal.customeMusicPlayer.util.ShuffleMode
 import com.example.musiqal.databinding.ActivityMainBinding
-import com.example.musiqal.dialogs.SimpleYesOrNoDialog
 import com.example.musiqal.fragments.*
+import com.example.musiqal.lyrics.LyricsBottomSheet
 import com.example.musiqal.lyrics.LyricsUtil
+import com.example.musiqal.lyrics.util.OnLyricsFoundListener
 import com.example.musiqal.search.SearchActivity.Companion.SEARCH_TITLE_KEY
 import com.example.musiqal.ui.slidingPan.SlidingUpDownPanel
 import com.example.musiqal.util.MusicPlayerViewPagerAdapter
@@ -126,11 +123,42 @@ class MainActivity() :
         }
     }
 
+    var isViewed = false
 
     private fun openLyricsView() {
+        isViewed = true
+        Log.d(TAG, "openLyricsView: ")
+        val lyricsUtil = LyricsUtil(this, object : OnLyricsFoundListener {
+            override fun onSuccess(lyrics: String) {
+                if (isViewed) {
 
-        val lyricsUtil = LyricsUtil(this)
-        lyricsUtil.initialize(currentItem.snippet.resourceId.videoId,currentItem.snippet.title)
+                    Log.d(TAG, "onSuccess:12121 ")
+                    val lyricsBottomSheet = LyricsBottomSheet.newInstance(lyricsFilter(lyrics))
+                    lyricsBottomSheet.show(supportFragmentManager, "lyricsBottomSheet")
+                    isViewed = false
+                }
+
+
+            }
+
+            override fun onFailed(error: String) {
+                Log.d(TAG, "onFailed: " + error)
+                Toast.makeText(
+                    this@MainActivity,
+                    "we can't find your lyrics now,\nwe will consider this problem as soon as possible",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
+        lyricsUtil.initialize(currentItem.snippet.resourceId.videoId, currentItem.snippet.title)
+    }
+
+    private fun lyricsFilter(lyrics: String): String {
+        val Lyrics_CopyRight = "Paroles de la chanson"
+
+      return  lyrics.replace(Lyrics_CopyRight, "")
+
+
     }
 
 

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/bottomSheet_relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+
+        android:background="#000000">
+
+
+        <!--        <ScrollView-->
+        <!--            android:scrollbars="vertical"-->
+        <!--            -->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent">-->
+
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:orientation="vertical">-->
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="horizontal"
+
+                    android:fillViewport="true">
+
+                    <LinearLayout
+                        android:id="@+id/bottomSheet_LinearColors"
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+
+
+                        android:padding="@dimen/_5sdp">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="@color/black"
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="@color/dark_blue"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="@color/colorActiveIcon"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#570505"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#530368"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#5A0256"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#2A2E75"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#958604"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#FFE925"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#770202"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#FDDA964D"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#DA00FF"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#04545E"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#03534C"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#574E02"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#686867"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:src="#3E3C2A"
+
+                            app:civ_border_color="@color/white_gray"
+                            app:civ_border_width="@dimen/_2sdp" />
+
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/bottomSheet_TV_lyrics"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:scrollbars="vertical"
+
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp"
+
+
+                    android:textIsSelectable="true" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+        <!--            </LinearLayout>-->
+        <!--        </ScrollView>-->
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

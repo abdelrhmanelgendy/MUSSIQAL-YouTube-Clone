@@ -158,6 +158,8 @@ dependencies {
     //Leack canary
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
+//Color Picker
+    implementation 'com.github.duanhong169:colorpicker:1.1.5'
 
 
 

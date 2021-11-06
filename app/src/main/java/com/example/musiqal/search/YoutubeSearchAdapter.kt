@@ -17,7 +17,7 @@ class YoutubeSearchAdapter(
 ) :
     RecyclerView.Adapter<YoutubeSearchAdapter.YoutubeSearchHolder>() {
 
-    private var listOfHistoryData: ArrayList<SearchHistoryData> = arrayListOf()
+     var listOfHistoryData: ArrayList<SearchHistoryData> = arrayListOf()
     fun setList(movieList: List<SearchHistoryData>) {
         Log.d("TAG", "setList: "+movieList.toString())
         listOfHistoryData.clear()

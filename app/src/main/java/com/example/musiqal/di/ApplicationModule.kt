@@ -9,6 +9,7 @@ import com.example.musiqal.database.local.PlaylistsDatabase
 import com.example.musiqal.database.remote.LyricsApiSource
 import com.example.musiqal.database.remote.YoutubeApi
 import com.example.musiqal.database.remote.YoutubeToMp3ApiConverter
+import com.example.musiqal.lyrics.mvi.LyricsMainRepository
 
 import com.example.musiqal.repository.YoutubeMainRepository
 import com.example.musiqal.ui.DummyClass
@@ -57,7 +58,6 @@ object ApplicationModule {
     @Singleton
     fun provideYoutubeRepository(
         youtubeApi: YoutubeApi,
-        lyricsApiSource: LyricsApiSource,
         randomPlaylistsDao: RandomPlaylistsDao,
         historyOfPlayedItemDao: HistoryOfPlayedItemDao,
         youtubeToMp3ApiConverter: YoutubeToMp3ApiConverter,
@@ -65,11 +65,19 @@ object ApplicationModule {
     ) =
         YoutubeMainRepository(
             youtubeApi,
-            lyricsApiSource,
             randomPlaylistsDao,
             historyOfPlayedItemDao,
             youtubeToMp3ApiConverter,
             customeMusicPlayback
+        )
+
+    @Provides
+    @Singleton
+    fun provideLyricsRepository(
+        lyricsApiSource: LyricsApiSource,
+    ) =
+        LyricsMainRepository(
+            lyricsApiSource
         )
 
 
@@ -107,7 +115,6 @@ object ApplicationModule {
     fun provideDummt(): DummyClass {
         return DummyClass()
     }
-
 
 
 }

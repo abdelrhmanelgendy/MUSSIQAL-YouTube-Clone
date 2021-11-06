@@ -21,6 +21,11 @@
     <string name="nowPlay">Now playing</string>
     <string name="searchHint">Search Youtube</string>
     <string name="dummySongName2">dummySongNamedummySongNamedummySongNamedummySongNamedummySongName</string>
+    <string name="ArtistName">Artist name</string>
+    <string name="search">Search</string>
+    <string name="cancel">Cancel</string>
+    <string name="SongName">Song name</string>
+    <string name="anotherWay">Try another way..</string>
 
 
 </resources>

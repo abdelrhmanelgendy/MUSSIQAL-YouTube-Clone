@@ -71,6 +71,7 @@
                         android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
                         app:layout_constraintStart_toStartOf="@id/main_container"
                         app:layout_constraintTop_toTopOf="@id/main_container"
+                        android:background="?actionBarItemBackground"
                         app:tint="@color/white" />
 
                     <TextView
@@ -160,7 +161,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_120sdp"
-
+                        android:background="?actionBarItemBackground"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:src="@drawable/ic_baseline_arrow_downward_24"
                         app:layout_constraintStart_toStartOf="@id/main_container"
@@ -218,6 +219,7 @@
                         android:layout_width="@dimen/_24sdp"
                         android:layout_height="@dimen/_24sdp"
                         android:layout_marginStart="@dimen/_30sdp"
+                        android:background="?actionBarItemBackground"
                         android:src="@drawable/ic_shuffle_icon"
                         app:layout_constraintBottom_toBottomOf="@id/mediaPlayerItem_imgPrevious"
                         app:layout_constraintStart_toStartOf="@id/main_container"
@@ -229,7 +231,7 @@
                         android:layout_height="@dimen/_28sdp"
 
                         android:layout_marginEnd="@dimen/_30sdp"
-
+                        android:background="?actionBarItemBackground"
                         android:src="@drawable/ic_baseline_repeat_all"
                         app:layout_constraintBottom_toBottomOf="@id/mediaPlayerItem_imgNext"
                         app:layout_constraintEnd_toEndOf="@id/main_container"
@@ -241,7 +243,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_30sdp"
-
+                        android:background="?actionBarItemBackground"
                         android:src="@drawable/ic_previous_24"
                         app:layout_constraintBottom_toBottomOf="@id/mediaPlayerItem_imgPlayPause"
                         app:layout_constraintStart_toEndOf="@id/mediaPlayerItem_imgShuffle"
@@ -252,7 +254,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_30sdp"
-
+                        android:background="?actionBarItemBackground"
                         android:src="@drawable/ic_next_24"
                         app:layout_constraintBottom_toBottomOf="@id/mediaPlayerItem_imgPlayPause"
                         app:layout_constraintEnd_toStartOf="@id/mediaPlayerItem_imgPlayRepeatMode"
@@ -264,6 +266,7 @@
                         android:layout_height="@dimen/_45sdp"
                         android:layout_marginBottom="@dimen/_35sdp"
                         android:src="@color/black"
+
                         app:layout_constraintBottom_toBottomOf="@id/main_container"
                         app:layout_constraintEnd_toStartOf="@id/mediaPlayerItem_imgNext"
                         app:layout_constraintStart_toEndOf="@id/mediaPlayerItem_imgPrevious" />
@@ -272,6 +275,7 @@
                         android:id="@+id/mediaPlayerItem_imgPlayPauseButtom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:background="?actionBarItemBackground"
                         android:src="@drawable/ic_baseline_play_arrow_24"
                         app:layout_constraintBottom_toBottomOf="@id/mediaPlayerItem_imgPlayPause"
                         app:layout_constraintEnd_toEndOf="@id/mediaPlayerItem_imgPlayPause"

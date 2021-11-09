@@ -4,7 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryVariant">@color/black</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/gray</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/white_gray_002</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
@@ -12,12 +12,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@android:color/transparent</item>
         <!-- Customize your theme here. -->
-
-<!--        avoid white scr -->
-<!--        <item name="android:windowNoTitle">true</item>-->
-<!--        <item name="android:windowContentOverlay">@null</item>-->
-<!--        <item name="android:windowBackground">@drawable/logo_no_name</item>-->
-<!--        <item name="android:windowDisablePreview">true</item>-->
+        <item name="colorControlHighlight">@color/white_gray_002</item>
+        <!--        avoid white scr -->
+        <!--        <item name="android:windowNoTitle">true</item>-->
+        <!--        <item name="android:windowContentOverlay">@null</item>-->
+        <!--        <item name="android:windowBackground">@drawable/logo_no_name</item>-->
+        <!--        <item name="android:windowDisablePreview">true</item>-->
 
 
     </style>
@@ -25,6 +25,7 @@
     <style name="WhiteButton" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/white</item>
     </style>
+
     <style name="BlackButton" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">#FFFFFF</item>
 
@@ -36,28 +37,28 @@
         <item name="android:thumbTint">@color/white</item>
     </style>
 
-<style name="GrayButton" parent="Theme.MaterialComponents.Light.NoActionBar">
-    <!-- Primary brand color. -->
-    <item name="colorPrimary">@android:color/transparent</item>
-    <item name="colorPrimaryVariant">@color/black</item>
-    <item name="colorOnPrimary">@color/white</item>
-    <!-- Secondary brand color. -->
-    <item name="colorSecondary">@color/white_gray_002</item>
-    <item name="colorSecondaryVariant">@color/teal_700</item>
-    <item name="colorOnSecondary">@color/black</item>
+    <style name="GrayButton" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/dark_gray</item>
+        <item name="colorPrimaryVariant">#FF0000</item>
+        <item name="colorOnPrimary">@color/gray</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/white_gray_002</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">#FFEB3B</item>
 
 
-</style>
+    </style>
 
     <style name="GrayET" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryVariant">@color/black</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/formal_blue</item>
+        <item name="colorPrimaryVariant">@color/formal_blue</item>
+        <item name="colorOnPrimary">@color/formal_blue</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#000000</item>
-        <item name="colorSecondaryVariant">#000000</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/formal_blue</item>
+        <item name="colorSecondaryVariant">@color/formal_blue</item>
+        <item name="colorOnSecondary">@color/formal_blue</item>
 
 
     </style>

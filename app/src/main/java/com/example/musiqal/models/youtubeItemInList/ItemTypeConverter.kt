@@ -2,6 +2,7 @@ package com.example.musiqal.models.youtubeItemInList
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class ItemTypeConverter {
     @TypeConverter
@@ -71,6 +72,16 @@ class ItemTypeConverter {
     @TypeConverter
     fun convertToStandardThunbnails(thumbnails: String): Standard {
         return Gson().fromJson(thumbnails, Standard::class.java)
+    }
+
+    @TypeConverter
+    fun convertStandardListOfItemsString(listOfItems: List<Item>): String {
+        return Gson().toJson(listOfItems.toString())
+    }
+    @TypeConverter
+    fun convertToListOfItems(listOfItems: String): List<Item> {
+        val type=object :TypeToken<List<Item>>(){}.type
+        return Gson().fromJson(listOfItems,type)
     }
 
 

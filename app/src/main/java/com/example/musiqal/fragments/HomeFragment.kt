@@ -421,9 +421,9 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
         val view =
             requireActivity().findViewById<FragmentContainerView>(R.id.MainActiviyt_nav_host_fragment)
         fm.beginTransaction().add(view.id, homeFragment, tag).commit();
-        activeFragment = homeFragment;
+        (activity as MainActivity).activeFragment = homeFragment;
     }
 
-    var activeFragment = Fragment()
+
 
 }

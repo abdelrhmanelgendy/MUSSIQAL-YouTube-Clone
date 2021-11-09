@@ -49,6 +49,7 @@ class OpenSourceDezzerLyrics(
                         is LyricsViewState.Success -> {
                             Log.d(TAG, "onPositiveButtonClick: 1" + it.lyrics.lyrics)
                             onDezzerLyricsListener.onSuccess(it.lyrics.lyrics)
+                            twoEditeTextDialog.dismis()
                         }
                         is LyricsViewState.Failed -> {
 
@@ -106,6 +107,7 @@ class OpenSourceDezzerLyrics(
                                                 "onPositiveButtonClick: 1" + it.lyrics.lyrics
                                             )
                                             onDezzerLyricsListener.onSuccess(it.lyrics.lyrics)
+                                            twoEditeTextDialog.dismis()
                                         }
                                         is LyricsViewState.Failed -> {
                                            if (isUserClicked)

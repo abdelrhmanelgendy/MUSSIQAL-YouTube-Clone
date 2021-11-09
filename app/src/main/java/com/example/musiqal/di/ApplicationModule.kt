@@ -13,6 +13,8 @@ import com.example.musiqal.lyrics.mvi.LyricsMainRepository
 
 import com.example.musiqal.repository.YoutubeMainRepository
 import com.example.musiqal.ui.DummyClass
+import com.example.musiqal.userPLaylists.database.UserPlaylistDao
+import com.example.musiqal.userPLaylists.mvi.UserPlayListsMainRepository
 import com.example.musiqal.util.CustomeMusicPlayback
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
@@ -61,7 +63,7 @@ object ApplicationModule {
         randomPlaylistsDao: RandomPlaylistsDao,
         historyOfPlayedItemDao: HistoryOfPlayedItemDao,
         youtubeToMp3ApiConverter: YoutubeToMp3ApiConverter,
-        customeMusicPlayback: CustomeMusicPlayback
+        customeMusicPlayback: CustomeMusicPlayback,
     ) =
         YoutubeMainRepository(
             youtubeApi,
@@ -115,6 +117,16 @@ object ApplicationModule {
     fun provideDummt(): DummyClass {
         return DummyClass()
     }
+//
 
+//
+//    @Provides
+//    @Singleton
+//    fun provideUserPLayListRepository(
+//        userPlaylistDao: UserPlaylistDao
+//    ) =
+//        UserPlayListsMainRepository(userPlaylistDao)
+//
+//}
 
 }

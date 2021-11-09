@@ -18,5 +18,7 @@
     <color name="colorActiveIcon">#545</color>
     <color name="light_gray">#6DEDEDED</color>
 <color name="dark_blue">#001C3B</color>
+    <color name="dialog_colors">#1D1D1D</color>
+    <color name="formal_blue">#0C3F69</color>
 
 </resources>

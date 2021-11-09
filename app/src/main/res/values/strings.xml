@@ -26,6 +26,13 @@
     <string name="cancel">Cancel</string>
     <string name="SongName">Song name</string>
     <string name="anotherWay">Try another way..</string>
+    <string name="addPlayList">Add new playlist</string>
+    <string name="title">Title</string>
+    <string name="craete">Create</string>
+    <string name="addToPlayList">Add to playlist</string>
+    <string name="newplaylist">Create PLaylist</string>
+    <string name="recentlyPlayed">Recently Played</string>
+    <string name="allPLaylists">All PLaylists</string>
 
 
 </resources>

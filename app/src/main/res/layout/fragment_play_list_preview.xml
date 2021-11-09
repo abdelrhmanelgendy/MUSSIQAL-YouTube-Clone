@@ -84,12 +84,12 @@
                 >
 
                 <ImageView
-                    android:id="@+id/playListPreviewFragment_ImageAddToFavorite"
+                    android:id="@+id/playListPreviewFragment_ImageAddCurrentPlayList"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:src="@drawable/ic_baseline_library_add_24"
-
+                    android:background="?actionBarItemBackground"
                     app:tint="@color/white_gray" />
 
                 <ImageView
@@ -98,6 +98,7 @@
                     android:layout_height="@dimen/_25sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:src="@drawable/ic_baseline_arrow_downward_24"
+                    android:background="?actionBarItemBackground"
                     app:tint="@color/white_gray" />
 
             </LinearLayout>

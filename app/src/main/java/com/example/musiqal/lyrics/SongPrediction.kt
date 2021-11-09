@@ -14,7 +14,9 @@ class SongPrediction {
         "[Official Music Video]",
         "(Official Video)",
         "(Official Music Video)",
-        "(Performance Edit)"
+        "(Performance Edit)",
+        "مترجمه",
+        "مترجمة",
 
     )
     val dashesList= listOf("-","_","–")

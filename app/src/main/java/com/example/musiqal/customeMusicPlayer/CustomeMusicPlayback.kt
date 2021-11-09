@@ -242,10 +242,13 @@ class CustomeMusicPlayback(
                 if (mediaPlayer.isPlaying) {
                     isMediaPlayerPlaying = false
                     mediaPlayer.pause()
-                    setPlayPauseButtonBackground(R.drawable.ic_baseline_play_arrow_24)
                     _mediaPlayerPausedTimeInMillis = mediaPlayer.currentPosition
                     Log.d(TAG, "pause: " + _mediaPlayerPausedTimeInMillis)
-                    startPausingMediaService()
+                  withContext(Dispatchers.Main)
+                  {
+                      startPausingMediaService()
+                      setPlayPauseButtonBackground(R.drawable.ic_baseline_play_arrow_24)
+                  }
                 }
             } catch (e: Exception) {
                 throw Exception(e.message)
@@ -460,10 +463,12 @@ class CustomeMusicPlayback(
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setPlayPauseButtonBackground(icBaselinePause24: Int) {
+    CoroutineScope(Dispatchers.Main).launch{
         playPauseButtom.setImageDrawable(
             context.resources.getDrawable(icBaselinePause24, context.theme)
         )
 
+    }
     }
 
     override fun seeking(currentPosition: Int) {

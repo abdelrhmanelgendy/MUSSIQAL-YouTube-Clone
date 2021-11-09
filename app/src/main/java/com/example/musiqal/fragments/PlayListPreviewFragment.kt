@@ -2,7 +2,6 @@ package com.example.musiqal.fragments
 
 import ItemsInPlayListAdapter
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -22,16 +21,18 @@ import com.example.musiqal.fragments.util.OnPlayListPreviewRecyclerViewListener
 import com.example.musiqal.models.youtubeItemInList.ItemInPlayListPreview
 import com.example.musiqal.models.youtubeItemInList.YoutubeItemsConverters
 import com.example.musiqal.ui.MainActivity
+import com.example.musiqal.userPLaylists.model.UserPlayList
+import com.example.musiqal.userPLaylists.mvi.UserPlayListViewModel
 import com.example.musiqal.util.OnAudioInPlaylistClickListner
 import com.example.musiqal.util.OnItemVideoInPlayListClickListner
 import java.lang.Exception
 
 
-const val PLAY_LIST_ID = "playListId"
-
 class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
     OnPlayListPreviewRecyclerViewListener {
+    private var currentPlayList: List<Item> = listOf()
     lateinit var onAudioInPlaylistClickListner: OnAudioInPlaylistClickListner
+    private val PLAY_LIST_ID = "playListId"
     val listOfReadyUrls =
         listOf(
             "https://cdn01.ytjar.xyz/get.php/b/86/foE1mO2yM04.mp3?h=TTJ6EVhZ0cKJHIQw14AQtg&s=1635199942&n=Mike-Posner-I-Took-A-Pill-In-Ibiza-Seeb-Remix-Explicit",
@@ -51,7 +52,7 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
 
 
     private val ITEM_LIST_INSHARED: String = "sharedSavedItem"
-    lateinit var playListPreviewBinding: FragmentPlayListPreviewBinding
+    lateinit var binding: FragmentPlayListPreviewBinding
     val mainViewModel: MainViewModel by lazy {
         ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
@@ -65,8 +66,8 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
         savedInstanceState: Bundle?
     ): View? {
         Log.d(TAG, "onCreateView: ")
-        playListPreviewBinding = FragmentPlayListPreviewBinding.inflate(layoutInflater)
-        return playListPreviewBinding.root
+        binding = FragmentPlayListPreviewBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,7 +78,8 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
         if (fromShared) {
             val itemFromSharedPreference = getItemFromSharedPreference()
             val listOfItem = YoutubeItemsConverters().convertItems(itemFromSharedPreference)
-            Log.d(TAG, "onViewCreated: ${listOfItem.toString()}")
+            Log.d(TAG, "onViewCreated: ${listOfItem.get(0).toString()}")
+            Log.d(TAG, "onViewCreated: ${listOfItem.get(1).toString()}")
             setupRecyclerViewData(listOfItem)
 
         } else {
@@ -87,20 +89,41 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
 //        activity?.findViewById<BottomNavigationView>(R.id.mainActivity_bottomNavigation)?.visibility =
 //            View.GONE
 //        findNavController().navigate(R.id.action_playListPreviewFragment_to_homeFragment)
+        initButtons()
+    }
+
+    private fun initButtons() {
+        binding.playListPreviewFragmentImageAddCurrentPlayList.setOnClickListener {
+            saveCurrentPLayList(this.currentPlayList)
+
+        }
+        binding.playListPreviewFragmentBtnBack.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
+    }
+
+    private fun saveCurrentPLayList(currentPlayList: List<Item>) {
+        val userPlayListViewModel=ViewModelProvider(requireActivity())
+            .get(UserPlayListViewModel::class.java)
+
+
+
 
     }
 
     lateinit var itemsInPlayListAdapter: ItemsInPlayListAdapter
     fun setupRecyclerViewData(items: List<Item>) {
+        this.currentPlayList = items
         val listOfSelectableItem: ArrayList<ItemInPlayListPreview> =
             convertItemToSelectableItem(items)
         itemsInPlayListAdapter = ItemsInPlayListAdapter(requireContext(), this)
         val layoutManager = LinearLayoutManager(requireContext())
 
-        playListPreviewBinding.playListPreviewFragmentRecyclerView.also {
+        binding.playListPreviewFragmentRecyclerView.also {
             it.layoutManager = layoutManager
             it.adapter = itemsInPlayListAdapter
-            itemsInPlayListAdapter.setListOfItems(listOfSelectableItem,0)
+            itemsInPlayListAdapter.setListOfItems(listOfSelectableItem, 0)
         }
     }
 
@@ -222,63 +245,13 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
             selectableItem.isSelected = false
         }
         _listOfSelectableYoutubeItemsInPLayListPreview.get(currentPosition).isSelected = true
-        itemsInPlayListAdapter.setListOfItems(_listOfSelectableYoutubeItemsInPLayListPreview,currentPosition    )
+        itemsInPlayListAdapter.setListOfItems(
+            _listOfSelectableYoutubeItemsInPLayListPreview,
+            currentPosition
+        )
     }
 
 
-    fun getVideoLink(rapidApiKey: String, videoId: String) {
-
-//        val dommyUrl = listOfReadyUrls.get(java.util.Random().nextInt(listOfReadyUrls.size - 1))
-//        onAudioInPlaylistClickListner.onAudioExtractedClick(
-//            YoutubeMp3ConverterData(
-//                0.0,
-//                dommyUrl,
-//                "",
-//                1,
-//                "",
-//                ""
-//            )
-//        )
-//        mainViewModel.getMp3VideoConvertedUrl(
-//            "youtube-mp36.p.rapidapi.com",
-//            rapidApiKey,
-//            videoId
-//        )
-//        lifecycleScope.launchWhenStarted {
-//            mainViewModel.youtubeVideoToMp3StateFlow.collect { event ->
-//                when (event) {
-//                    is YoutubeVideoToMp3StateFlow.Failed -> {
-//                        Log.d(TAG2, "video Failed: " + event.errorMessgae)
-//                        if (event.errorMessgae.equals(Constants.mp3ApiTooManyRequestsError) || event.errorMessgae.equals(
-//                                "Unauthorized"
-//                            )
-//                        ) {
-//                            Log.d(TAG2, "getVideoLink: Changing ApiKey")
-//                            val newApiKey = changeApiKey(rapidApiKey)
-//                            getVideoLink(newApiKey, videoId)
-//                        } else {
-//                            Log.d(TAG2, "getVideoLink: reCallMethod")
-//                            getVideoLink(rapidApiKey, videoId)
-//
-//                        }
-//
-//                    }
-//                    is YoutubeVideoToMp3StateFlow.Success -> {
-////                        if (event.item.progress)
-//                        Log.d(TAG2, "onVideoClick: Video Success " + event.item)
-//                        onAudioInPlaylistClickListner.onAudioExtractedClick(event.item)
-//
-//
-//                    }
-//                    is YoutubeVideoToMp3StateFlow.Loading -> {
-//                        Log.d(TAG2, "onVideoClick: Loading")
-//                    }
-//
-//
-//                }
-//            }
-//        }
-    }
 
     private fun changeApiKey(rapidApiKey: String): String {
 
@@ -288,14 +261,12 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
     override fun onScroll(position: Int, currentListOfItems: List<Item>) {
 
 
-      if (::playListPreviewBinding.isInitialized)
-      {
-          playListPreviewBinding.playListPreviewFragmentRecyclerView.scrollToPosition(position)
-          val convertItemToSelectableItem = convertItemToSelectableItem(currentListOfItems)
-          changeNowPlayingGifPosition(convertItemToSelectableItem, position)
-      }
+        if (::binding.isInitialized) {
+            binding.playListPreviewFragmentRecyclerView.scrollToPosition(position)
+            val convertItemToSelectableItem = convertItemToSelectableItem(currentListOfItems)
+            changeNowPlayingGifPosition(convertItemToSelectableItem, position)
+        }
     }
-
 
 
 }

@@ -102,7 +102,7 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
     private fun setUpTextViewTitle(searchTitle: String) {
         binding.searchResultFragmentTVSearch.text = searchTitle
         binding.searchResultFragmentTVSearch.setOnClickListener {
-            startSearchingActivityWithLastSearching(searchTitle)
+//            startSearchingActivityWithLastSearching(searchTitle)
         }
         binding.searchResultFragmentImgBack.setOnClickListener {
             requireActivity().onBackPressed()

@@ -6,11 +6,11 @@
 
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <RelativeLayout
         android:id="@+id/bottomSheet_relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+
 
         android:background="#000000">
 
@@ -54,6 +54,12 @@
 
 
                         android:padding="@dimen/_5sdp">
+                        <ImageView
+                            android:id="@+id/bottomSheet_imgCopy"
+                            android:layout_width="@dimen/_30sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:src="@drawable/ic_baseline_copy_all_24"
+                            />
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:layout_width="@dimen/_30sdp"
@@ -216,17 +222,21 @@
                     android:layout_height="match_parent"
                     android:paddingTop="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_10sdp"
-                    android:scrollbars="vertical"
+android:paddingStart="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_5sdp"
 
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15sdp"
 
 
-                    android:textIsSelectable="true" />
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusable="true"
+                    android:longClickable="true"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
         <!--            </LinearLayout>-->
         <!--        </ScrollView>-->
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </RelativeLayout>
 </layout>

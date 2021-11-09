@@ -6,12 +6,14 @@
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable-v24/ic_baseline_home_24.xml" value="0.16822916666666668" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable-v24/ic_baseline_library_music_24.xml" value="0.16822916666666668" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable-v24/icon_item_selection.xml" value="0.25462962962962965" />
+        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/above_shadow.xml" value="0.236986301369863" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/arrow_navigate_back_ic.xml" value="0.236986301369863" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/below_shadow.xml" value="0.13703703703703704" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/custome_black_button_white_border.xml" value="0.14537037037037037" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/custome_white_button.xml" value="0.14537037037037037" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/dummy.xml" value="0.236986301369863" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/gradient_background_black.xml" value="0.23378378378378378" />
+        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/gray_view.xml" value="0.24027777777777778" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.23378378378378378" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_arrow_downward_24.xml" value="0.22037037037037038" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_close_18.xml" value="0.19907407407407407" />
@@ -19,6 +21,7 @@
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.21481481481481482" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_history_24.xml" value="0.236986301369863" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_keyboard_arrow_down_24.xml" value="0.15833333333333333" />
+        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_keyboard_arrow_right_24.xml" value="0.24027777777777778" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_library_add_24.xml" value="0.22037037037037038" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_library_books_24.xml" value="0.24027777777777778" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_no_repeat_all.xml" value="0.24027777777777778" />
@@ -28,9 +31,11 @@
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_pause_24.xml" value="0.2263888888888889" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_play_arrow_18.xml" value="0.19907407407407407" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.22037037037037038" />
+        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_playlist_add_check_24.xml" value="0.24027777777777778" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_repeat_all.xml" value="0.23378378378378378" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_repeat_one_24.xml" value="0.24027777777777778" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_baseline_shuffle_24.xml" value="0.22037037037037038" />
+        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_filter_state.xml" value="0.2324074074074074" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.25462962962962965" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_next_18.xml" value="0.19907407407407407" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_next_24.xml" value="0.23378378378378378" />
@@ -39,26 +44,32 @@
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_previous_24.xml" value="0.23378378378378378" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/ic_shuffle_icon.xml" value="0.22037037037037038" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/rounded_gray_et.xml" value="0.1" />
+        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/drawable/state_pressed_ripple.xml" value="0.2324074074074074" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/activity_search.xml" value="0.176" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/activity_test.xml" value="0.2361111111111111" />
+        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/add_new_playlist_dialog_item.xml" value="0.4" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/custome_view_pager_item_list.xml" value="0.22592592592592592" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/demo.xml" value="0.1" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/fragment_blank.xml" value="0.22592592592592592" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/fragment_blank2.xml" value="0.21981981981981982" />
-        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/fragment_collections.xml" value="0.25416666666666665" />
+        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/fragment_collections.xml" value="0.176" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/fragment_home.xml" value="0.11916971916971918" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/fragment_library.xml" value="0.2" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/fragment_play_list_preview.xml" value="0.176" />
+        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/fragment_recently_played_tracks.xml" value="0.22592592592592592" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/fragment_serarch_result.xml" value="0.176" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/fragment_test.xml" value="0.21981981981981982" />
+        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/history_playlist_recyclerview_item.xml" value="0.2" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/item_search_result.xml" value="0.4" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/item_single_playlist.xml" value="0.21981981981981982" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/lyrics_bottom_sheat_layout.xml" value="0.22592592592592592" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/media_player_view_irem.xml" value="0.1" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/media_player_view_item.xml" value="0.136" />
+        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/play_lists_dialog.xml" value="0.2" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/recycler_view_item_list_of_videos_in_play_list.xml" value="0.264" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/recycler_view_item_search.xml" value="0.176" />
+        <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/recycler_view_item_user_playlists.xml" value="0.264" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/recycler_view_items_of_othe_recycler_view.xml" value="0.2" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/shuffle_button.xml" value="0.22592592592592592" />
         <entry key="..\:/courses/01_Android/00Learning/School Starting October/app/src/main/res/layout/special_recycler_view_playlist_items.xml" value="0.4" />

@@ -37,9 +37,11 @@ import com.example.musiqal.customeMusicPlayer.util.RepeateMode
 import com.example.musiqal.customeMusicPlayer.util.ShuffleMode
 import com.example.musiqal.databinding.ActivityMainBinding
 import com.example.musiqal.fragments.*
+import com.example.musiqal.fragments.util.OnCollectionFragmentListeners
 import com.example.musiqal.lyrics.LyricsBottomSheet
 import com.example.musiqal.lyrics.LyricsUtil
 import com.example.musiqal.lyrics.util.OnLyricsFoundListener
+import com.example.musiqal.models.youtubeItemInList.ItemTypeConverter
 import com.example.musiqal.search.SearchActivity.Companion.SEARCH_TITLE_KEY
 import com.example.musiqal.ui.slidingPan.SlidingUpDownPanel
 import com.example.musiqal.util.MusicPlayerViewPagerAdapter
@@ -58,7 +60,9 @@ class MainActivity() :
     OnCustomeMusicPlayerCompletionListener,
     MusicPlayerEvents,
     View.OnClickListener,
+    OnCollectionFragmentListeners,
     MusicNotificationReceiverListener {
+    private lateinit var OUTSIDE_FRAGMENT: RecentlyPlayedTracksFragment
     private val TAG = "MainActivity11"
     val listOfReadyUrls =
         listOf(
@@ -123,6 +127,7 @@ class MainActivity() :
         binding.mediaPlayerItemImgLyrics.setOnClickListener {
             openLyricsView()
         }
+//        mainViewModel.deleteAllSavedTrackItem()
     }
 
     var isViewed = false
@@ -158,7 +163,7 @@ class MainActivity() :
     private fun lyricsFilter(lyrics: String): String {
         val Lyrics_CopyRight = "Paroles de la chanson"
 
-      return  lyrics.replace(Lyrics_CopyRight, "")
+        return lyrics.replace(Lyrics_CopyRight, "")
 
 
     }
@@ -452,8 +457,8 @@ class MainActivity() :
                     true
                 )
                 val youtubeItem = currentListOfItems.get(audioPosition)
-                this.currentItem=currentListOfItems.get(audioPosition)
-                this.currentItemPosion=audioPosition
+                this.currentItem = currentListOfItems.get(audioPosition)
+                this.currentItemPosion = audioPosition
                 setupMainMediaPlayerViews()
                 val videoId = youtubeItem.snippet.resourceId.videoId
             } else if (shuffleMode == ShuffleMode.Shuffle) {
@@ -463,8 +468,8 @@ class MainActivity() :
                     false
                 )
                 val youtubeItem = currentListOfItems.get(audioPosition)
-                this.currentItem=currentListOfItems.get(audioPosition)
-                this.currentItemPosion=audioPosition
+                this.currentItem = currentListOfItems.get(audioPosition)
+                this.currentItemPosion = audioPosition
                 setupMainMediaPlayerViews()
                 val videoId = youtubeItem.snippet.resourceId.videoId
 
@@ -487,8 +492,8 @@ class MainActivity() :
                 Log.d(TAG, "urlExtracted At position : " + currentItemPosion)
 
                 val youtubeItem = currentListOfItems.get(audioPosition)
-                this.currentItem=currentListOfItems.get(audioPosition)
-                this.currentItemPosion=audioPosition
+                this.currentItem = currentListOfItems.get(audioPosition)
+                this.currentItemPosion = audioPosition
                 setupMainMediaPlayerViews()
                 binding.mediaPlayerItemViewPagerSongImage.setCurrentItem(
                     audioPosition,
@@ -501,8 +506,8 @@ class MainActivity() :
                 Log.d(TAG, "urlExtracted At position : " + currentItemPosion)
 
                 val youtubeItem = currentListOfItems.get(audioPosition)
-                this.currentItem=currentListOfItems.get(audioPosition)
-                this.currentItemPosion=audioPosition
+                this.currentItem = currentListOfItems.get(audioPosition)
+                this.currentItemPosion = audioPosition
                 setupMainMediaPlayerViews()
                 binding.mediaPlayerItemViewPagerSongImage.setCurrentItem(
                     audioPosition,
@@ -554,12 +559,21 @@ class MainActivity() :
             TAG,
             "onBackPressed: " + currentSettedFragment?.javaClass?.name
         )
+        if (IS_FROM_COLLECTIONFRAGMENT) {
+            val fm = supportFragmentManager
+            fm.beginTransaction()
+                .hide(activeFragment)
+                .show(collectionFragment).commit();
+            currentSettedFragment = collectionFragment
+            IS_FROM_COLLECTIONFRAGMENT = false
+            return
+        }
         if (currentSettedFragment?.javaClass?.name.equals(SearchResultFragment::class.java.name)) {
             val fm = supportFragmentManager
             fm.beginTransaction()
                 .hide(currentSettedFragment!!)
                 .show(homeFragment).commit();
-            currentSettedFragment= homeFragment
+            currentSettedFragment = homeFragment
             return
         }
         if (binding.mainActiviytSlidingLayout.isPanelExpanded) {
@@ -580,20 +594,20 @@ class MainActivity() :
                         .hide(HomeFragment.playListPreviewFragmen)
                         .show(homeFragment).commit();
                     isFromPlayListPreview = false
-                    currentSettedFragment= homeFragment
+                    currentSettedFragment = homeFragment
                 }
             }
             (R.id.libraryFragment) -> {
                 setFragment(homeFragment, "0", 1)
                 binding.mainActivityBottomNavigation.selectedItemId =
                     R.id.homeFragment
-                currentSettedFragment= homeFragment
+                currentSettedFragment = homeFragment
             }
             (R.id.collectionsFragment) -> {
                 setFragment(homeFragment, "0", 1)
                 binding.mainActivityBottomNavigation.selectedItemId =
                     R.id.homeFragment
-                currentSettedFragment= homeFragment
+                currentSettedFragment = homeFragment
             }
         }
 
@@ -601,7 +615,7 @@ class MainActivity() :
 
     var currentSettedFragment: Fragment? = null
     private fun setFragmentF(currentFragment: Fragment) {
-        Log.d(TAG, "setFragmentF: "+currentFragment::class.java.name)
+        Log.d(TAG, "setFragmentF: " + currentFragment::class.java.name)
         val fm = supportFragmentManager
         currentSettedFragment = currentFragment
         if (currentFragment.isAdded()) {
@@ -611,6 +625,7 @@ class MainActivity() :
                 fm.beginTransaction().hide(collectionFragment).commit()
                 fm.beginTransaction().hide(HomeFragment.playListPreviewFragmen)
                 fm.beginTransaction().hide(searchResultFragment).commit()
+                fm.beginTransaction().hide(this.OUTSIDE_FRAGMENT).commit()
                 currentSettedFragment?.let {
                     fm.beginTransaction().hide(it).commit()
                 }
@@ -778,12 +793,12 @@ class MainActivity() :
 
 
     fun setupMainMediaPlayerViews() {
-        val item =this.currentItem
+        val item = this.currentItem
         val title = item
             .snippet.title
         val imageUrl = ImageUrlUtil.getMaxResolutionImageUrl(item)
         binding.mediaPlayerItemTVSongName.text = title
-        Log.d(TAG, "setupMainMediaPlayerViews: "+item.snippet.title)
+        Log.d(TAG, "setupMainMediaPlayerViews: " + item.snippet.title)
         if (item.snippet.title.equals(Constants.PRIVATE_VIDEO)) {
             CoroutineScope(Dispatchers.Main).launch {
                 Glide.with(applicationContext)
@@ -820,27 +835,11 @@ class MainActivity() :
     }
 
     private fun savePlayingTrackIntoHistory(currentItem: Item) {
-        currentItem.playedTrackID=null
+        currentItem.playedTrackID = null
+        currentItem.playedDateInMillisSecond=System.currentTimeMillis().toString()
         mainViewModel.insertSavedTrackItem(currentItem)
         mainViewModel.getAllPLayedTrackHistory()
-        lifecycleScope.launch {
-            mainViewModel.savedPlayedTraksStateFlow.collect { state ->
-                when (state) {
-                    is SavedPlayListViewState.Idel -> {
-                    }
-                    is SavedPlayListViewState.Loading -> {
-                    }
-                    is SavedPlayListViewState.Success -> {
-                        Log.d(TAG, "savePlayingTrackIntoHistory: " + state.item.size)
-                    }
-                    is SavedPlayListViewState.Failed -> {
-                        Log.d(TAG, "savePlayingTrackIntoHistory: " + state.errorMessgae)
-                    }
 
-                }
-
-            }
-        }
     }
 
     private fun startWithSeeking(
@@ -1113,28 +1112,36 @@ class MainActivity() :
             NavigationBarView.OnItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
+
                 if (currentSettedFragment?.javaClass?.name.equals(SearchResultFragment::class.java.name)) {
                     return false
                 }
                 if (binding.mainActiviytSlidingLayout.isPanelExpanded) {
                     return false
                 }
-                Log.d(TAG, "onNavigationItemSelected: "+item.itemId)
+                Log.d(TAG, "onNavigationItemSelected: " + item.itemId)
                 when (item.itemId) {
 
                     R.id.homeFragment -> {
                         if (!isFromPlayListPreview) {
-                            setFragment(homeFragment,"",1)
+                            setFragmentF(homeFragment)
                             Log.d(TAG, "onNavigationItemSelected: isFromPlayListPreview")
                         } else {
-                            setFragment(HomeFragment.playListPreviewFragmen,"",1)
+                            setFragment(HomeFragment.playListPreviewFragmen, "", 1)
                             Log.d(TAG, "onNavigationItemSelected: not isFromPlayListPreview")
                         }
                     }
-                    R.id.collectionsFragment -> setFragment(collectionFragment,"",1)
+                    R.id.collectionsFragment -> {
+                        if (IS_FROM_COLLECTIONFRAGMENT) {
+                            setFragment(OUTSIDE_FRAGMENT, "", 1)
+                        } else {
+                            setFragment(collectionFragment, "", 1)
+                        }
+                    }
 
                     R.id.libraryFragment -> setFragment(
-                        libraryFragment,"",1)
+                        libraryFragment, "", 1
+                    )
 
                 }
                 return true
@@ -1199,6 +1206,44 @@ class MainActivity() :
             nSearchResultFragment.bundleInstance(searchTitle)
             setFragmentF(nSearchResultFragment)
         }
+    }
+
+    var IS_FROM_COLLECTIONFRAGMENT = false
+    override fun onPlayedTracksClick(tracks: List<Item>) {
+        Log.d(
+            TAG, "onPlayedTracksClick: " + tracks.get(0).snippet.title.toString()
+        )
+        val cleanItemList = getCleanListOfItems(tracks)
+        RecentlyPlayedTracksFragment.itemsList=tracks
+        val recentlyPlayedTracksFragment = RecentlyPlayedTracksFragment.newInstance(
+            ItemTypeConverter().convertStandardListOfItemsString(
+                cleanItemList
+            )
+        )
+
+        setFragmentF(recentlyPlayedTracksFragment)
+        this.OUTSIDE_FRAGMENT = recentlyPlayedTracksFragment
+        activeFragment = recentlyPlayedTracksFragment
+        currentSettedFragment = recentlyPlayedTracksFragment
+        IS_FROM_COLLECTIONFRAGMENT = true
+    }
+
+    private fun getCleanListOfItems(tracks: List<Item>): List<Item> {
+
+        val items: MutableList<Item> = mutableListOf()
+
+        return tracks.filter { i ->
+            items.add(
+                Item(
+                    "",
+                    "",
+                    "",
+                    i.snippet,
+                    i.playedDateInMillisSecond
+                )
+            )
+        }
+
     }
 
 }

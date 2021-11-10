@@ -59,14 +59,21 @@ class TwoEditeTextDialog(private val context: Context) {
     }
 
     private fun removeSpaces(mainEditeText: String): String {
-        var name = mainEditeText
-        if (name.get(name.length - 1).toString().equals(" ")) {
-            name = name.replace(" ", "")
-        }
-        if (name.get(0).toString().equals(" ")) {
-            name = name.replace(" ", "")
-        }
-        return name
+   try {
+       var name = mainEditeText
+       if (name.get(name.length - 1).toString().equals(" ")) {
+           name = name.replace(" ", "")
+       }
+       if (name.get(0).toString().equals(" ")) {
+           name = name.replace(" ", "")
+       }
+       return name
+
+   }
+   catch (e:Exception)
+   {
+       return mainEditeText
+   }
 
     }
 

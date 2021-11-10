@@ -2,6 +2,7 @@ package com.example.musiqal.lyrics
 
 import android.util.Log
 import com.example.musiqal.lyrics.model.SongAndSingerName
+import java.util.*
 
 class SongPrediction {
     private val TAG = "SongPredictionTG"
@@ -48,6 +49,10 @@ class SongPrediction {
 
     private fun filterSongFromFTWord(songName: String): String {
 
+        if (songName.toLowerCase(Locale.US).contains("swift"))
+        {
+            return songName
+        }
         for (ftName in featsList)
         {
             if (songName.toLowerCase().contains(ftName)) {

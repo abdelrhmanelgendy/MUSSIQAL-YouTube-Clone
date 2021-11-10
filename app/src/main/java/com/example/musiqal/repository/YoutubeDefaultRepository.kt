@@ -51,4 +51,8 @@ interface YoutubeDefaultRepository {
     suspend fun insertPlayedTrack(item:Item)
     suspend fun deletePlayedTrack(itemId:Int)
     suspend fun getAllPlayedTracks():Resource<List<Item>>
+
+    suspend fun deleteAllSavedPlayedTrack()
+
+
 }

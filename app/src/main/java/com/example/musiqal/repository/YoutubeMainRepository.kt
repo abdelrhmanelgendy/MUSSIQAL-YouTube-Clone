@@ -145,6 +145,9 @@ class YoutubeMainRepository @Inject constructor(
         historyOfPlayedItemDao.deleteTrack(itemId)
     }
 
+    override suspend fun deleteAllSavedPlayedTrack() {
+        historyOfPlayedItemDao.deleteAllSavedTrack()
+    }
     override suspend fun getAllPlayedTracks():Resource< List<com.example.musiqal.models.youtubeItemInList.Item> >{
         return try {
             val items = historyOfPlayedItemDao.selectAllTracks()

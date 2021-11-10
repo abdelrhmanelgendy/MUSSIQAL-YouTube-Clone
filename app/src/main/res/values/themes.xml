@@ -28,6 +28,7 @@
 
     <style name="BlackButton" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#FFFFFF</item>
 
     </style>
 

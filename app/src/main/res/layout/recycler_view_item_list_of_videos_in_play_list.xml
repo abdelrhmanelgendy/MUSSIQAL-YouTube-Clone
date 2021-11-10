@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_1sdp"
-            android:text="publish: 01/02/2020 "
+            android:text="@string/publishDate"
             android:textColor="@color/gray"
             android:textSize="@dimen/_10sdp"
             app:layout_constraintStart_toEndOf="@id/recyclerViewItemListOfVideos_txtPosistion"

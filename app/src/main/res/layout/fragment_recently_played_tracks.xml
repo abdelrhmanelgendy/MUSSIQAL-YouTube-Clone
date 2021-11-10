@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".fragments.RecentlyPlayedTracksFragment">
+
+        <ProgressBar
+            android:indeterminateTint="@color/white"
+            android:id="@+id/recentlyPlayedTracksFragment_progressabar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:id="@+id/recentlyPlayedTracksFragment_linearLayoutAllViews"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+
+                android:id="@+id/recentlyPlayedTracksFragment_layoutToolBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:paddingStart="@dimen/_5sdp"
+                app:layout_constraintTop_toTopOf="parent"
+
+                >
+
+                <ImageView
+                    android:id="@+id/recentlyPlayedTracksFragment_imgBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?actionBarItemBackground"
+                    android:src="@drawable/arrow_navigate_back_ic"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/recentlyPlayedTracksFragment_txtS_recentlyPLayed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/recentlyPlayed"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15sdp"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/recentlyPlayedTracksFragment_imgBack"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray" />
+
+            <TextView
+
+                android:id="@+id/recentlyPlayedTracksFragment_TV_ItemsDate"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:fontFamily="@font/aclonica"
+
+                android:paddingStart="@dimen/_15sdp"
+
+                android:paddingTop="@dimen/_3sdp"
+                android:text="@string/defDate"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_20sdp"
+
+
+                android:visibility="visible" />
+
+            <ScrollView
+                android:id="@+id/recentlyPlayedTracksFragment_scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recentlyPlayedTracksFragment_recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingStart="@dimen/_5sdp"
+                        android:visibility="visible"
+                        tools:listitem="@layout/recycler_view_item_recently_played_tracks" />
+                </LinearLayout>
+            </ScrollView>
+
+
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

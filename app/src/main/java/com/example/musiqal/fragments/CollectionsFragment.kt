@@ -1,6 +1,7 @@
 package com.example.musiqal.fragments
 
 import HistoryOfPlayedTracksAdapter
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musiqal.databinding.FragmentCollectionsBinding
+import com.example.musiqal.fragments.util.OnCollectionFragmentListeners
 import com.example.musiqal.models.youtubeItemInList.Item
 import com.example.musiqal.recyclerViewAdapters.collectionsAdapter.util.OnTrackClickListener
 import com.example.musiqal.util.MakingToast
@@ -24,6 +26,18 @@ import java.lang.Exception
 
 class CollectionsFragment : Fragment(), OnTrackClickListener {
 
+    lateinit var onCollectionFragmentListeners: OnCollectionFragmentListeners
+
+    override fun onAttach(activity: Activity) {
+        super.onAttach(activity)
+        if (activity is OnCollectionFragmentListeners) {
+            onCollectionFragmentListeners = activity
+        } else {
+            throw Exception("")
+        }
+    }
+
+    private lateinit var itemsList: List<Item>
     lateinit var binding: FragmentCollectionsBinding
     val mainViewModel: MainViewModel by lazy {
         ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
@@ -49,13 +63,19 @@ class CollectionsFragment : Fragment(), OnTrackClickListener {
     }
 
     private fun setViewListeners() {
-        binding.imgShowAllPLayedTracks.setOnClickListener {
-            MakingToast(requireContext())
-                .toast("hi",MakingToast.LENGTH_SHORT)
+        binding.collectionFragmentLayoutBtnOpenHistory.setOnClickListener {
+            openRecentlyPlayedFragment()
         }
+
         binding.collectionFragmentLayoutRecentlyPLayed.setOnClickListener {
-            MakingToast(requireContext())
-                .toast("hi",MakingToast.LENGTH_SHORT)
+            openRecentlyPlayedFragment()
+        }
+    }
+
+    private fun openRecentlyPlayedFragment() {
+        if (itemsList.size != 0) {
+            onCollectionFragmentListeners.onPlayedTracksClick(this.itemsList)
+
         }
     }
 
@@ -68,12 +88,14 @@ class CollectionsFragment : Fragment(), OnTrackClickListener {
                         Log.d(TAG, "getAllPLayedTracksFromDataBase: loading")
                     }
                     is SavedPlayListViewState.Success -> {
-                       if (index==1)
-                       {
-                           Log.d(TAG, "getAllPLayedTracksFromDataBase: succedd ${index}" + event.item.size)
+                        if (index == 1) {
+                            Log.d(
+                                TAG,
+                                "getAllPLayedTracksFromDataBase: succedd ${index}" + event.item.size
+                            )
 
-                           setUpDataIntoRecyclerView(event.item)
-                       }
+                            setUpDataIntoRecyclerView(event.item)
+                        }
                     }
                     is SavedPlayListViewState.Failed -> {
                         Log.d(TAG, "getAllPLayedTracksFromDataBase: " + event.errorMessgae)
@@ -84,6 +106,7 @@ class CollectionsFragment : Fragment(), OnTrackClickListener {
     }
 
     fun setUpDataIntoRecyclerView(list: List<Item>) {
+        this.itemsList = list
         Log.d(TAG, "setUpDataIntoRecyclerView: setting")
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -93,6 +116,7 @@ class CollectionsFragment : Fragment(), OnTrackClickListener {
             it.layoutManager = layoutManager
         }
         historyOfPlayedTracksAdapter.setList(list)
+        progressBarVisibility(false)
 
     }
 
@@ -120,4 +144,19 @@ class CollectionsFragment : Fragment(), OnTrackClickListener {
 
     }
 
+
+
+    fun progressBarVisibility(isVisible:Boolean)
+    {
+        if (isVisible)
+        {
+            binding.collectionFragmentProgressBar.visibility=View.VISIBLE
+            binding.collectionFragmentLinearLayoutAllViews.visibility=View.GONE
+        }
+        else
+        {
+            binding.collectionFragmentProgressBar.visibility=View.GONE
+            binding.collectionFragmentLinearLayoutAllViews.visibility=View.VISIBLE
+        }
+    }
 }

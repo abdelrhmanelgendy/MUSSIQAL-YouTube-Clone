@@ -134,6 +134,14 @@ class MainViewModel @Inject constructor(private val mainRepository: YoutubeMainR
 
     }
 
+    fun deleteAllSavedTrackItem() {
+        viewModelScope.launch {
+            mainRepository.deleteAllSavedPlayedTrack()
+        }
+
+    }
+
+
     fun getAllPLayedTrackHistory() {
         _savedPlayedTraksStateFlow.value = SavedPlayListViewState.Idel
         viewModelScope.launch(Dispatchers.IO) {

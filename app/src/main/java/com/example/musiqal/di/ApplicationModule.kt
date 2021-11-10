@@ -9,6 +9,7 @@ import com.example.musiqal.database.local.PlaylistsDatabase
 import com.example.musiqal.database.remote.LyricsApiSource
 import com.example.musiqal.database.remote.YoutubeApi
 import com.example.musiqal.database.remote.YoutubeToMp3ApiConverter
+import com.example.musiqal.helpers.CalenderHelper
 import com.example.musiqal.lyrics.mvi.LyricsMainRepository
 
 import com.example.musiqal.repository.YoutubeMainRepository
@@ -116,6 +117,13 @@ object ApplicationModule {
     @Singleton
     fun provideDummt(): DummyClass {
         return DummyClass()
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideCalenderHelper():CalenderHelper{
+        return CalenderHelper()
     }
 //
 

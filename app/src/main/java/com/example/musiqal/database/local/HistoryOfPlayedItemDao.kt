@@ -15,6 +15,10 @@ interface HistoryOfPlayedItemDao {
     @Query("delete from hitory_of_played_track where playedTrackID =:trackID")
     suspend fun deleteTrack(trackID: Int)
 
+
+    @Query("delete from hitory_of_played_track")
+    suspend fun deleteAllSavedTrack()
+
     @Query("select * from hitory_of_played_track")
     suspend fun selectAllTracks(): List<Item>
 

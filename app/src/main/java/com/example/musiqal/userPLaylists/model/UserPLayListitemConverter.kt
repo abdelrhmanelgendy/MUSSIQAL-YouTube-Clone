@@ -1,7 +1,7 @@
 package com.example.musiqal.userPLaylists.model
 
 import androidx.room.TypeConverter
-import com.example.musiqal.models.youtubeItemInList.*
+import com.example.musiqal.datamodels.youtubeItemInList.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -125,5 +125,14 @@ class UserPLayListitemConverter {
         return Gson().fromJson(items, type)
     }
 
+    @TypeConverter
+    fun convertUserPLaylistToString(userPLaylist:UserPlayList): String {
 
+        return Gson().toJson(userPLaylist.toString())
+    }
+
+    @TypeConverter
+    fun convertToUserPLaylist(userPLaylist: String): UserPlayList {
+        return Gson().fromJson(userPLaylist,UserPlayList::class.java)
+    }
 }

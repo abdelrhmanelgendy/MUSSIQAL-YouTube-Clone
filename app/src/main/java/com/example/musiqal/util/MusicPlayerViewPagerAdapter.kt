@@ -8,10 +8,7 @@ import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.example.musiqal.R
-import com.example.musiqal.models.youtubeItemInList.Item
-import com.example.musiqal.util.Constants
-import com.example.musiqal.util.ImageUrlUtil
-import com.example.musiqal.util.LoadDrawableFromGLide
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 
 class MusicPlayerViewPagerAdapter constructor(
     val layoutInflater: LayoutInflater,

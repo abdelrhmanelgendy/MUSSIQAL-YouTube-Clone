@@ -75,9 +75,9 @@
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
             android:layout_marginEnd="@dimen/_8sdp"
+            android:background="@android:color/transparent"
             android:src="@drawable/play_now"
             android:visibility="invisible"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

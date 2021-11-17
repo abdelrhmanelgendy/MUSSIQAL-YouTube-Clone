@@ -14,6 +14,7 @@ import com.example.musiqal.lyrics.util.OnDezzerLyricsListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectIndexed
 import kotlinx.coroutines.launch
 
 class OpenSourceDezzerLyrics(
@@ -42,7 +43,7 @@ class OpenSourceDezzerLyrics(
 
         CoroutineScope(Dispatchers.Main)
             .launch {
-                lyricsViewModel.songLyricsStateFlow.collect {
+                lyricsViewModel.songLyricsStateFlow.collectIndexed { index, it ->
                     when (it) {
                         is LyricsViewState.Loading -> {
                         }
@@ -53,16 +54,20 @@ class OpenSourceDezzerLyrics(
                         }
                         is LyricsViewState.Failed -> {
 
-                            if (isDataFailuer) {
-                                Log.d(TAG, "trySearchBySongDataWithoutUser:  failed1")
-                                Toast.makeText(
-                                    context,
-                                    "Failed to get this way",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                trySearchBySongDataWithUserHelp(songAndSingerName)
-                                isDataFailuer = false
-                            }
+                           if (index==1)
+                           {
+                               if (isDataFailuer) {
+                                   Log.d(TAG, "trySearchBySongDataWithoutUser:  failed1")
+                                   Toast.makeText(
+                                       context,
+                                       "Failed to automatically get lyrics,\n" +
+                                               "search it yourself",
+                                       Toast.LENGTH_SHORT
+                                   ).show()
+                                   trySearchBySongDataWithUserHelp(songAndSingerName)
+                                   isDataFailuer = false
+                               }
+                           }
 
                         }
 

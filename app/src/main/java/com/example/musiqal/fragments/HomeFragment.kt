@@ -13,12 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musiqal.R
 import com.example.musiqal.databinding.FragmentHomeBinding
-import com.example.musiqal.models.RandomSearchQueryWithImage
+import com.example.musiqal.datamodels.RandomSearchQueryWithImage
 import com.example.musiqal.util.Constants
 import com.example.musiqal.viewModels.viewStates.PlayListSearchViewState
 import kotlinx.coroutines.flow.collect
@@ -26,9 +24,9 @@ import java.util.*
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.musiqal.models.youtubeApiSearchForPlayList.Item
-import com.example.musiqal.models.youtubeApiSearchForPlayList.Snippet
-import com.example.musiqal.models.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
+import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.Item
+import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.Snippet
+import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
 import com.example.musiqal.search.SearchActivity
 import com.example.musiqal.ui.MainActivity
 import com.example.musiqal.util.OnPlayListItemClickListner
@@ -37,7 +35,6 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 
 
 class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickListner {

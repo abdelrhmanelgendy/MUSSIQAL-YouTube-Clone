@@ -1,6 +1,6 @@
 package com.example.musiqal.viewModels.viewStates
 
-import com.example.musiqal.models.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
+import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
 
 sealed class PlayListSearchViewState {
     class Success(

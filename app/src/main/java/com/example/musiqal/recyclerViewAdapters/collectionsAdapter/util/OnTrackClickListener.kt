@@ -1,7 +1,6 @@
 package com.example.musiqal.recyclerViewAdapters.collectionsAdapter.util
 
-import com.example.musiqal.models.youtubeItemInList.Item
-import com.example.musiqal.models.youtubeItemInList.ItemInPlayListPreview
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 
 interface OnTrackClickListener {
     fun onVideoClick(

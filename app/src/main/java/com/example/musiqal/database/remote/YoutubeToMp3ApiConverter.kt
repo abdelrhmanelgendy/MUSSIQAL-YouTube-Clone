@@ -1,6 +1,6 @@
 package com.example.musiqal.database.remote
 
-import com.example.musiqal.models.youtube.converter.toaudio.YoutubeMp3ConverterData
+import com.example.musiqal.datamodels.youtube.converter.toaudio.YoutubeMp3ConverterData
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

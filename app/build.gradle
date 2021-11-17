@@ -3,11 +3,13 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id("androidx.navigation.safeargs")
+//    id 'com.chaquo.python'
 
 
 }
 apply plugin: 'com.android.application'
 apply plugin: 'dagger.hilt.android.plugin'
+//apply plugin: 'com.chaquo.python'
 
 android {
 
@@ -36,6 +38,21 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+//        ndk {
+//            abiFilters "armeabi-v7a", "x86"
+//        }
+//
+//        python {
+//            buildPython "C:/Users/darkd/AppData/Local/Programs/Python/Python37-32/python.exe"
+//
+//        }
+//        sourceSets {
+//            main {
+//                python.srcDir "src/main/python"
+//            }
+//        }
     }
 
     buildTypes {

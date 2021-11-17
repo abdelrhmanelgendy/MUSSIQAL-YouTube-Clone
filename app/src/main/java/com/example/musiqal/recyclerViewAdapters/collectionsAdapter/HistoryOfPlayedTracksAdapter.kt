@@ -6,7 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.musiqal.R
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 import com.example.musiqal.recyclerViewAdapters.collectionsAdapter.util.OnTrackClickListener
 import com.example.musiqal.util.GlideLoader
 import com.example.musiqal.util.ImageUrlUtil

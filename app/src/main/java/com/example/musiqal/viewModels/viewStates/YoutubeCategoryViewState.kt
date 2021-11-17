@@ -1,6 +1,6 @@
 package com.example.musiqal.viewModels.viewStates
 
-import com.example.musiqal.models.youtubeApiChannel.YoutubeCategoryRequest
+import com.example.musiqal.datamodels.youtubeApiChannel.YoutubeCategoryRequest
 
 sealed class YoutubeCategoryViewState {
     class Success(val youtubeCategoryRequest: YoutubeCategoryRequest) : YoutubeCategoryViewState()

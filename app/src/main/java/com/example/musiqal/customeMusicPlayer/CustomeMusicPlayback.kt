@@ -17,12 +17,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.musiqal.R
-import com.example.musiqal.customeMusicPlayer.*
+import com.example.musiqal.customeMusicPlayer.data.MusicPlayerPersistence
 import com.example.musiqal.customeMusicPlayer.musicNotification.NotificationHelper
-import com.example.musiqal.customeMusicPlayer.musicNotification.NotificationListener
+import com.example.musiqal.customeMusicPlayer.util.NotificationListener
 import com.example.musiqal.customeMusicPlayer.musicNotification.NotificationService
 import com.example.musiqal.customeMusicPlayer.util.MusicPlayerEvents
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.customeMusicPlayer.util.MusicPlayerUtil
+import com.example.musiqal.customeMusicPlayer.util.OnCustomeMusicPlayerCompletionListener
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 import com.example.musiqal.ui.MainActivity
 import kotlinx.coroutines.*
 import java.lang.Runnable
@@ -38,7 +40,7 @@ class CustomeMusicPlayback(
         lateinit var currentPlayListName: String
         lateinit var mediaPlayer: MediaPlayer
         lateinit var songPlayList: List<Item>
-        lateinit var songItem: Item
+        var songItem: Item = Item()
         var songItemPosition: Int = -1
         var songItemDuration: Int = -1
         var _mediaPlayerPausedTimeInMillis = 0
@@ -57,6 +59,7 @@ class CustomeMusicPlayback(
         mediaPlayerItemMediaPlayerSeekBar: SeekBar,
         playPauseButtom: ImageView
     ) {
+
         this.mediaPlayerItemTVTxtPlayedTimeInMinutes = mediaPlayerItemTVTxtPlayedTimeInMinutes
         this.mediaPlayerItemTVTxtRemainingTimeInMinutes = mediaPlayerItemTVTxtRemainingTimeInMinutes
         this.mediaPlayerItemMediaPlayerSeekBar = mediaPlayerItemMediaPlayerSeekBar
@@ -91,6 +94,7 @@ class CustomeMusicPlayback(
         playListName: String
     ) {
 
+        Log.d(TAG, "start playing123: " + url)
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 createCustomeNotification(
@@ -119,34 +123,48 @@ class CustomeMusicPlayback(
 
         emptyViews()
         CoroutineScope(Dispatchers.Unconfined).launch {
-            try {
-                startPlayingSong(url, songItem, playListName)
-            } catch (e: java.lang.Exception) {
-                Log.d(TAG, "start: " + e.message)
-            }
+//            try {
+            startPlayingSong(url, songItem, playListName)
+//            } catch (e: java.lang.Exception) {
+//                Log.d(TAG, "start: " + e.message)
+//            }
 
         }
     }
 
     private fun startPlayingSong(url: String, item: Item, playListName: String) {
-
+        Log.d(TAG, "VideoExtraction1122: "+url)
+        if (url.equals("-1")||url.isEmpty()||url.equals("null"))
+        {
+            MakingToast(context)
+                .toast("sorry cant find an extraction to this video now\ntry again later",MakingToast.LENGTH_SHORT)
+            return
+        }
         CoroutineScope(Dispatchers.Default)
             .launch {
                 try {
 
 //                    val url=getAudioMP3EdURL(item)
 
+                try {
                     mediaPlayer.stop()
                     mediaPlayer.release()
-                    mediaPlayer =
-                        MediaPlayer.create(context, MusicPlayerUtil.convertVideoUrlToUri(url))
+                } catch (e: Exception) {
 
-                    mediaPlayer.start()
-                    setPlayPauseButtonBackground(R.drawable.ic_baseline_pause_24)
-                    setUpViews(item, playListName)
+                }
+
+                mediaPlayer =
+                    MediaPlayer.create(context, MusicPlayerUtil.convertVideoUrlToUri(url))
+
+                mediaPlayer.start()
+                setPlayPauseButtonBackground(R.drawable.ic_baseline_pause_24)
+                setUpViews(item, playListName)
 
                 } catch (e: java.lang.Exception) {
+                    MakingToast(context)
+                        .toast("sorry cant find an extraction to this video now\ntry again later",MakingToast.LENGTH_SHORT)
                     Log.d(TAG, "start: " + e.message)
+
                 }
             }
 
@@ -171,7 +189,7 @@ class CustomeMusicPlayback(
         playListName: String,
         isCurrentlyPlaying: Boolean
     ) {
-        Log.d(TAG, "setNotificationMediaStyleImagesAndDurations: "+ songItem.snippet.title)
+        Log.d(TAG, "setNotificationMediaStyleImagesAndDurations: " + songItem.snippet.title)
         val maxResolutionImageUrl = ImageUrlUtil.getMaxResolutionImageUrl(songItem)
         Glide.with(context)
             .asBitmap()
@@ -244,11 +262,11 @@ class CustomeMusicPlayback(
                     mediaPlayer.pause()
                     _mediaPlayerPausedTimeInMillis = mediaPlayer.currentPosition
                     Log.d(TAG, "pause: " + _mediaPlayerPausedTimeInMillis)
-                  withContext(Dispatchers.Main)
-                  {
-                      startPausingMediaService()
-                      setPlayPauseButtonBackground(R.drawable.ic_baseline_play_arrow_24)
-                  }
+                    withContext(Dispatchers.Main)
+                    {
+                        startPausingMediaService()
+                        setPlayPauseButtonBackground(R.drawable.ic_baseline_play_arrow_24)
+                    }
                 }
             } catch (e: Exception) {
                 throw Exception(e.message)
@@ -263,32 +281,38 @@ class CustomeMusicPlayback(
         try {
             CoroutineScope(Dispatchers.Default).launch {
                 if (!mediaPlayer.isPlaying) {
-                        isMediaPlayerPlaying = true
-                        setPlayPauseButtonBackground(R.drawable.ic_baseline_pause_24)
-                        mediaPlayer.seekTo(_mediaPlayerPausedTimeInMillis)
-                        mediaPlayer.start()
-                        Log.d(TAG, "resume: " + _mediaPlayerPausedTimeInMillis)
-                        startPlayingMediaService()
-                    }
-
+                    isMediaPlayerPlaying = true
+                    setPlayPauseButtonBackground(R.drawable.ic_baseline_pause_24)
+                    mediaPlayer.seekTo(_mediaPlayerPausedTimeInMillis)
+                    mediaPlayer.start()
+                    Log.d(TAG, "resume: " + _mediaPlayerPausedTimeInMillis)
+                    startPlayingMediaService()
+                }
 
 
             }
-        }catch (e:java.lang.Exception){
+        } catch (e: java.lang.Exception) {
             isMediaPlayerPlaying = false
         }
     }
 
     override fun stop() {
         CoroutineScope(Dispatchers.Default).launch {
-            mediaPlayer.pause()
-            notificationHelper.pauseingMediaSession(mediaPlayer.currentPosition.toLong(), songItem)
-            notificationHelper.isPlaying = true
-            MainActivity.isPlaying = false
-            isMediaPlayerPlaying = false
-            saveCurrentPlayingMusicTime()
-            stopNotificationService()
-
+            if (!songItem.id.equals("-1")) {
+                try {
+                    mediaPlayer.pause()
+                    notificationHelper.pauseingMediaSession(
+                        mediaPlayer.currentPosition.toLong(),
+                        songItem
+                    )
+                    notificationHelper.isPlaying = true
+                    MainActivity.isPlaying = false
+                    isMediaPlayerPlaying = false
+                    saveCurrentPlayingMusicTime()
+                    stopNotificationService()
+                } catch (e: Exception) {
+                }
+            }
 
         }
         CoroutineScope(Dispatchers.Main).launch {
@@ -463,12 +487,12 @@ class CustomeMusicPlayback(
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setPlayPauseButtonBackground(icBaselinePause24: Int) {
-    CoroutineScope(Dispatchers.Main).launch{
-        playPauseButtom.setImageDrawable(
-            context.resources.getDrawable(icBaselinePause24, context.theme)
-        )
+        CoroutineScope(Dispatchers.Main).launch {
+            playPauseButtom.setImageDrawable(
+                context.resources.getDrawable(icBaselinePause24, context.theme)
+            )
 
-    }
+        }
     }
 
     override fun seeking(currentPosition: Int) {

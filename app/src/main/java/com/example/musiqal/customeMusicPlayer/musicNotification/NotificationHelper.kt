@@ -8,27 +8,21 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.media.MediaMetadata
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
-import android.view.KeyEvent
 import androidx.core.app.NotificationCompat
-import androidx.media.session.MediaButtonReceiver
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.example.musiqal.R
 import com.example.musiqal.customeMusicPlayer.musicNotification.MusicPlayerActions.Companion.ACTION_CLOSE
 import com.example.musiqal.customeMusicPlayer.musicNotification.MusicPlayerActions.Companion.ACTION_NEXT
 import com.example.musiqal.customeMusicPlayer.musicNotification.MusicPlayerActions.Companion.ACTION_PLAY
 import com.example.musiqal.customeMusicPlayer.musicNotification.MusicPlayerActions.Companion.ACTION_PREVIOUS
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.customeMusicPlayer.util.NotificationListener
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 import com.example.musiqal.ui.MainActivity
 import com.example.musiqal.util.BaseApplication
-import com.example.musiqal.util.ImageUrlUtil
 
 class NotificationHelper(
     private val context: Context,
@@ -131,21 +125,22 @@ class NotificationHelper(
         currentSongName: String, playListName: String
     ): MediaSessionCompat {
         Log.d("TAG", "setNotificationMediaStyleImagesAndDurations3: "+currentSongName)
-        notificationBuilder.setContentTitle(playListName)
-        notificationBuilder.setContentText(currentSongName)
-            .setLargeIcon(currentSongbitmap)
-        mediaSessionCompat = MediaSessionCompat(context, "MUSIQAL")
-        mediaSessionCompat.isActive = true
-        val mediaMetadata =
-            MediaMetadata.Builder()
-                .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, currentSongbitmap)
+        if (::notificationBuilder.isInitialized) {
+            notificationBuilder.setContentTitle(playListName)
+            notificationBuilder.setContentText(currentSongName)
+                .setLargeIcon(currentSongbitmap)
+            mediaSessionCompat = MediaSessionCompat(context, "MUSIQAL")
+            mediaSessionCompat.isActive = true
+            val mediaMetadata =
+                MediaMetadata.Builder()
+                    .putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, currentSongbitmap)
 
-                .build()
+                    .build()
 
-        mediaSessionCompat.setMetadata(MediaMetadataCompat.fromMediaMetadata(mediaMetadata))
+            mediaSessionCompat.setMetadata(MediaMetadataCompat.fromMediaMetadata(mediaMetadata))
 
 
-        //                .putString(
+            //                .putString(
 //                    MediaMetadata.METADATA_KEY_TITLE,
 //                    "AudioPlayerService.activeBook.title"
 //                )
@@ -198,6 +193,7 @@ class NotificationHelper(
 //
 //            }
 //        })
+        }
         return mediaSessionCompat
     }
 

@@ -8,13 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.musiqal.R
 import com.example.musiqal.helpers.CalenderHelper
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 import com.example.musiqal.recyclerViewAdapters.collectionsAdapter.util.OnTrackClickListener
 import com.example.musiqal.util.GlideLoader
 import com.example.musiqal.util.ImageUrlUtil
-import com.example.musiqal.util.OnItemVideoInPlayListClickListner
-import java.util.*
-import javax.inject.Inject
 import kotlin.collections.ArrayList
 
 
@@ -93,10 +90,9 @@ class RecentlyPlayedTracksAdapter(
             glideLoader.loadImage(trackImage, ImageUrlUtil.getMeduimResolutionImageUrl(track))
             trackName.setText(track.snippet.title)
 
-            calenderHelper.setCalender(track.playedDateInMillisSecond.toLong())
-            playedDate.setText(calenderHelper.toString())
 
-            val currentClickedPosition=adapterPosition
+            playedDate.setText(track.snippet.channelTitle)
+
 
 
         }

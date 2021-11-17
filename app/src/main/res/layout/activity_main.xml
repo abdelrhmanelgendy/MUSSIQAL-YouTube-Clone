@@ -42,7 +42,6 @@
                     android:layout_height="match_parent"
                     app:defaultNavHost="true"
                     app:navGraph="@navigation/main_nav_host" />
-
                 <androidx.constraintlayout.motion.widget.MotionLayout
                     android:id="@+id/mainActiviyt_MotionLayout"
                     android:layout_width="match_parent"
@@ -162,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_120sdp"
                         android:background="?actionBarItemBackground"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:src="@drawable/ic_baseline_arrow_downward_24"
                         app:layout_constraintStart_toStartOf="@id/main_container"
                         app:layout_constraintTop_toBottomOf="@id/mediaPlayerItem_viewPagerSongImage" />
@@ -171,9 +170,9 @@
                         android:id="@+id/mediaPlayerItem_imgAddFavorite"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginEnd="@dimen/_120sdp"
-                        android:src="@drawable/ic_baseline_favorite_24"
+                        android:src="@drawable/ic_baseline_playlist_add_24"
 
                         app:layout_constraintEnd_toEndOf="@id/main_container"
                         app:layout_constraintTop_toBottomOf="@id/mediaPlayerItem_viewPagerSongImage" />
@@ -284,6 +283,9 @@
 
 
                 </androidx.constraintlayout.motion.widget.MotionLayout>
+
+
+
 
 
             </com.example.musiqal.ui.slidingPan.SlidingUpDownPanel>

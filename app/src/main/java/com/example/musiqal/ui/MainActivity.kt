@@ -10,8 +10,8 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
-import com.example.musiqal.models.youtube.converter.toaudio.YoutubeMp3ConverterData
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtube.converter.toaudio.YoutubeMp3ConverterData
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 import com.example.musiqal.util.*
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
@@ -20,6 +20,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
+import android.os.Build
 import android.view.View
 import android.widget.Toast
 import androidx.constraintlayout.motion.widget.MotionLayout
@@ -27,29 +28,38 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.musiqal.customeMusicPlayer.*
+import com.example.musiqal.customeMusicPlayer.data.MusicPlayerPersistence
 import com.example.musiqal.customeMusicPlayer.musicNotification.MusicNotificationReceiverListener
 import com.example.musiqal.customeMusicPlayer.musicNotification.NotificationHelper
 import com.example.musiqal.customeMusicPlayer.musicNotification.NotificationReciever
 import com.example.musiqal.customeMusicPlayer.musicNotification.NotificationService
-import com.example.musiqal.customeMusicPlayer.util.LastPlayedTrack
+import com.example.musiqal.customeMusicPlayer.musicNotification.model.LastPlayedSongData
+import com.example.musiqal.customeMusicPlayer.musicNotification.model.LastPlayedTrack
 import com.example.musiqal.customeMusicPlayer.util.MusicPlayerEvents
+import com.example.musiqal.customeMusicPlayer.util.OnCustomeMusicPlayerCompletionListener
 import com.example.musiqal.customeMusicPlayer.util.RepeateMode
 import com.example.musiqal.customeMusicPlayer.util.ShuffleMode
 import com.example.musiqal.databinding.ActivityMainBinding
+import com.example.musiqal.extractVideoDirectLink.VideoLinkToDirectUrlExtraction
+import com.example.musiqal.extractVideoDirectLink.util.VideoExtractionEventListener
 import com.example.musiqal.fragments.*
 import com.example.musiqal.fragments.util.OnCollectionFragmentListeners
 import com.example.musiqal.lyrics.LyricsBottomSheet
 import com.example.musiqal.lyrics.LyricsUtil
 import com.example.musiqal.lyrics.util.OnLyricsFoundListener
-import com.example.musiqal.models.youtubeItemInList.ItemTypeConverter
+import com.example.musiqal.datamodels.youtubeItemInList.ItemTypeConverter
 import com.example.musiqal.search.SearchActivity.Companion.SEARCH_TITLE_KEY
 import com.example.musiqal.ui.slidingPan.SlidingUpDownPanel
+import com.example.musiqal.userPLaylists.dialogs.UserPLaylistsDialog
 import com.example.musiqal.util.MusicPlayerViewPagerAdapter
 import com.example.musiqal.viewModels.MainViewModel
-import com.example.musiqal.viewModels.viewStates.SavedPlayListViewState
+import com.example.musiqal.youtubeAudioVideoExtractor.YouTubeDurationConverter
+
+import com.example.musiqal.youtubeAudioVideoExtractor.mvi.YouTubeExtractorViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
+import okhttp3.*
 import java.lang.Exception
+import java.util.*
 import kotlin.random.Random
 
 
@@ -61,7 +71,8 @@ class MainActivity() :
     MusicPlayerEvents,
     View.OnClickListener,
     OnCollectionFragmentListeners,
-    MusicNotificationReceiverListener {
+    MusicNotificationReceiverListener, VideoExtractionEventListener {
+    private var CurrentItemDuration: String = "-1"
     private lateinit var OUTSIDE_FRAGMENT: RecentlyPlayedTracksFragment
     private val TAG = "MainActivity11"
     val listOfReadyUrls =
@@ -72,7 +83,7 @@ class MainActivity() :
             )
 
     lateinit var binding: ActivityMainBinding
-
+    val ALLOWED_AUDIO_TIME_IN_SECCONDS = 400
     val libraryFragment = LibraryFragment()
     val searchResultFragment = SearchResultFragment()
     val collectionFragment = CollectionsFragment()
@@ -84,6 +95,11 @@ class MainActivity() :
     lateinit var currentListOfItems: List<Item>
     lateinit var playListName: String
     lateinit var notificationHelper: NotificationHelper
+
+    val youTubeExtractorViewModel: YouTubeExtractorViewModel by lazy {
+        ViewModelProvider(this).get(YouTubeExtractorViewModel::class.java)
+    }
+
 
     var currentItemPosion: Int = -1
     var isAudioCompleted = false
@@ -111,7 +127,6 @@ class MainActivity() :
         setFragmentF(homeFragment)
 
 
-
         musicPlayerPersistence = MusicPlayerPersistence(this)
         getMusicPlayerSavedSettings(musicPlayerPersistence)
 
@@ -127,7 +142,18 @@ class MainActivity() :
         binding.mediaPlayerItemImgLyrics.setOnClickListener {
             openLyricsView()
         }
+
+        binding.mediaPlayerItemImgAddFavorite.setOnClickListener {
+            openAddingToPlaylistDialog()
+        }
+
 //        mainViewModel.deleteAllSavedTrackItem()
+    }
+
+    private fun openAddingToPlaylistDialog() {
+        val userPLaylistsDialog = UserPLaylistsDialog(this)
+        userPLaylistsDialog.createDialog(this.currentItem)
+
     }
 
     var isViewed = false
@@ -559,6 +585,19 @@ class MainActivity() :
             TAG,
             "onBackPressed: " + currentSettedFragment?.javaClass?.name
         )
+        if (currentSettedFragment?.javaClass?.name.equals(UserPlayListPreviewFragment::class.java.name)) {
+            val fm = supportFragmentManager
+            fm.beginTransaction()
+                .hide(currentSettedFragment!!)
+                .show(collectionFragment).commit();
+            currentSettedFragment = collectionFragment
+            return
+//            val fm = supportFragmentManager
+//
+//            fm.beginTransaction()
+//                .hide(activeFragment)
+//                .show(collectionFragment).commit();
+        }
         if (IS_FROM_COLLECTIONFRAGMENT) {
             val fm = supportFragmentManager
             fm.beginTransaction()
@@ -614,7 +653,7 @@ class MainActivity() :
     }
 
     var currentSettedFragment: Fragment? = null
-    private fun setFragmentF(currentFragment: Fragment) {
+    fun setFragmentF(currentFragment: Fragment) {
         Log.d(TAG, "setFragmentF: " + currentFragment::class.java.name)
         val fm = supportFragmentManager
         currentSettedFragment = currentFragment
@@ -650,6 +689,21 @@ class MainActivity() :
         item: Item,
         _listOfYoutubeItemsInPlaylists: MutableList<Item>,
         position: Int,
+        playListName: String,
+        shuffleMode: ShuffleMode
+    ) {
+        super.onItemClick(item, _listOfYoutubeItemsInPlaylists, position, playListName, shuffleMode)
+        this.shuffleMode = shuffleMode
+        shuffleClicked()
+        setUpShuffleModeButton(this.shuffleMode)
+
+        onItemClick(item, _listOfYoutubeItemsInPlaylists, position, playListName)
+    }
+
+    override fun onItemClick(
+        item: Item,
+        _listOfYoutubeItemsInPlaylists: MutableList<Item>,
+        position: Int,
         playListName: String
     ) {
         this.playListName = playListName
@@ -658,13 +712,14 @@ class MainActivity() :
         this.currentItem = item
         setupMainMediaPlayerViews()
         setUpViewPagersView(_listOfYoutubeItemsInPlaylists, position)
-
+        this.CurrentItemDuration = item.videoDuration
+        Log.d(TAG, "onItemClick12121: " + item.videoDuration)
         if (position == 0) {
             firstTimeinitializeViewPager = true
         }
         if (firstTimeinitializeViewPager) {
             Log.d(TAG, "onItemClick: firstTimeinitializeViewPager")
-            getVideoLink("", item.snippet.resourceId.videoId)
+            getVideoLink("", item.snippet.resourceId.videoId, item)
             firstTimeinitializeViewPager = false
         }
 
@@ -735,6 +790,7 @@ class MainActivity() :
                     val item = _listOfYoutubeItemsInPlaylists.get(position)
                     currentItemPosion = position
                     currentItem = currentListOfItems.get(currentItemPosion)
+                    CurrentItemDuration = currentItem.videoDuration
                     setupMainMediaPlayerViews()
                     val dommyUrl =
                         listOfReadyUrls.get(
@@ -749,7 +805,7 @@ class MainActivity() :
                         ""
                     )
 
-                    getVideoLink("", audioItem.link)
+                    getVideoLink("", item.snippet.resourceId.videoId, item)
                     withContext(Dispatchers.Main) {
                         delay(100)
                         HomeFragment.playListPreviewFragmen
@@ -797,7 +853,9 @@ class MainActivity() :
         val title = item
             .snippet.title
         val imageUrl = ImageUrlUtil.getMaxResolutionImageUrl(item)
-        binding.mediaPlayerItemTVSongName.text = title
+        CoroutineScope(Dispatchers.Main).launch {
+            binding.mediaPlayerItemTVSongName.text = title
+        }
         Log.d(TAG, "setupMainMediaPlayerViews: " + item.snippet.title)
         if (item.snippet.title.equals(Constants.PRIVATE_VIDEO)) {
             CoroutineScope(Dispatchers.Main).launch {
@@ -817,26 +875,71 @@ class MainActivity() :
 
     var x = 0
     override fun start(
-        url: String,
+        videoId: String,
         currentItem: Item,
         currentPlayList: List<Item>,
         currentItemPosition: Int, playListName: String
     ) {
-        CustomeMusicPlayback.songItem = currentItem
-        customeMusicPlayer.start(
-            url,
-            currentItem,
-            currentPlayList,
-            currentItemPosition,
-            playListName
-        )
-        Log.d(TAG, "started: " + (++x))
-        savePlayingTrackIntoHistory(currentItem)
+
+//        stop()
+
+//        checkFile -> video lenth in minutes
+        val audioInSeconds = checkFileSize(currentItem)
+        if (audioInSeconds <= ALLOWED_AUDIO_TIME_IN_SECCONDS) {
+
+            Log.d(TAG, "start: find for premuim user")
+            VideoLinkToDirectUrlExtraction(
+                this,
+                this,
+                VideoLinkToDirectUrlExtraction.PREMUIM_USER_TYPE
+            ).getVideoLink(videoId)
+        } else {
+
+            //App is not designed for such  a big audio do you want to download it instead of playing it?
+            Log.d(TAG, "start: find for Normal user")
+            if (audioInSeconds > 600) {
+                MakingToast(applicationContext).toast("Video with more than 10 minutes are slow streaming\nplease be patient.",MakingToast.LENGTH_SHORT)
+            }
+            VideoLinkToDirectUrlExtraction(
+                this,
+                this,
+                VideoLinkToDirectUrlExtraction.NORMAL_USER_TYPE
+            ).getVideoLink(videoId)
+        }
+
+
+    }
+
+
+    private fun checkFileSize(item: Item): Int {
+        val timeInSeconds = YouTubeDurationConverter.getTimeInSeconds(item.videoDuration)
+        return timeInSeconds
+
+    }
+
+    var isStartPlayingSuccess = false
+    override fun onSuccess(directUrl: String) {
+
+
+        if (!isStartPlayingSuccess) {
+            Log.d(TAG, "onSuccess: getting url success  $directUrl")
+            isStartPlayingSuccess = true
+            CustomeMusicPlayback.songItem = currentItem
+            customeMusicPlayer.start(
+                directUrl,
+                currentItem,
+                currentListOfItems,
+                currentItemPosion,
+                playListName
+            )
+
+            savePlayingTrackIntoHistory(currentItem)
+        }
     }
 
     private fun savePlayingTrackIntoHistory(currentItem: Item) {
         currentItem.playedTrackID = null
-        currentItem.playedDateInMillisSecond=System.currentTimeMillis().toString()
+        currentItem.playedDateInMillisSecond = System.currentTimeMillis().toString()
         mainViewModel.insertSavedTrackItem(currentItem)
         mainViewModel.getAllPLayedTrackHistory()
 
@@ -850,14 +953,14 @@ class MainActivity() :
         playListName: String,
         currentDuration: Long
     ) {
-        customeMusicPlayer.startWithSeeking(
-            url,
-            currentItem,
-            currentPlayList,
-            currentItemPosion,
-            playListName,
-            currentDuration
-        )
+//        customeMusicPlayer.startWithSeeking(
+//            url,
+//            currentItem,
+//            currentPlayList,
+//            currentItemPosion,
+//            playListName,
+//            currentDuration
+//        )
     }
 
 
@@ -869,7 +972,7 @@ class MainActivity() :
 
     override fun resume() {
         if (isAudioCompleted && savedRepeateMode == RepeateMode.NoRepeating) {
-            getVideoLink("", currentItem.snippet.resourceId.videoId)
+            getVideoLink("", currentItem.snippet.resourceId.videoId, currentItem)
             isAudioCompleted = false
             return
         }
@@ -879,7 +982,12 @@ class MainActivity() :
     }
 
     override fun stop() {
-        customeMusicPlayer.stop()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            binding.mediaPlayerItemMediaPlayerSeekBar.setProgress(0, true)
+        } else {
+            binding.mediaPlayerItemMediaPlayerSeekBar.setProgress(0)
+        }
+
     }
 
     private fun nextTrackWithSeeking(link: String, currentDuration: Long) {
@@ -894,19 +1002,34 @@ class MainActivity() :
     }
 
 
-    override fun next(url: String) {
-        start(
-            url = url,
-            currentItem,
-            currentPlayList = currentListOfItems,
-            currentItemPosion,
-            playListName
-        )
+    override fun next(videoId: String, item: Item) {
+        if (item.videoDuration.equals("P0D")) {
+
+            lifecycleScope.launch(Dispatchers.Main) {
+                MakingToast(applicationContext).toast(
+                    "sorry playing live videos is not avaiblable now",
+                    MakingToast.LENGTH_SHORT
+                )
+            }
+
+        } else {
+            isStartPlayingSuccess = false
+            customeMusicPlayer.stop()
+            customeMusicPlayer.emptyViews()
+            start(
+                videoId = videoId,
+                item,
+                currentPlayList = currentListOfItems,
+                currentItemPosion,
+                playListName
+            )
+        }
     }
 
     override fun previouse(url: String) {
+        isStartPlayingSuccess = false
         start(
-            url = url,
+            videoId = url,
             currentItem,
             currentPlayList = currentListOfItems,
             currentItemPosion,
@@ -948,13 +1071,14 @@ class MainActivity() :
     }
 
     override fun onComplete(mediaPlayer: MediaPlayer) {
+        //if no internet the return
         if (savedRepeateMode == RepeateMode.RepeateOnc) {
 
             binding.mediaPlayerItemViewPagerSongImage.setCurrentItem(
                 currentItemPosion,
                 true
             )
-            getVideoLink(changeApiKey(""), currentItem.snippet.resourceId.videoId)
+            getVideoLink(changeApiKey(""), currentItem.snippet.resourceId.videoId, currentItem)
 
 
         } else if (savedRepeateMode == RepeateMode.NoRepeating) {
@@ -1052,57 +1176,10 @@ class MainActivity() :
     }
 
 
-    fun getVideoLink(rapidApiKey: String, videoId: String) {
-        val dommyUrl =
-            listOfReadyUrls.get(
-                java.util.Random().nextInt(listOfReadyUrls.size - 1)
-            )
-        val item = YoutubeMp3ConverterData(
-            0.0,
-            dommyUrl,
-            "",
-            1,
-            "",
-            ""
-        )
-        next(item.link)
-//        mainViewModel.getMp3VideoConvertedUrl(
-//            "youtube-mp36.p.rapidapi.com",
-//            rapidApiKey,
-//            videoId
-//        )
-//        lifecycleScope.launchWhenStarted {
-//            mainViewModel.youtubeVideoToMp3StateFlow.collect { event ->
-//                when (event) {
-//                    is YoutubeVideoToMp3StateFlow.Failed -> {
-//                        Log.d(TAG, "video Failed: " + event.errorMessgae)
-//                        if (event.errorMessgae.equals(Constants.mp3ApiTooManyRequestsError) || event.errorMessgae.equals(
-//                                "Unauthorized"
-//                            )
-//                        ) {
-//                            Log.d(TAG, "getVideoLink: Changing ApiKey")
-//                            val newApiKey = changeApiKey(rapidApiKey)
-//                            getVideoLink(newApiKey, videoId)
-//                        } else {
-//                            Log.d(TAG, "getVideoLink: reCallMethod")
-//                            getVideoLink(rapidApiKey, videoId)
-//
-//                        }
-//
-//                    }
-//                    is YoutubeVideoToMp3StateFlow.Success -> {
-//                        Log.d(TAG, "onVideoClick: Video Success " + event.item)
-//        next(event.item.link)
-//
-//
-//                    }
-//                    is YoutubeVideoToMp3StateFlow.Loading -> {
-//                        Log.d(TAG, "onVideoClick: Loading")
-//                    }
-//
-//
-//                }
-//            }
+    fun getVideoLink(rapidApiKey: String, videoId: String, item: Item) {
+        next(videoId, item)
+
+
     }
 
     private fun initializeBottomNavigationView() {
@@ -1214,7 +1291,7 @@ class MainActivity() :
             TAG, "onPlayedTracksClick: " + tracks.get(0).snippet.title.toString()
         )
         val cleanItemList = getCleanListOfItems(tracks)
-        RecentlyPlayedTracksFragment.itemsList=tracks
+        RecentlyPlayedTracksFragment.itemsList = tracks
         val recentlyPlayedTracksFragment = RecentlyPlayedTracksFragment.newInstance(
             ItemTypeConverter().convertStandardListOfItemsString(
                 cleanItemList
@@ -1245,6 +1322,7 @@ class MainActivity() :
         }
 
     }
+
 
 }
 

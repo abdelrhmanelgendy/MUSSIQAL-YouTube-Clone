@@ -2,7 +2,7 @@ package com.example.musiqal.userPLaylists.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 
 @Entity(tableName = "userPLayLists")
 data class UserPlayList(

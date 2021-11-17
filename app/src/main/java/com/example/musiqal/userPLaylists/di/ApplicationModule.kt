@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class ApplicationModule {
+object ApplicationModule {
 
     @Provides
     @Singleton
@@ -25,6 +25,9 @@ class ApplicationModule {
         )
             .build()
             .getUserPLayListDao()
+
+
+
 
     @Provides
     @Singleton

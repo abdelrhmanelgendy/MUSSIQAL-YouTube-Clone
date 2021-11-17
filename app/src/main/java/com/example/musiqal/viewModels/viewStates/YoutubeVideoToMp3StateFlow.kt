@@ -1,7 +1,6 @@
 package com.example.musiqal.viewModels.viewStates
 
-import com.example.musiqal.models.youtube.converter.toaudio.YoutubeMp3ConverterData
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtube.converter.toaudio.YoutubeMp3ConverterData
 
 
 sealed class YoutubeVideoToMp3StateFlow {

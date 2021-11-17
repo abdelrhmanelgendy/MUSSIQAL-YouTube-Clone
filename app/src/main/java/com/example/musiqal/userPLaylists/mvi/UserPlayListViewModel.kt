@@ -21,7 +21,7 @@ class UserPlayListViewModel @Inject constructor(
 
     private val _listOfUserPLayLists: MutableStateFlow<ListOfUserPlayListsState> =
         MutableStateFlow(ListOfUserPlayListsState.Idel)
-    var listOfUserPLayLists: StateFlow<ListOfUserPlayListsState> = _listOfUserPLayLists
+    var listOfUserPLayListsStateFLow: StateFlow<ListOfUserPlayListsState> = _listOfUserPLayLists
 
 
     private val _userPLayListItem: MutableStateFlow<UserPlayListItemState> =

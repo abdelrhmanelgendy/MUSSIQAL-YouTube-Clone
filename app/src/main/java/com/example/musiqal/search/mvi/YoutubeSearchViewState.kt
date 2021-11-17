@@ -1,6 +1,6 @@
 package com.example.musiqal.search.mvi
 
-import com.example.musiqal.models.youtubeApiSearchForVideo.YoutubeApiRequest
+import com.example.musiqal.datamodels.youtubeApiSearchForVideo.YoutubeApiRequest
 
 sealed class YoutubeSearchViewState {
     class Success(val youtubeApiRequest: YoutubeApiRequest) : YoutubeSearchViewState()

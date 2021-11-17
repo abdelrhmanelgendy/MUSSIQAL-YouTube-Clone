@@ -6,7 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.musiqal.R
-import com.example.musiqal.models.youtubeApiSearchForPlayList.Item
+import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.Item
 import com.example.musiqal.util.Constants
 import com.example.musiqal.util.OnPlayListItemClickListner
 import com.squareup.picasso.Picasso

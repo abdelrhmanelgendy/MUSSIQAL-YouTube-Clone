@@ -1,10 +1,9 @@
 package com.example.musiqal.database.local
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 
 @Dao
 interface HistoryOfPlayedItemDao {

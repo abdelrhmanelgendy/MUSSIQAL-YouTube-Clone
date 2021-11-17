@@ -1,6 +1,6 @@
 package com.example.musiqal.util
 
-import com.example.musiqal.models.youtubeApiSearchForVideo.Item
+import com.example.musiqal.datamodels.youtubeApiSearchForVideo.Item
 
 
 interface OnSearchedItemClickListner {

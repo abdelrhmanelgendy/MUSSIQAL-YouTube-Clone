@@ -1,6 +1,6 @@
 package com.example.musiqal.viewModels.viewStates
 
-import com.example.musiqal.models.youtubeItemInList.YoutubeVideosInPlaylistRequest
+import com.example.musiqal.datamodels.youtubeItemInList.YoutubeVideosInPlaylistRequest
 
 sealed class VideosInPlayListViewState {
     class Success(val youtubeVideosInPlaylistRequest: YoutubeVideosInPlaylistRequest) : VideosInPlayListViewState()

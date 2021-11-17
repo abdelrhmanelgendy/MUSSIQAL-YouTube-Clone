@@ -1,6 +1,6 @@
 package com.example.musiqal.search.database.remot
 
-import com.example.musiqal.models.youtubeApiSearchForVideo.YoutubeApiRequest
+import com.example.musiqal.datamodels.youtubeApiSearchForVideo.YoutubeApiRequest
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

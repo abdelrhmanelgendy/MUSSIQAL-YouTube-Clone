@@ -1,6 +1,6 @@
 package com.example.musiqal.customeMusicPlayer.util
 
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 
 public interface MusicPlayerEvents {
     fun start(
@@ -15,7 +15,8 @@ public interface MusicPlayerEvents {
     fun pause()
     fun resume()
     fun stop()
-    fun next(url: String)
+    fun next(url: String){}
+    fun next(url: String,currentItem: Item){}
     fun previouse(url: String)
 
     fun addFavorite()

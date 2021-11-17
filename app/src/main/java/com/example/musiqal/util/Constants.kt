@@ -1,8 +1,23 @@
 package com.example.musiqal.util
 
-import com.example.musiqal.models.RandomSearchQueryWithImage
+import com.example.musiqal.datamodels.RandomSearchQueryWithImage
+import kotlin.random.Random
 
 object Constants {
+
+    val YOUTUBE_CONTENTDETAIL_PARTS="contentDetails"
+    fun getRandomMp3Api():String
+    {
+        val randomy=false
+        if (randomy)
+        {
+            return Constants.MP3_API_ALL_API_KEY.get(Random.nextInt(Constants.MP3_API_ALL_API_KEY.size-1))
+        }
+        else {
+            return Constants.MP3_API_ALL_API_KEY.get(1)
+        }
+    }
+    val YOUTUBE_MP3_RapidHost = "youtube-mp36.p.rapidapi.com"
 
     val HOME_FRAGMENT_TAG = "homeFragmentTag"
     val COLLECTION_FRAGMENT_TAG = "collectionFragmentTag"
@@ -104,9 +119,17 @@ object Constants {
             //sasaYT
             "6ef26fe9edmsh844999cafc52541p1f9db6jsn3027459635e7",
             //facebook
-            "69df107b91mshbf5463d0ab83739p1bc2d3jsnbf235a046418"
+            "69df107b91mshbf5463d0ab83739p1bc2d3jsnbf235a046418",
+            //dumm1
+            "67215c13e0msh2dab9dd8e95c191p1aae01jsnab1f01c600b2",
+//            //dumm2
+//            "07de125e4dmshf985756affde310p19242djsn4a33a449a558",
+//            //dummy3
+//        "9289181c70msheca20edcd203bf6p1bf9dcjsn785d9d70bed6",
+            //dummy 4
+
         )
-     val PRIVATE_VIDEO="Private video"
+    val PRIVATE_VIDEO = "Private video"
 
     val listOFSingersPart1 =
         listOf<String>(

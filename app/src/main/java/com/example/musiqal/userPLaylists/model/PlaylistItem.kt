@@ -1,7 +1,6 @@
 package com.example.musiqal.userPLaylists.model
 
-import androidx.room.Ignore
-import com.example.musiqal.models.youtubeItemInList.*
+import com.example.musiqal.datamodels.youtubeItemInList.*
 
 data class PlaylistItem(
     var etag: String,

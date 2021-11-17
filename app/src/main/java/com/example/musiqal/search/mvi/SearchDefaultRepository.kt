@@ -1,6 +1,6 @@
 package com.example.musiqal.search.mvi
 
-import com.example.musiqal.models.youtubeApiSearchForVideo.YoutubeApiRequest
+import com.example.musiqal.datamodels.youtubeApiSearchForVideo.YoutubeApiRequest
 import com.example.musiqal.search.database.SearchHistoryData
 import com.example.musiqal.util.Resource
 

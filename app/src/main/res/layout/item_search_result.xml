@@ -21,11 +21,10 @@
             android:layout_height="0dp"
             android:scaleType="centerCrop"
             android:src="@drawable/img_car_demmo"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/searchResultItem_TV_txtVideoDuration"
@@ -33,13 +32,24 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_8sdp"
             android:background="@color/black"
-            android:maxLength="5"
             android:padding="@dimen/_1sdp"
             android:text="45:50"
             android:textColor="@color/white"
-            android:textSize="@dimen/_8sdp"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
 
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <include
+            android:id="@+id/searchResultItem_item_live"
+            layout="@layout/item_live_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_8sdp"
+            android:padding="@dimen/_1sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

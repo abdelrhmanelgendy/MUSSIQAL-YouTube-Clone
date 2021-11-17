@@ -1,14 +1,12 @@
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.musiqal.R
-import com.example.musiqal.models.youtubeItemInList.Item
-import com.example.musiqal.models.youtubeItemInList.ItemInPlayListPreview
+import com.example.musiqal.datamodels.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.ItemInPlayListPreview
 import com.example.musiqal.util.Constants
 import com.example.musiqal.util.GetDateFromFormate
 import com.example.musiqal.util.OnItemVideoInPlayListClickListner

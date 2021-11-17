@@ -23,6 +23,8 @@
     </style>
 
     <style name="WhiteButton" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorControlHighlight">@color/white_gray_002</item>
+
         <item name="colorPrimary">@color/white</item>
     </style>
 

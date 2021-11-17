@@ -34,35 +34,40 @@ class LyricsUtil(private val context: Context, private val onLyricsFound: OnLyri
             throw Throwable("Invalid id ")
         }
         showDialog(songName)
-        youtubeSubtitleLyrics.getLyricsByVideoId(videoId, object : YoutubeLyricsListener {
-            override fun onSuccess(lyrics: String) {
-                if (lyrics.length == 0) {
-                    dismissDialog()
-                    getLyricsByOpenSourceLyricsApi(songName)
-                    return
-                }
-                dismissDialog()
-                onLyricsFound.onSuccess(lyrics)
-
-            }
-
-            override fun onFailed(e: Throwable?) {
-                Log.d(TAG, "onFailed: " + e?.message.toString())
-                if (e?.message.toString()
-                        .contains("Unable to resolve host \"video.google.com\": No address associated with hostname")!!
-                ) {
-                    onLyricsFound.onFailed(e?.message!!)
-                    Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, "onFailed: no internet")
-                } else {
-                    getLyricsByOpenSourceLyricsApi(songName)
-                }
-                CoroutineScope(Dispatchers.Default).launch {
-                    delay(100)
-                    dismissDialog()
-                }
-            }
-        })
+        getLyricsByOpenSourceLyricsApi(songName)
+        CoroutineScope(Dispatchers.Default).launch {
+            delay(100)
+            dismissDialog()
+        }
+//        youtubeSubtitleLyrics.getLyricsByVideoId(videoId, object : YoutubeLyricsListener {
+//            override fun onSuccess(lyrics: String) {
+//                if (lyrics.length == 0) {
+//                    dismissDialog()
+//                    getLyricsByOpenSourceLyricsApi(songName)
+//                    return
+//                }
+//                dismissDialog()
+//                onLyricsFound.onSuccess(lyrics)
+//
+//            }
+//
+//            override fun onFailed(e: Throwable?) {
+//                Log.d(TAG, "onFailed: " + e?.message.toString())
+//                if (e?.message.toString()
+//                        .contains("Unable to resolve host \"video.google.com\": No address associated with hostname")!!
+//                ) {
+//                    onLyricsFound.onFailed(e?.message!!)
+//                    Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show()
+//                    Log.d(TAG, "onFailed: no internet")
+//                } else {
+//                    getLyricsByOpenSourceLyricsApi(songName)
+//                }
+//                CoroutineScope(Dispatchers.Default).launch {
+//                    delay(100)
+//                    dismissDialog()
+//                }
+//            }
+//        })
 
 
     }
@@ -77,7 +82,7 @@ class LyricsUtil(private val context: Context, private val onLyricsFound: OnLyri
     }
 
     fun getLyricsByOpenSourceLyricsApi(tottalSongName: String) {
-        var openSourceDezzerLyrics = OpenSourceDezzerLyrics(context, this)
+        val openSourceDezzerLyrics = OpenSourceDezzerLyrics(context, this)
         openSourceDezzerLyrics.trySearchBySongDataWithoutUser(tottalSongName)
 
     }

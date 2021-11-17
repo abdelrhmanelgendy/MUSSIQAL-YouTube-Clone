@@ -1,11 +1,11 @@
 package com.example.musiqal.repository
 
-import com.example.musiqal.lyrics.model.LyricsData
-import com.example.musiqal.models.youtube.converter.toaudio.YoutubeMp3ConverterData
-import com.example.musiqal.models.youtubeApiChannel.YoutubeCategoryRequest
-import com.example.musiqal.models.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
-import com.example.musiqal.models.youtubeItemInList.Item
-import com.example.musiqal.models.youtubeItemInList.YoutubeVideosInPlaylistRequest
+import com.example.musiqal.datamodels.youtube.converter.toaudio.YoutubeMp3ConverterData
+import com.example.musiqal.datamodels.youtubeApiChannel.YoutubeCategoryRequest
+import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
+import com.example.musiqal.datamodels.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.YoutubeVideosInPlaylistRequest
+import com.example.musiqal.datamodels.youtubeVideoDuaration.YouTubeVideoDurationResult
 import com.example.musiqal.util.Resource
 
 interface YoutubeDefaultRepository {
@@ -53,6 +53,7 @@ interface YoutubeDefaultRepository {
     suspend fun getAllPlayedTracks():Resource<List<Item>>
 
     suspend fun deleteAllSavedPlayedTrack()
+    suspend fun getVideoDuration(part: String,videosId: List<String>,apiKey: String):Resource<YouTubeVideoDurationResult>
 
 
 }

@@ -2,9 +2,11 @@ package com.example.musiqal.customeMusicPlayer
 
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.musiqal.customeMusicPlayer.data.MusicPlayerPersistence
+import com.example.musiqal.customeMusicPlayer.musicNotification.model.LastPlayedSongData
 import com.example.musiqal.customeMusicPlayer.util.RepeateMode
 import com.example.musiqal.customeMusicPlayer.util.ShuffleMode
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -30,7 +32,7 @@ class MusicPlayerPersistenceTest {
     @Test
     fun test_saving_last_playing_song_with_last_song_data_returns_true() {
         val lastPlayedSongDataDummy = LastPlayedSongData(LastPlayedSongData.item,50)
-        var lastPlayedSong:LastPlayedSongData ?=null
+        var lastPlayedSong: LastPlayedSongData?=null
         runBlockingTest {
             musicPlayerPersistence.saveLastPlayedSong(lastPlayedSongDataDummy)
         }
@@ -113,7 +115,7 @@ class MusicPlayerPersistenceTest {
     fun test_saving_last_played_list_of_songs_returns_true() {
 
 
-        val listOfSongs = listOf<Item>(LastPlayedSongData.item,LastPlayedSongData.item)
+        val listOfSongs = listOf<Item>(LastPlayedSongData.item, LastPlayedSongData.item)
         var savedListOfSOngs: List<Item>? = null
         runBlockingTest{
             musicPlayerPersistence.saveLastPlayedList(listOfSongs)

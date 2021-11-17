@@ -3,8 +3,7 @@ package com.example.musiqal.viewModels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.musiqal.lyrics.mvi.LyricsViewState
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 import com.example.musiqal.repository.YoutubeMainRepository
 import com.example.musiqal.util.CustomeMusicPlayback
 import com.example.musiqal.util.Resource
@@ -40,13 +39,17 @@ class MainViewModel @Inject constructor(private val mainRepository: YoutubeMainR
         _youtubeVideoToMp3StateFlow
 
 
+    private var _youTubeVideoDurationStateFlow: MutableStateFlow<YoutubeVideoDurationViewState> =
+        MutableStateFlow(YoutubeVideoDurationViewState.Idel)
+    val youTubeVideoDurationStateFlow: StateFlow<YoutubeVideoDurationViewState> =
+        _youTubeVideoDurationStateFlow
+
+
     private var _savedPlayedTraksStateFlow: MutableStateFlow<SavedPlayListViewState> =
         MutableStateFlow(SavedPlayListViewState.Idel)
 
     val savedPlayedTraksStateFlow: StateFlow<SavedPlayListViewState> =
         _savedPlayedTraksStateFlow
-
-
 
 
     fun searchForYoutubeCategory(
@@ -67,8 +70,6 @@ class MainViewModel @Inject constructor(private val mainRepository: YoutubeMainR
             }
         }
     }
-
-
 
 
     fun getVideosInsidePlaylist(
@@ -152,6 +153,23 @@ class MainViewModel @Inject constructor(private val mainRepository: YoutubeMainR
                     SavedPlayListViewState.Success(savedTracks.data!!)
                 is Resource.Failed -> _savedPlayedTraksStateFlow.value =
                     SavedPlayListViewState.Failed(savedTracks.message!!)
+            }
+        }
+    }
+
+
+    fun getVideoDuration(part: String, videoId: List<String>, api_key: String) {
+        _youTubeVideoDurationStateFlow.value = YoutubeVideoDurationViewState.Loading
+        viewModelScope.launch(Dispatchers.IO) {
+            _youTubeVideoDurationStateFlow.value = YoutubeVideoDurationViewState.Loading
+            val videoDuration = mainRepository.getVideoDuration(
+                part = part, videosId = videoId, apiKey = api_key
+            )
+            when (videoDuration) {
+                is Resource.Success -> _youTubeVideoDurationStateFlow.value =
+                    YoutubeVideoDurationViewState.Success(videoDuration.data?.items?.map { i->(i.contentDetails?.duration!!)}!!)
+                is Resource.Failed -> _youTubeVideoDurationStateFlow.value =
+                    YoutubeVideoDurationViewState.Failed(videoDuration.message!!)
             }
         }
     }

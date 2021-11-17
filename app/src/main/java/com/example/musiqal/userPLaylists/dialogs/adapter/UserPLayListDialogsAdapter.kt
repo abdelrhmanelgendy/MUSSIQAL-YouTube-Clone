@@ -62,7 +62,7 @@ class UserPLayListDialogsAdapter(
             itemView.setOnClickListener {
                 val adapterPosition = adapterPosition
                 if (adapterPosition != -1) {
-                    onPlayListClickListner.onCLick(_listOfPLaylists.get(adapterPosition))
+                    onPlayListClickListner.onPLaylistClick(_listOfPLaylists.get(adapterPosition))
                 }
             }
 

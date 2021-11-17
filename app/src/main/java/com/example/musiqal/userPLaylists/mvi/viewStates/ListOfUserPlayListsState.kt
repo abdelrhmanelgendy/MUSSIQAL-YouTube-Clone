@@ -1,6 +1,5 @@
 package com.example.musiqal.userPLaylists.mvi.viewStates
 
-import com.example.musiqal.models.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
 import com.example.musiqal.userPLaylists.model.UserPlayList
 
 sealed class ListOfUserPlayListsState {

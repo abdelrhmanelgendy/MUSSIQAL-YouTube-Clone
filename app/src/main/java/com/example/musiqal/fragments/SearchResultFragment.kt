@@ -15,17 +15,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musiqal.R
 import com.example.musiqal.databinding.FragmentSerarchResultBinding
-import com.example.musiqal.models.youtubeApiSearchForVideo.Item
-import com.example.musiqal.models.youtubeApiSearchForVideo.ItemConverters
-import com.example.musiqal.models.youtubeItemInList.*
+import com.example.musiqal.datamodels.youtubeApiSearchForVideo.Item
+import com.example.musiqal.datamodels.youtubeApiSearchForVideo.ItemConverters
+import com.example.musiqal.datamodels.youtubeItemInList.*
 import com.example.musiqal.search.SearchActivity
 import com.example.musiqal.search.mvi.SearchViewModel
 import com.example.musiqal.search.mvi.YoutubeSearchViewState
 import com.example.musiqal.util.Constants
 import com.example.musiqal.util.OnAudioInPlaylistClickListner
 import com.example.musiqal.util.OnSearchedItemClickListner
+import com.example.musiqal.viewModels.MainViewModel
+import com.example.musiqal.viewModels.viewStates.YoutubeVideoDurationViewState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectIndexed
 
 
 @AndroidEntryPoint
@@ -41,6 +44,7 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
         FragmentSerarchResultBinding.inflate(layoutInflater)
     }
     val searchViewModel by lazy { ViewModelProvider(this).get(SearchViewModel::class.java) }
+    val mianViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
     lateinit var searchResultAdapter: SearchResultAdapter
     lateinit var linearLayoutManager: LinearLayoutManager
     lateinit var onAudioInPlaylistClickListner: OnAudioInPlaylistClickListner
@@ -82,14 +86,16 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
     }
 
     private fun dataGettedSuccessfully(items: List<Item>) {
-        hideProgressBar(true)
-        setUpRecyclerView(items)
+
+        mapNoralrItemToItemWithDuration(items.toMutableList())
+
 
     }
 
     private fun setUpRecyclerView(items: List<Item>) {
         searchResultAdapter.setList(items)
-        Log.d(TAG, "setUpRecyclerView: " + items)
+
+        Log.d(TAG, "setUpRecyclerView: " + items.get(0).videoDuration)
 
     }
 
@@ -134,21 +140,74 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
         _listOfYoutubeItemsInPlaylists: MutableList<Item>,
         position: Int
     ) {
-        Log.d(TAG, "onSearchResultClick: " + item)
-        val convertedItem: com.example.musiqal.models.youtubeItemInList.Item =
-            convertNormalItemToYoutubeItemInPlaylist(item)
         val convertNormalLISToFItemToYoutubeListOfItemInPlaylist =
             convertNormalLISToFItemToYoutubeListOfItemInPlaylist(_listOfYoutubeItemsInPlaylists)
+        val convertedItem: com.example.musiqal.datamodels.youtubeItemInList.Item =
+            convertNormalItemToYoutubeItemInPlaylist(item)
         onAudioInPlaylistClickListner.onItemClick(
             convertedItem,
             convertNormalLISToFItemToYoutubeListOfItemInPlaylist.toMutableList(),
             position,
-            item.snippet.channelTitle
+            convertNormalLISToFItemToYoutubeListOfItemInPlaylist.get(position).snippet.channelTitle
         )
+
+
+        Log.d(TAG, "onSearchResultClick: " + convertedItem.videoDuration)
+
+
+
+    }
+
+    private fun mapNoralrItemToItemWithDuration(_listOfYoutubeItemsInPlaylists: MutableList<Item>){
+//
+
+        getAllVideosDurationsInPLayList(_listOfYoutubeItemsInPlaylists)
+//        searchResultAdapter.setDurationsList(items.)
+    }
+
+    private fun getAllVideosDurationsInPLayList(
+        items: MutableList<Item>
+    ) {
+        mianViewModel.getVideoDuration(
+            part = Constants.YOUTUBE_CONTENTDETAIL_PARTS,
+            items.map { i -> i.id.videoId },
+            resources.getStringArray(R.array.api_keys).get(0)
+        )
+        lifecycleScope.launchWhenStarted {
+            mianViewModel.youTubeVideoDurationStateFlow.collectIndexed { index, value ->
+                when (value) {
+                    is YoutubeVideoDurationViewState.Loading -> {
+                        Log.d(TAG, "getAllVideosDurationsInPLayList: loading")
+                    }
+                    is YoutubeVideoDurationViewState.Success -> {
+                        Log.d(TAG, "getAllVideosDurationsInPLayList: success${value.duration}")
+                        replacingDurationOldWithNewDuration(value.duration, items)
+
+                    }
+                    is YoutubeVideoDurationViewState.Failed -> {
+                        Log.d(TAG, "getAllVideosDurationsInPLayList: ${value.errorMessgae}")
+                    }
+                }
+
+            }
+        }
+    }
+
+    private fun replacingDurationOldWithNewDuration(
+        duration: List<String>,
+        items: MutableList<Item>,
+
+        ) {
+        items.forEachIndexed { index, currentItem ->
+            currentItem.videoDuration = duration.get(index)
+        }
+        hideProgressBar(true)
+        setUpRecyclerView(items)
+
     }
 
     private fun convertNormalLISToFItemToYoutubeListOfItemInPlaylist(_listOfYoutubeItemsInPlaylists: MutableList<Item>):
-            List<com.example.musiqal.models.youtubeItemInList.Item> {
+            List<com.example.musiqal.datamodels.youtubeItemInList.Item> {
 
         val map = _listOfYoutubeItemsInPlaylists.map { item ->
             val highThumbnailsUrl = item.snippet.thumbnails.high.url
@@ -182,14 +241,14 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
                     title,
                     "-1",
                     "-1"
-                ), ""
+                ), "",item.videoDuration
             )
         }
         return map
 
     }
 
-    private fun convertNormalItemToYoutubeItemInPlaylist(item: Item): com.example.musiqal.models.youtubeItemInList.Item {
+    private fun convertNormalItemToYoutubeItemInPlaylist(item: Item): com.example.musiqal.datamodels.youtubeItemInList.Item {
 
         val highThumbnailsUrl = item.snippet.thumbnails.high.url
         val defaultThumbnailsUrl = item.snippet.thumbnails.default.url
@@ -224,7 +283,7 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
                 title,
                 "-1",
                 "-1"
-            ), ""
+            ), "",item.videoDuration
         )
 
     }
@@ -232,7 +291,7 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
     fun getRandomApiKey(): String {
         val stringArray = resources.getStringArray(R.array.api_keys)
 //        return stringArray.get(Random().nextInt(stringArray.size))
-        return stringArray.get(0)
+        return stringArray.get(1)
     }
 
     private fun searForQuery(searchTitle: String) {

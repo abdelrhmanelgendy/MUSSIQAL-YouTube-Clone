@@ -1,9 +1,9 @@
 package com.example.musiqal.database.remote
 
-import com.example.musiqal.models.youtubeApiSearchForVideo.YoutubeApiRequest
-import com.example.musiqal.models.youtubeApiChannel.YoutubeCategoryRequest
-import com.example.musiqal.models.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
-import com.example.musiqal.models.youtubeItemInList.YoutubeVideosInPlaylistRequest
+import com.example.musiqal.datamodels.youtubeApiChannel.YoutubeCategoryRequest
+import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
+import com.example.musiqal.datamodels.youtubeItemInList.YoutubeVideosInPlaylistRequest
+import com.example.musiqal.datamodels.youtubeVideoDuaration.YouTubeVideoDurationResult
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -49,6 +49,15 @@ interface YoutubeApi {
         @Query("key") apiKey: String
     ): Response<YoutubeCategoryRequest>
 
+
+    //https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=rtOvBOTyX00&key=AIzaSyATskn_B0gM6QL7jEj2SeaxOBYfl4_GUIg
+
+    @GET("videos")
+    suspend fun getYoutubeVideoDuration(
+        @Query("part") videoPart: String,
+        @Query("id") videosId: List<String>,
+        @Query("key") apiKey: String
+    ): Response<YouTubeVideoDurationResult>
 
     //https://clients1.google.com/complete/search?client=youtube&hl=en&gl=sg&gs_rn=64&gs_ri=youtube&tok=h3yTGb1h3-yuCBwsAaQpxQ&ds=yt&cp=3&gs_id=2u&q=fifty%shades&callback=google.sbox.p50&gs_gbg=0l0MjG05RWnWBe9WcipQbsy
 

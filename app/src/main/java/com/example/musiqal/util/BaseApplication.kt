@@ -3,19 +3,8 @@ package com.example.musiqal.util
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.RemoteControlClient
 import android.os.Build
 import android.util.Log
-import com.example.musiqal.customeMusicPlayer.musicNotification.DummyReciever
-import com.example.musiqal.customeMusicPlayer.musicNotification.NotificationReciever
-import com.example.musiqal.customeMusicPlayer.musicNotification.NotificationService
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

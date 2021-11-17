@@ -2,14 +2,13 @@ package com.example.musiqal.repository
 
 import com.example.musiqal.database.local.HistoryOfPlayedItemDao
 import com.example.musiqal.database.local.RandomPlaylistsDao
-import com.example.musiqal.database.remote.LyricsApiSource
 import com.example.musiqal.database.remote.YoutubeApi
 import com.example.musiqal.database.remote.YoutubeToMp3ApiConverter
-import com.example.musiqal.lyrics.model.LyricsData
-import com.example.musiqal.models.youtube.converter.toaudio.YoutubeMp3ConverterData
-import com.example.musiqal.models.youtubeApiChannel.YoutubeCategoryRequest
-import com.example.musiqal.models.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
-import com.example.musiqal.models.youtubeItemInList.YoutubeVideosInPlaylistRequest
+import com.example.musiqal.datamodels.youtube.converter.toaudio.YoutubeMp3ConverterData
+import com.example.musiqal.datamodels.youtubeApiChannel.YoutubeCategoryRequest
+import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
+import com.example.musiqal.datamodels.youtubeItemInList.YoutubeVideosInPlaylistRequest
+import com.example.musiqal.datamodels.youtubeVideoDuaration.YouTubeVideoDurationResult
 import com.example.musiqal.util.CustomeMusicPlayback
 import com.example.musiqal.util.Resource
 import java.lang.Exception
@@ -137,7 +136,7 @@ class YoutubeMainRepository @Inject constructor(
         }
     }
 
-    override suspend fun insertPlayedTrack(item: com.example.musiqal.models.youtubeItemInList.Item) {
+    override suspend fun insertPlayedTrack(item: com.example.musiqal.datamodels.youtubeItemInList.Item) {
         historyOfPlayedItemDao.insertTrack(item)
     }
 
@@ -148,7 +147,21 @@ class YoutubeMainRepository @Inject constructor(
     override suspend fun deleteAllSavedPlayedTrack() {
         historyOfPlayedItemDao.deleteAllSavedTrack()
     }
-    override suspend fun getAllPlayedTracks():Resource< List<com.example.musiqal.models.youtubeItemInList.Item> >{
+
+    override suspend fun getVideoDuration(part: String, videosId: List<String>, apiKey: String): Resource<YouTubeVideoDurationResult> {
+        return try {
+            val getDuartion = youtubeApi.getYoutubeVideoDuration(part,videosId,apiKey)
+            if (getDuartion.isSuccessful) {
+                Resource.Success(getDuartion.body()!!)
+            } else {
+                return Resource.Failed(getDuartion.message().toString())
+            }
+        } catch (e: Exception) {
+            Resource.Failed(e.message.toString())
+        }
+    }
+
+    override suspend fun getAllPlayedTracks():Resource< List<com.example.musiqal.datamodels.youtubeItemInList.Item> >{
         return try {
             val items = historyOfPlayedItemDao.selectAllTracks()
             Resource.Success(items)

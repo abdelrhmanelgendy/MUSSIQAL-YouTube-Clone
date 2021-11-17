@@ -34,6 +34,7 @@
             android:src="@drawable/ic_baseline_close_24"
             android:text="@string/addToPlayList"
             android:textColor="@color/white"
+            android:background="?actionBarItemBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

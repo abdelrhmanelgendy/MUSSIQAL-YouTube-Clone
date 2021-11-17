@@ -3,15 +3,12 @@ package com.example.musiqal.database.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.musiqal.databasesTypeConverters.YoutubePlaylistTypeConverter
-import com.example.musiqal.models.StringConverter
-import com.example.musiqal.models.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
-import com.example.musiqal.models.youtubeItemInList.Item
-import com.example.musiqal.models.youtubeItemInList.ItemTypeConverter
+import com.example.musiqal.database.YoutubePlaylistTypeConverter
+import com.example.musiqal.datamodels.StringConverter
+import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
+import com.example.musiqal.datamodels.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.ItemTypeConverter
 import com.example.musiqal.search.database.SearchHistoryData
-import com.example.musiqal.userPLaylists.model.UserPlayList
-import com.example.musiqal.userPLaylists.database.UserPlaylistDao
-import com.example.musiqal.userPLaylists.model.UserPLayListitemConverter
 
 @Database(entities = arrayOf(YoutubeApiSearchForPlayListRequest::class,Item::class,SearchHistoryData::class,
 ), version = 1)

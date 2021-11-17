@@ -12,20 +12,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.musiqal.R
 import com.example.musiqal.databinding.FragmentPlayListPreviewBinding
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 import com.example.musiqal.viewModels.MainViewModel
 import com.example.musiqal.viewModels.viewStates.VideosInPlayListViewState
-import kotlinx.coroutines.flow.collect
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.musiqal.customeMusicPlayer.util.ShuffleMode
 import com.example.musiqal.fragments.util.OnPlayListPreviewRecyclerViewListener
-import com.example.musiqal.models.youtubeItemInList.ItemInPlayListPreview
-import com.example.musiqal.models.youtubeItemInList.YoutubeItemsConverters
+import com.example.musiqal.datamodels.youtubeItemInList.ItemInPlayListPreview
+import com.example.musiqal.datamodels.youtubeItemInList.YoutubeItemsConverters
+import com.example.musiqal.datamodels.youtubeItemInList.YoutubeVideosInPlaylistRequest
 import com.example.musiqal.ui.MainActivity
 import com.example.musiqal.userPLaylists.model.UserPlayList
 import com.example.musiqal.userPLaylists.mvi.UserPlayListViewModel
-import com.example.musiqal.util.OnAudioInPlaylistClickListner
-import com.example.musiqal.util.OnItemVideoInPlayListClickListner
+import com.example.musiqal.util.*
+import com.example.musiqal.viewModels.viewStates.YoutubeVideoDurationViewState
+import kotlinx.coroutines.flow.collectIndexed
 import java.lang.Exception
+import kotlin.random.Random
 
 
 class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
@@ -33,6 +36,7 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
     private var currentPlayList: List<Item> = listOf()
     lateinit var onAudioInPlaylistClickListner: OnAudioInPlaylistClickListner
     private val PLAY_LIST_ID = "playListId"
+    lateinit var youtubeAPiReQ: YoutubeVideosInPlaylistRequest
     val listOfReadyUrls =
         listOf(
             "https://cdn01.ytjar.xyz/get.php/b/86/foE1mO2yM04.mp3?h=TTJ6EVhZ0cKJHIQw14AQtg&s=1635199942&n=Mike-Posner-I-Took-A-Pill-In-Ibiza-Seeb-Remix-Explicit",
@@ -55,6 +59,10 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
     lateinit var binding: FragmentPlayListPreviewBinding
     val mainViewModel: MainViewModel by lazy {
         ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
+    }
+
+    val userPlayListViewModel: UserPlayListViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(UserPlayListViewModel::class.java)
     }
     val TAG = "PlayListPreviewTAG"
     val TAG2 = "convertVideoToUrl"
@@ -90,6 +98,7 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
 //            View.GONE
 //        findNavController().navigate(R.id.action_playListPreviewFragment_to_homeFragment)
         initButtons()
+
     }
 
     private fun initButtons() {
@@ -101,13 +110,49 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
             requireActivity().onBackPressed()
         }
 
+        setPlayingButtonsListeners()
+
+    }
+
+    private fun setPlayingButtonsListeners() {
+
+        binding.playListPreviewFragmentBtnPlayAllList.setOnClickListener {
+            if (::youtubeAPiReQ.isInitialized && youtubeAPiReQ.items.size > 0) {
+                val position = 0
+                val item = youtubeAPiReQ.items.get(position)
+
+                onAudioInPlaylistClickListner.onItemClick(
+                    item, currentPlayList.toMutableList(), position, "name",
+                    ShuffleMode.Shuffle
+                )
+            }
+        }
+        binding.playListPreviewFragmentBtnPlayShuffle.setOnClickListener {
+            if (::youtubeAPiReQ.isInitialized && youtubeAPiReQ.items.size > 0) {
+                val position = Random.nextInt(youtubeAPiReQ.items.size - 1)
+                val item = youtubeAPiReQ.items.get(position)
+
+                onAudioInPlaylistClickListner.onItemClick(
+                    item, youtubeAPiReQ.items.toMutableList(), position, "playListName",
+                    ShuffleMode.NoShuffle
+                )
+                onScroll(position, youtubeAPiReQ.items)
+            }
+        }
+
     }
 
     private fun saveCurrentPLayList(currentPlayList: List<Item>) {
-        val userPlayListViewModel=ViewModelProvider(requireActivity())
-            .get(UserPlayListViewModel::class.java)
-
-
+        val currentTimeInMillis = System.currentTimeMillis().toString()
+        val currentUserPlayList = UserPlayList(
+            "name ${Random.nextInt(500)}",
+            currentTimeInMillis,
+            ImageUrlUtil.getMaxResolutionImageUrl(currentPlayList.get(0)),
+            currentPlayList
+        )
+        userPlayListViewModel.insertNewPLayList(currentUserPlayList)
+        MakingToast(requireContext())
+            .toast("Playlist added", MakingToast.LENGTH_SHORT)
 
 
     }
@@ -160,18 +205,23 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
             "snippet",
             playListID,
             "100",
-            resources.getStringArray(R.array.api_keys).get(4)
+            resources.getStringArray(R.array.api_keys).get(0)
         )
 
         lifecycleScope.launchWhenStarted {
-            mainViewModel.itemInPlayLitsStateFlow.collect { event ->
+            mainViewModel.itemInPlayLitsStateFlow.collectIndexed { index, event ->
                 when (event) {
                     is VideosInPlayListViewState.Failed -> {
                         Log.d(TAG, "getDataByListID: ")
                         getDataByListID(playListID)
                     }
                     is VideosInPlayListViewState.Success -> {
-                        setUpData(event.youtubeVideosInPlaylistRequest.items)
+
+                        if (index==1)
+                        {
+                            getAllVideosDurationsInPLayList(event.youtubeVideosInPlaylistRequest)
+                        }
+
                     }
                     is VideosInPlayListViewState.Loading -> {
                         Log.d(TAG, "getDataByListID: Loading")
@@ -191,8 +241,52 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
     }
 
     private fun setUpData(items: List<Item>) {
-        savePlayListInSharesPref(items)
 
+        savePlayListInSharesPref(items)
+    }
+
+    private fun getAllVideosDurationsInPLayList(
+        youtubeVideosInPlaylistRequest: YoutubeVideosInPlaylistRequest
+    ) {
+//        savePlayListInSharesPref(items)
+        mainViewModel.getVideoDuration(
+            part = Constants.YOUTUBE_CONTENTDETAIL_PARTS,
+            youtubeVideosInPlaylistRequest.items.map { i -> i.snippet.resourceId.videoId },
+            resources.getStringArray(R.array.api_keys).get(0)
+        )
+        lifecycleScope.launchWhenStarted {
+            mainViewModel.youTubeVideoDurationStateFlow.collectIndexed { index, value ->
+                when (value) {
+                    is YoutubeVideoDurationViewState.Loading -> {
+                        Log.d(TAG, "getAllVideosDurationsInPLayList: loading")
+                    }
+                    is YoutubeVideoDurationViewState.Success -> {
+                        if (index == 1)
+                        {
+                            Log.d(TAG, "getAllVideosDurationsInPLayList: success${value.duration}")
+                            replacingDurationOldWithNewDuration(value.duration, youtubeVideosInPlaylistRequest)
+                        }
+
+
+                    }
+                    is YoutubeVideoDurationViewState.Failed -> {
+                        Log.d(TAG, "getAllVideosDurationsInPLayList: ${value.errorMessgae}")
+                    }
+                }
+
+            }
+        }
+    }
+
+    private fun replacingDurationOldWithNewDuration(
+        duration: List<String>,
+        youtubeVideosInPlaylistRequest: YoutubeVideosInPlaylistRequest
+    ) {
+        youtubeVideosInPlaylistRequest.items.forEachIndexed { index, currentItem ->
+            currentItem.videoDuration = duration.get(index)
+        }
+        setUpData(youtubeVideosInPlaylistRequest.items)
+        this.youtubeAPiReQ = youtubeVideosInPlaylistRequest
 
     }
 
@@ -250,7 +344,6 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
             currentPosition
         )
     }
-
 
 
     private fun changeApiKey(rapidApiKey: String): String {

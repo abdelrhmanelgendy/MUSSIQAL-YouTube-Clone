@@ -8,19 +8,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.musiqal.R
 import com.example.musiqal.databinding.FragmentRecentlyPlayedTracksBinding
 import com.example.musiqal.helpers.CalenderHelper
-import com.example.musiqal.models.youtubeApiSearchForVideo.ItemConverters
-import com.example.musiqal.models.youtubeItemInList.Item
-import com.example.musiqal.models.youtubeItemInList.ItemTypeConverter
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 import com.example.musiqal.recyclerViewAdapters.collectionsAdapter.util.OnTrackClickListener
 import com.example.musiqal.util.OnAudioInPlaylistClickListner
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.lang.Exception
 import java.util.*
 

@@ -2,6 +2,9 @@ package com.example.musiqal.util
 
 import android.content.Context
 import android.widget.Toast
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MakingToast(val context: Context) {
     companion object
@@ -12,6 +15,9 @@ class MakingToast(val context: Context) {
 
     fun toast(msg:String,length:Int)
     {
-        Toast.makeText(context,msg,length).show()
+        CoroutineScope(Dispatchers.Main).launch {
+
+            Toast.makeText(context,msg,length).show()
+        }
     }
 }

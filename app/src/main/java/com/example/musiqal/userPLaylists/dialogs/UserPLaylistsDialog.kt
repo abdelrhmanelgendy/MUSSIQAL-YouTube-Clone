@@ -9,11 +9,9 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.musiqal.databinding.PlayListsDialogBinding
-import com.example.musiqal.models.youtubeItemInList.Item
-import com.example.musiqal.models.youtubeItemInList.ItemTypeConverter
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 import com.example.musiqal.userPLaylists.dialogs.adapter.OnPlayListClickListener
 import com.example.musiqal.userPLaylists.model.UserPlayList
 import com.example.musiqal.userPLaylists.mvi.UserPlayListViewModel
@@ -24,7 +22,6 @@ import com.example.musiqal.util.ImageUrlUtil
 import com.example.musiqal.util.MakingToast
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectIndexed
-import kotlinx.coroutines.flow.collectLatest
 
 class UserPLaylistsDialog(private val context: Context) : OnPlayListClickListener,
     AddNewPLayListDialogClickLister {
@@ -60,7 +57,7 @@ class UserPLaylistsDialog(private val context: Context) : OnPlayListClickListene
         CoroutineScope(Dispatchers.Main)
             .launch {
                 userPlaysListViewModel.getAllPlayLists()
-                userPlaysListViewModel.listOfUserPLayLists.collectIndexed { index, event ->
+                userPlaysListViewModel.listOfUserPLayListsStateFLow.collectIndexed { index, event ->
                     when (event) {
                         is ListOfUserPlayListsState.Loading -> {
                             Log.d(TAG, "getAllUserPLayLists: loading")
@@ -105,10 +102,13 @@ class UserPLaylistsDialog(private val context: Context) : OnPlayListClickListene
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
         layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
         playListsDialog.window?.attributes = layoutParams
+        binding.addVideoToPLayListDialogImgClose.setOnClickListener {
+            playListsDialog.dismiss()
+        }
 
     }
 
-    override fun onCLick(userPlayList: UserPlayList) {
+    override fun onPLaylistClick(userPlayList: UserPlayList) {
         addVideoToThePlayList(userPlayList.playListName)
     }
 
@@ -144,24 +144,51 @@ class UserPLaylistsDialog(private val context: Context) : OnPlayListClickListene
         listOfPlayLists: UserPlayList,
         playListName: String
     ) {
+        if (checkIfTrackAlreadyAddedToThisPlaylist(listOfPlayLists, playListName, this.videoItem)) {
+            CoroutineScope(Dispatchers.Main).launch {
+                Toast.makeText(
+                    context,
+                    "this track already added to this $playListName playlist",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
 
-        val videoItem = this.videoItem
-        val itemsMutableList = listOfPlayLists.playListItems.toMutableList()
-        itemsMutableList.add(0,videoItem)
+        } else {
+            val videoItem = this.videoItem
+            val itemsMutableList = listOfPlayLists.playListItems.toMutableList()
+            itemsMutableList.add(0, videoItem)
 
-        val playListCoverUrl = ImageUrlUtil.getMeduimResolutionImageUrl(this.videoItem)
-        val playListUpdateTime = System.currentTimeMillis().toString()
-        userPlaysListViewModel.deletePlayListByName(playListName)
-        userPlaysListViewModel.insertNewPLayList(
-            UserPlayList(
-                playListName,
-                playListUpdateTime,
-                playListCoverUrl,
-                itemsMutableList
+            val playListCoverUrl = ImageUrlUtil.getMaxResolutionImageUrl(this.videoItem)
+            val playListUpdateTime = System.currentTimeMillis().toString()
+            userPlaysListViewModel.deletePlayListByName(playListName)
+            userPlaysListViewModel.insertNewPLayList(
+                UserPlayList(
+                    playListName,
+                    playListUpdateTime,
+                    playListCoverUrl,
+                    itemsMutableList
+                )
             )
-        )
-        MakingToast(context)
-            .toast("Video added",MakingToast.LENGTH_SHORT)
+            CoroutineScope(Dispatchers.Main).launch {
+                MakingToast(context)
+                    .toast("Video added", MakingToast.LENGTH_SHORT)
+            }
+        }
+
+
+    }
+
+    private fun checkIfTrackAlreadyAddedToThisPlaylist(
+        listOfPlayLists: UserPlayList,
+        playListName: String,
+        videoItem: Item
+    ): Boolean {
+        val videoId = videoItem.snippet.resourceId.videoId
+        if (videoId in listOfPlayLists.playListItems.map { i -> i.snippet.resourceId.videoId }) {
+            return true
+        }
+        return false
+
 
     }
 

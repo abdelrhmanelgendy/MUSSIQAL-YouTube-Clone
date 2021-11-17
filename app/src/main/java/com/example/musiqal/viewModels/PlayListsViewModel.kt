@@ -3,7 +3,7 @@ package com.example.musiqal.viewModels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.musiqal.models.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
+import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
 import com.example.musiqal.repository.YoutubeMainRepository
 import com.example.musiqal.util.Resource
 import com.example.musiqal.viewModels.viewStates.*

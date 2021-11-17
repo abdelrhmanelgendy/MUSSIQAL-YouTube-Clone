@@ -1,6 +1,6 @@
 package com.example.musiqal.viewModels.viewStates
 
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 
 
 sealed class SavedPlayListViewState {

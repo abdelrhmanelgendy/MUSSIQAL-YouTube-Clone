@@ -1,6 +1,6 @@
 package com.example.musiqal.util
 
-import com.example.musiqal.models.youtubeItemInList.Item
+import com.example.musiqal.datamodels.youtubeItemInList.Item
 
 object ImageUrlUtil
 {

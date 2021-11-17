@@ -30,11 +30,12 @@
     <string name="title">Title</string>
     <string name="craete">Create</string>
     <string name="addToPlayList">Add to playlist</string>
-    <string name="newplaylist">Create PLaylist</string>
+    <string name="newplaylist">Create new pLaylist</string>
     <string name="recentlyPlayed">Recently Played</string>
     <string name="allPLaylists">All PLaylists</string>
     <string name="publishDate">publish: 01/02/2020</string>
     <string name="defDate">October 2021</string>
+    <string name="playLists">Playlists</string>
 
 
 </resources>

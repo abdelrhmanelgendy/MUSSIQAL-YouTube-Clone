@@ -54,6 +54,7 @@ import com.example.musiqal.userPLaylists.dialogs.UserPLaylistsDialog
 import com.example.musiqal.util.MusicPlayerViewPagerAdapter
 import com.example.musiqal.viewModels.MainViewModel
 import com.example.musiqal.youtubeAudioVideoExtractor.YouTubeDurationConverter
+import com.example.musiqal.youtubeAudioVideoExtractor.database.local.YoutubeExtractedFileDao
 
 import com.example.musiqal.youtubeAudioVideoExtractor.mvi.YouTubeExtractorViewModel
 import kotlinx.coroutines.*
@@ -75,6 +76,11 @@ class MainActivity() :
     private var CurrentItemDuration: String = "-1"
     private lateinit var OUTSIDE_FRAGMENT: RecentlyPlayedTracksFragment
     private val TAG = "MainActivity11"
+
+
+
+
+
     val listOfReadyUrls =
         listOf(
             "https://cdns-preview-0.dzcdn.net/stream/c-0b5d54798687583efbb35a42f3ca7bed-6.mp3",

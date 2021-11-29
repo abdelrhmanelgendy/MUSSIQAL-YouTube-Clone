@@ -179,6 +179,10 @@ dependencies {
     implementation 'com.github.duanhong169:colorpicker:1.1.5'
 
 
+    //lottie animation
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
 
 }
 kapt {

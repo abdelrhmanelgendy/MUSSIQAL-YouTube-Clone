@@ -5,21 +5,25 @@ import android.os.Bundle
 import android.os.Environment
 import android.util.Log
 import android.webkit.URLUtil
-import androidx.room.util.FileUtil
 import com.example.musiqal.R
 
 import dagger.hilt.android.AndroidEntryPoint
 
 import com.example.musiqal.databinding.ActivityTestBinding
+import com.example.musiqal.downloadManager.downloadBottomSheet.DownLoadInfoBottomSheet
 import com.example.musiqal.downloadManager.source.core.DownloadManagerPro
-import com.example.musiqal.downloadManager.source.core.enums.QueueSort
-import com.example.musiqal.downloadManager.source.core.enums.TaskStates
 import com.example.musiqal.downloadManager.source.report.listener.DownloadManagerListener
+import com.example.musiqal.downloadManager.util.DownloadTrack
+import com.example.musiqal.downloadManager.util.OnFilterationSuccess
+import com.example.musiqal.downloadManager.util.OnSelectedTrackClickedListener
+import com.example.musiqal.youtubeAudioVideoExtractor.model.YouTubeDlExtractorResultDataItem
+import com.google.gson.Gson
 import java.io.File
 
 
 @AndroidEntryPoint
-class Test : AppCompatActivity(), DownloadManagerListener {
+class Test : AppCompatActivity(), DownloadManagerListener, OnFilterationSuccess,
+    OnSelectedTrackClickedListener {
     private val TAG = "Test1111"
     lateinit var binding: ActivityTestBinding
     val urls = listOf(
@@ -33,6 +37,9 @@ class Test : AppCompatActivity(), DownloadManagerListener {
         super.onCreate(savedInstanceState)
         binding = ActivityTestBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val link =
+            "https://r4---sn-p5qlsny6.googlevideo.com/videoplayback?expire=1638083812&ei=hNiiYb2LFomohwazka-IBw&ip=3.91.157.194&id=o-AJjVHoXw3IlB5VwoWDQSAw7bwgzSl4b32XfFIkdpDkbU&itag=249&source=youtube&requiressl=yes&mh=Ws&mm=31%2C26&mn=sn-p5qlsny6%2Csn-vgqsknek&ms=au%2Conr&mv=m&mvi=4&pl=20&initcwndbps=976250&vprv=1&mime=audio%2Fwebm&ns=LfcpQZe3nGlxi3qRu7KdPhYG&gir=yes&clen=1416426&dur=222.101&lmt=1540482458071731&mt=1638061740&fvip=4&keepalive=yes&fexp=24001373%2C24007246&c=WEB&txp=5511222&n=3RUP_iRh_OYnQmkb&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cvprv%2Cmime%2Cns%2Cgir%2Cclen%2Cdur%2Clmt&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRAIgUA0WphykJsLDwYYrqr6ykvRrdsAN2gxdGOKXHYbYaWACIEYea7qVaSdF30Qmf7bmy8fQywkspjQp6MDhlRVPpmAz&sig=AOq0QJ8wRQIgAUy-0B-9rDzFHg2L2D7HvglWgz9sUuITlit6p0ijuPECIQC6c4Npi1W1dhAP_4M84OVtWFEcZbfikcJkgrXTIjyAzQ=="
         val downloadManagerPro = DownloadManagerPro(this)
         val cashFile =
             File(Environment.DIRECTORY_DOWNLOADS + "/" + resources.getString(R.string.app_name))
@@ -40,21 +47,27 @@ class Test : AppCompatActivity(), DownloadManagerListener {
             Log.d(TAG, "onCreate: chash path ${cashFile.mkdir()}")
         }
         downloadManagerPro.init(cashFile.path, 1, this)
-        val addTask = downloadManagerPro.addTask(getSongName(urls.get(0)), urls.get(0), false, true)
+        val addTask = downloadManagerPro.addTask(getSongName(urls.get(0)), link, false, true)
         mTaskId = addTask
-        downloadManagerPro.downloadTasksInSameState(TaskStates.INIT)
-        downloadManagerPro.downloadTasksInSameState(TaskStates.DOWNLOADING).forEach { i-> Log.d(TAG, "onCreate: "+i.toString()) }
-        downloadManagerPro.downloadTasksInSameState(TaskStates.INIT).forEach { i-> Log.d(TAG, "onCreate: "+i.toString()) }
-        downloadManagerPro.downloadTasksInSameState(TaskStates.DOWNLOAD_FINISHED).forEach { i-> Log.d(TAG, "onCreate: "+i.toString()) }
-        downloadManagerPro.downloadTasksInSameState(TaskStates.END).forEach { i-> Log.d(TAG, "onCreate: "+i.toString()) }
-        downloadManagerPro.downloadTasksInSameState(TaskStates.PAUSED).forEach { i-> Log.d(TAG, "onCreate: "+i.toString()) }
-        downloadManagerPro.downloadTasksInSameState(TaskStates.READY).forEach { i-> Log.d(TAG, "onCreate: "+i.toString()) }
         binding.btnStart.setOnClickListener {
-            downloadManagerPro.startQueueDownload(1, QueueSort.HighPriority)
-            downloadManagerPro.startDownload(
-                mTaskId
-            )
+
+
+//            downloadManagerPro.startQueueDownload(1, QueueSort.HighPriority)
+//            downloadManagerPro.startDownload(
+//                mTaskId
+//            )
+
+//            val items = DownloadInfo("sia Alive", "PT11H54M48S", "L_LUpnjgPso")
+//            DownloadInfoExtractor(this, this).extractVideosUrlsByVideoLink(items)
+//
+//            DownloadTrack(this, "sia-alive", link)
+//
+
+//
+
         }
+
+
         binding.btnPause.setOnClickListener {
             downloadManagerPro.pauseDownload(mTaskId)
         }
@@ -104,4 +117,15 @@ class Test : AppCompatActivity(), DownloadManagerListener {
 
     override fun connectionLost(taskId: Long) {
     }
+
+    override fun onSuccess(dataItems: List<YouTubeDlExtractorResultDataItem>) {
+        val downloadFragment = DownLoadInfoBottomSheet.newInstance(Gson().toJson(dataItems), this)
+        downloadFragment.show(supportFragmentManager, "sx")
+    }
+
+    override fun onTrackSeelcted(currentSelectedItem: YouTubeDlExtractorResultDataItem) {
+        Log.d(TAG, "onTrackSeelcted: " + currentSelectedItem)
+    }
+
+
 }

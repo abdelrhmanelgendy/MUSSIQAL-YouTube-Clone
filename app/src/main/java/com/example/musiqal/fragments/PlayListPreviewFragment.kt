@@ -36,7 +36,7 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
     private var currentPlayList: List<Item> = listOf()
     lateinit var onAudioInPlaylistClickListner: OnAudioInPlaylistClickListner
     private val PLAY_LIST_ID = "playListId"
-    lateinit var youtubeAPiReQ: YoutubeVideosInPlaylistRequest
+    lateinit var youtubeAPiReQItems: List<Item>
     val listOfReadyUrls =
         listOf(
             "https://cdn01.ytjar.xyz/get.php/b/86/foE1mO2yM04.mp3?h=TTJ6EVhZ0cKJHIQw14AQtg&s=1635199942&n=Mike-Posner-I-Took-A-Pill-In-Ibiza-Seeb-Remix-Explicit",
@@ -110,6 +110,7 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
             requireActivity().onBackPressed()
         }
 
+
         setPlayingButtonsListeners()
 
     }
@@ -117,26 +118,29 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
     private fun setPlayingButtonsListeners() {
 
         binding.playListPreviewFragmentBtnPlayAllList.setOnClickListener {
-            if (::youtubeAPiReQ.isInitialized && youtubeAPiReQ.items.size > 0) {
+            Log.d(TAG, "setPlayingButtonsListeners: play")
+            if (::youtubeAPiReQItems.isInitialized && youtubeAPiReQItems.size > 0) {
                 val position = 0
-                val item = youtubeAPiReQ.items.get(position)
+                val item = youtubeAPiReQItems.get(position)
 
                 onAudioInPlaylistClickListner.onItemClick(
                     item, currentPlayList.toMutableList(), position, "name",
                     ShuffleMode.Shuffle
                 )
+                onScroll(position,this.youtubeAPiReQItems)
             }
         }
         binding.playListPreviewFragmentBtnPlayShuffle.setOnClickListener {
-            if (::youtubeAPiReQ.isInitialized && youtubeAPiReQ.items.size > 0) {
-                val position = Random.nextInt(youtubeAPiReQ.items.size - 1)
-                val item = youtubeAPiReQ.items.get(position)
+            Log.d(TAG, "setPlayingButtonsListeners: shuffle"+youtubeAPiReQItems.size)
+            if (::youtubeAPiReQItems.isInitialized && youtubeAPiReQItems.size > 0) {
+                val position = Random.nextInt(youtubeAPiReQItems.size - 1)
+                val item = youtubeAPiReQItems.get(position)
 
                 onAudioInPlaylistClickListner.onItemClick(
-                    item, youtubeAPiReQ.items.toMutableList(), position, "playListName",
+                    item, youtubeAPiReQItems.toMutableList(), position, "playListName",
                     ShuffleMode.NoShuffle
                 )
-                onScroll(position, youtubeAPiReQ.items)
+                onScroll(position, youtubeAPiReQItems)
             }
         }
 
@@ -159,6 +163,7 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
 
     lateinit var itemsInPlayListAdapter: ItemsInPlayListAdapter
     fun setupRecyclerViewData(items: List<Item>) {
+        this.youtubeAPiReQItems=items
         this.currentPlayList = items
         val listOfSelectableItem: ArrayList<ItemInPlayListPreview> =
             convertItemToSelectableItem(items)
@@ -286,7 +291,7 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
             currentItem.videoDuration = duration.get(index)
         }
         setUpData(youtubeVideosInPlaylistRequest.items)
-        this.youtubeAPiReQ = youtubeVideosInPlaylistRequest
+        this.youtubeAPiReQItems = youtubeVideosInPlaylistRequest.items
 
     }
 

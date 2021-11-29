@@ -36,6 +36,12 @@
     <string name="publishDate">publish: 01/02/2020</string>
     <string name="defDate">October 2021</string>
     <string name="playLists">Playlists</string>
+    <string name="selected_item">1 Track Selected</string>
+    <string name="storageSpace"><![CDATA[Available Storage-> 5.4G Free/32.0 GB]]></string>
+    <string name="storagePath">Save Path:/Storage/emulated/0/download/Mussiqal/</string>
+    <string name="music">Music</string>
+    <string name="startDownload">Start Download</string>
+    <string name="high_speed">High Speed</string>
 
 
 </resources>

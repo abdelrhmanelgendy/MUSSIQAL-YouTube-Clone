@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    >
+    <LinearLayout
+        android:background="?selectableItemBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <RadioButton
+            android:id="@+id/recyclerViewItemDownloadTrackInfo_radioButton"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:theme="@style/GrayET"
+            />
+        <TextView
+            android:id="@+id/recyclerViewItemDownloadTrackInfo_txtAudioQuality"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="128K"
+            android:textSize="@dimen/_11sdp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:id="@+id/recyclerViewItemDownloadTrackInfo_txtAudioExtension"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mp3"
+            android:textSize="@dimen/_11sdp"
+            android:textColor="@color/gray"
+            android:textStyle="bold"
+            android:layout_weight="1"
+
+
+            />
+
+        <TextView
+            android:id="@+id/recyclerViewItemDownloadTrackInfo_txtAudioSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="80M"
+            android:textSize="@dimen/_11sdp"
+            android:textColor="@color/gray"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            />
+        <TextView
+            android:id="@+id/recyclerViewItemDownloadTrackInfo_txtHighSpeedDownload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/high_speed"
+            android:textSize="@dimen/_11sdp"
+            android:textColor="@color/white_gray_002"
+            android:layout_weight="1"
+            android:textAlignment="center"
+
+
+            />
+    </LinearLayout>
+
+</RelativeLayout>

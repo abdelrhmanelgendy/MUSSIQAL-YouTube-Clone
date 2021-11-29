@@ -308,7 +308,7 @@ class SearchActivity : AppCompatActivity(), OnHistoryDataClickListener,
     fun getRandomApiKey(): String {
         val stringArray = resources.getStringArray(R.array.api_keys)
 //        return stringArray.get(Random().nextInt(stringArray.size))
-        return stringArray.get(0)
+        return stringArray.get(1)
     }
 
     override fun onBackPressed() {

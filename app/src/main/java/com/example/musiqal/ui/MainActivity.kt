@@ -48,13 +48,14 @@ import com.example.musiqal.lyrics.LyricsBottomSheet
 import com.example.musiqal.lyrics.LyricsUtil
 import com.example.musiqal.lyrics.util.OnLyricsFoundListener
 import com.example.musiqal.datamodels.youtubeItemInList.ItemTypeConverter
+import com.example.musiqal.downloadManager.data.DownloadInfo
+import com.example.musiqal.downloadManager.util.DownloadTrack
 import com.example.musiqal.search.SearchActivity.Companion.SEARCH_TITLE_KEY
 import com.example.musiqal.ui.slidingPan.SlidingUpDownPanel
 import com.example.musiqal.userPLaylists.dialogs.UserPLaylistsDialog
 import com.example.musiqal.util.MusicPlayerViewPagerAdapter
 import com.example.musiqal.viewModels.MainViewModel
 import com.example.musiqal.youtubeAudioVideoExtractor.YouTubeDurationConverter
-import com.example.musiqal.youtubeAudioVideoExtractor.database.local.YoutubeExtractedFileDao
 
 import com.example.musiqal.youtubeAudioVideoExtractor.mvi.YouTubeExtractorViewModel
 import kotlinx.coroutines.*
@@ -78,9 +79,6 @@ class MainActivity() :
     private val TAG = "MainActivity11"
 
 
-
-
-
     val listOfReadyUrls =
         listOf(
             "https://cdns-preview-0.dzcdn.net/stream/c-0b5d54798687583efbb35a42f3ca7bed-6.mp3",
@@ -97,8 +95,7 @@ class MainActivity() :
     lateinit var shuffleMode: ShuffleMode
     lateinit var savedRepeateMode: RepeateMode
     lateinit var customeMusicPlayer: CustomeMusicPlayback
-    lateinit var currentItem: Item
-    lateinit var currentListOfItems: List<Item>
+    
     lateinit var playListName: String
     lateinit var notificationHelper: NotificationHelper
 
@@ -121,6 +118,8 @@ class MainActivity() :
         var isFromPlayListPreview = false
         var isPlaying = true
         var isFromStaticPlayer = false
+        lateinit var currentItem: Item
+        lateinit var currentListOfItems: List<Item>
     }
 
     var activeFragment = Fragment()
@@ -140,6 +139,7 @@ class MainActivity() :
         initializeCustomeMusicPlayer()
         initializeBottomNavigationView()
 
+
 //        getLastPlayedSongData()
 
         initializeViewsListeners()
@@ -152,13 +152,25 @@ class MainActivity() :
         binding.mediaPlayerItemImgAddFavorite.setOnClickListener {
             openAddingToPlaylistDialog()
         }
+        binding.mediaPlayerItemImgDownload.setOnClickListener { 
+            downLoadCurrentItem(currentItem)
+        }
 
 //        mainViewModel.deleteAllSavedTrackItem()
     }
 
+    private fun downLoadCurrentItem(currentItem: Item) {
+        val trackTitle=currentItem.snippet.title
+        val trackDuration="PT11H54M48S"
+        val trackId=currentItem.snippet.resourceId.videoId
+        Log.d(TAG, "downLoadCurrentItem: "+trackDuration+" "+trackTitle+" "+trackId)
+        DownloadTrack(this, DownloadInfo(trackTitle,trackDuration,trackId))
+
+    }
+
     private fun openAddingToPlaylistDialog() {
         val userPLaylistsDialog = UserPLaylistsDialog(this)
-        userPLaylistsDialog.createDialog(this.currentItem)
+        userPLaylistsDialog.createDialog(currentItem)
 
     }
 
@@ -489,8 +501,8 @@ class MainActivity() :
                     true
                 )
                 val youtubeItem = currentListOfItems.get(audioPosition)
-                this.currentItem = currentListOfItems.get(audioPosition)
-                this.currentItemPosion = audioPosition
+                currentItem = currentListOfItems.get(audioPosition)
+                currentItemPosion = audioPosition
                 setupMainMediaPlayerViews()
                 val videoId = youtubeItem.snippet.resourceId.videoId
             } else if (shuffleMode == ShuffleMode.Shuffle) {
@@ -500,8 +512,8 @@ class MainActivity() :
                     false
                 )
                 val youtubeItem = currentListOfItems.get(audioPosition)
-                this.currentItem = currentListOfItems.get(audioPosition)
-                this.currentItemPosion = audioPosition
+                currentItem = currentListOfItems.get(audioPosition)
+                currentItemPosion = audioPosition
                 setupMainMediaPlayerViews()
                 val videoId = youtubeItem.snippet.resourceId.videoId
 
@@ -524,8 +536,8 @@ class MainActivity() :
                 Log.d(TAG, "urlExtracted At position : " + currentItemPosion)
 
                 val youtubeItem = currentListOfItems.get(audioPosition)
-                this.currentItem = currentListOfItems.get(audioPosition)
-                this.currentItemPosion = audioPosition
+                currentItem = currentListOfItems.get(audioPosition)
+                currentItemPosion = audioPosition
                 setupMainMediaPlayerViews()
                 binding.mediaPlayerItemViewPagerSongImage.setCurrentItem(
                     audioPosition,
@@ -538,8 +550,8 @@ class MainActivity() :
                 Log.d(TAG, "urlExtracted At position : " + currentItemPosion)
 
                 val youtubeItem = currentListOfItems.get(audioPosition)
-                this.currentItem = currentListOfItems.get(audioPosition)
-                this.currentItemPosion = audioPosition
+                currentItem = currentListOfItems.get(audioPosition)
+                currentItemPosion = audioPosition
                 setupMainMediaPlayerViews()
                 binding.mediaPlayerItemViewPagerSongImage.setCurrentItem(
                     audioPosition,
@@ -713,12 +725,12 @@ class MainActivity() :
         playListName: String
     ) {
         this.playListName = playListName
-        this.currentItemPosion = position
-        this.currentListOfItems = _listOfYoutubeItemsInPlaylists
-        this.currentItem = item
+        currentItemPosion = position
+        currentListOfItems = _listOfYoutubeItemsInPlaylists
+        currentItem = item
         setupMainMediaPlayerViews()
         setUpViewPagersView(_listOfYoutubeItemsInPlaylists, position)
-        this.CurrentItemDuration = item.videoDuration
+        CurrentItemDuration = item.videoDuration
         Log.d(TAG, "onItemClick12121: " + item.videoDuration)
         if (position == 0) {
             firstTimeinitializeViewPager = true
@@ -855,7 +867,7 @@ class MainActivity() :
 
 
     fun setupMainMediaPlayerViews() {
-        val item = this.currentItem
+        val item = currentItem
         val title = item
             .snippet.title
         val imageUrl = ImageUrlUtil.getMaxResolutionImageUrl(item)
@@ -904,7 +916,10 @@ class MainActivity() :
             //App is not designed for such  a big audio do you want to download it instead of playing it?
             Log.d(TAG, "start: find for Normal user")
             if (audioInSeconds > 600) {
-                MakingToast(applicationContext).toast("Video with more than 10 minutes are slow streaming\nplease be patient.",MakingToast.LENGTH_SHORT)
+                MakingToast(applicationContext).toast(
+                    "Video with more than 10 minutes are slow streaming\nplease be patient.",
+                    MakingToast.LENGTH_SHORT
+                )
             }
             VideoLinkToDirectUrlExtraction(
                 this,
@@ -1311,7 +1326,12 @@ class MainActivity() :
         IS_FROM_COLLECTIONFRAGMENT = true
     }
 
+    private infix fun Hi(num1: Int): Int {
+        return num1 * 10
+    }
+
     private fun getCleanListOfItems(tracks: List<Item>): List<Item> {
+
 
         val items: MutableList<Item> = mutableListOf()
 

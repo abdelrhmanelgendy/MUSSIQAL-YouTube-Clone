@@ -349,7 +349,7 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
     ) {
         //first chech if user first open app
         val specifyIfUpdateUserDataOfNotByRandomValues = Random().nextInt(50)
-        if (specifyIfUpdateUserDataOfNotByRandomValues > 60) {
+        if (specifyIfUpdateUserDataOfNotByRandomValues < 20) {
 
             Log.d(TAG, "searchForPlayList: ")
             playListsViewModel.serchForRandomPlaylists(

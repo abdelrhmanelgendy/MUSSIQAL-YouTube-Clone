@@ -57,19 +57,19 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-     lifecycleScope.launchWhenStarted {
-         withContext(Dispatchers.Main)
-         {
-             setUpRamdomPlayList(Constants.PLAYLIST_MIXED_ID)
-             setUpLatestPlayList(Constants.PLAYLIST_LATEST_ID)
-             setUpTopPlayList(Constants.PLAYLIST_TOP_ID)
-             setUpSingerOnePlayList(Constants.PLAYLIST_SINGERONE_ID)
-             setUpSingerTwoPlayList(Constants.PLAYLIST_SINGERTWO_ID)
-         }
-     }
+        lifecycleScope.launchWhenStarted {
+            withContext(Dispatchers.Main)
+            {
+                setUpRamdomPlayList(Constants.PLAYLIST_MIXED_ID)
+                setUpLatestPlayList(Constants.PLAYLIST_LATEST_ID)
+                setUpTopPlayList(Constants.PLAYLIST_TOP_ID)
+                setUpSingerOnePlayList(Constants.PLAYLIST_SINGERONE_ID)
+                setUpSingerTwoPlayList(Constants.PLAYLIST_SINGERTWO_ID)
+            }
+        }
 
 
-     initializeToolBar()
+        initializeToolBar()
     }
     private fun initializeToolBar() {
         val searchClickLitnerObject=object :View.OnClickListener{
@@ -349,7 +349,7 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
     ) {
         //first chech if user first open app
         val specifyIfUpdateUserDataOfNotByRandomValues = Random().nextInt(50)
-        if (specifyIfUpdateUserDataOfNotByRandomValues < 20) {
+        if (specifyIfUpdateUserDataOfNotByRandomValues > 60) {
 
             Log.d(TAG, "searchForPlayList: ")
             playListsViewModel.serchForRandomPlaylists(

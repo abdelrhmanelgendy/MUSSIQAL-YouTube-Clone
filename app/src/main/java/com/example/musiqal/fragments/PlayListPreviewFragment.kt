@@ -82,7 +82,7 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
         super.onViewCreated(view, savedInstanceState)
         MainActivity.isFromPlayListPreview = true
 
-        val fromShared = false
+        val fromShared = true
         if (fromShared) {
             val itemFromSharedPreference = getItemFromSharedPreference()
             val listOfItem = YoutubeItemsConverters().convertItems(itemFromSharedPreference)
@@ -210,7 +210,7 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
             "snippet",
             playListID,
             "100",
-            resources.getStringArray(R.array.api_keys).get(6)
+            resources.getStringArray(R.array.api_keys).get(0)
         )
 
         lifecycleScope.launchWhenStarted {
@@ -247,8 +247,7 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
 
     private fun setUpData(items: List<Item>) {
 
-        setupRecyclerViewData(items)
-
+        savePlayListInSharesPref(items)
     }
 
     private fun getAllVideosDurationsInPLayList(
@@ -258,7 +257,7 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
         mainViewModel.getVideoDuration(
             part = Constants.YOUTUBE_CONTENTDETAIL_PARTS,
             youtubeVideosInPlaylistRequest.items.map { i -> i.snippet.resourceId.videoId },
-            resources.getStringArray(R.array.api_keys).get(6)
+            resources.getStringArray(R.array.api_keys).get(0)
         )
         lifecycleScope.launchWhenStarted {
             mainViewModel.youTubeVideoDurationStateFlow.collectIndexed { index, value ->

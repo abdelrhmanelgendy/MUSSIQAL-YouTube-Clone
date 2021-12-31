@@ -21,11 +21,7 @@ class NotificationService : Service() {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        try {
-            startForeground(NOTIFICATION_ID, customeNotification)
-        }
-        catch (e:Exception)
-        {}
+        startForeground(NOTIFICATION_ID, customeNotification)
         return START_STICKY
 
     }

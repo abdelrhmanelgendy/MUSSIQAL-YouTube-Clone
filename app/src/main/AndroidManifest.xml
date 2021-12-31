@@ -24,11 +24,11 @@
             android:name=".search.SearchActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.Test"
+            android:name=".ui.MainActivity"
             android:exported="true" />
         <activity
             android:screenOrientation="portrait"
-            android:name=".ui.MainActivity"
+            android:name=".ui.Test"
             android:exported="true"
             android:launchMode="singleTask">
             <intent-filter>

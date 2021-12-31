@@ -81,8 +81,8 @@ class VideoLinkToDirectUrlExtraction(
                     "checkIfDatabaseHaveTheVideoUrl: $videoId ${localExtractedFileData[i].videId}"
                 )
                 val mp3Url = localExtractedFileData[i].mp3Url
-                val urlAvailability = UrlAvailability.checkAudioAvailability(mp3Url)
-                if (urlAvailability) {
+                val urlAvailability = UrlAvailability.checkUrl(mp3Url)
+                if (urlAvailability.isAvailable) {
                     videoExtractionEventListener.onSuccess(mp3Url)
                     Log.d(TAG, "checkIfDatabaseHaveTheVideoUrl: availabile")
                 } else {

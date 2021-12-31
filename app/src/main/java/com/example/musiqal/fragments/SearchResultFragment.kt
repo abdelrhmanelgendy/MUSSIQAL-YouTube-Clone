@@ -21,7 +21,6 @@ import com.example.musiqal.datamodels.youtubeItemInList.*
 import com.example.musiqal.search.SearchActivity
 import com.example.musiqal.search.mvi.SearchViewModel
 import com.example.musiqal.search.mvi.YoutubeSearchViewState
-import com.example.musiqal.ui.MainActivity
 import com.example.musiqal.util.Constants
 import com.example.musiqal.util.OnAudioInPlaylistClickListner
 import com.example.musiqal.util.OnSearchedItemClickListner
@@ -141,13 +140,10 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
         _listOfYoutubeItemsInPlaylists: MutableList<Item>,
         position: Int
     ) {
-
         val convertNormalLISToFItemToYoutubeListOfItemInPlaylist =
             convertNormalLISToFItemToYoutubeListOfItemInPlaylist(_listOfYoutubeItemsInPlaylists)
         val convertedItem: com.example.musiqal.datamodels.youtubeItemInList.Item =
             convertNormalItemToYoutubeItemInPlaylist(item)
-        MainActivity.currentItem=convertedItem
-        MainActivity.currentListOfItems=convertNormalLISToFItemToYoutubeListOfItemInPlaylist
         onAudioInPlaylistClickListner.onItemClick(
             convertedItem,
             convertNormalLISToFItemToYoutubeListOfItemInPlaylist.toMutableList(),
@@ -175,7 +171,7 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
         mianViewModel.getVideoDuration(
             part = Constants.YOUTUBE_CONTENTDETAIL_PARTS,
             items.map { i -> i.id.videoId },
-            resources.getStringArray(R.array.api_keys).get(6)
+            resources.getStringArray(R.array.api_keys).get(0)
         )
         lifecycleScope.launchWhenStarted {
             mianViewModel.youTubeVideoDurationStateFlow.collectIndexed { index, value ->
@@ -295,7 +291,7 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
     fun getRandomApiKey(): String {
         val stringArray = resources.getStringArray(R.array.api_keys)
 //        return stringArray.get(Random().nextInt(stringArray.size))
-        return stringArray.get(6)
+        return stringArray.get(1)
     }
 
     private fun searForQuery(searchTitle: String) {

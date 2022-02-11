@@ -84,6 +84,10 @@ class Test : AppCompatActivity(), DownloadManagerListener {
     override fun onDownloadProcess(taskId: Long, percent: Double, downloadedLength: Long) {
         Log.d(TAG, "onDownloadProcess: $taskId   $percent   $downloadedLength")
         binding.progressBar.progress = percent.toInt()
+
+        //fileModel
+        //proccess
+        //adapter.set(list.get(taskId))
     }
 
     override fun OnDownloadFinished(taskId: Long) {

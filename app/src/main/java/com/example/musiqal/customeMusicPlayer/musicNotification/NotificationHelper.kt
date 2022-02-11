@@ -33,7 +33,9 @@ class NotificationHelper(
     lateinit var notificationBuilder: NotificationCompat.Builder
     private lateinit var mediaSessionCompat: MediaSessionCompat
     init {
+        createBasicNotification()
         mediaSessionCompat = MediaSessionCompat(context, "MUSIQAL")
+
     }
     fun createBasicNotification() {
 

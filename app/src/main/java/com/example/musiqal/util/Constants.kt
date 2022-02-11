@@ -1,22 +1,32 @@
 package com.example.musiqal.util
 
+import android.content.Context
+import com.example.musiqal.R
 import com.example.musiqal.datamodels.RandomSearchQueryWithImage
 import kotlin.random.Random
 
 object Constants {
 
-    val YOUTUBE_CONTENTDETAIL_PARTS="contentDetails"
-    fun getRandomMp3Api():String
-    {
-        val randomy=false
-        if (randomy)
-        {
-            return Constants.MP3_API_ALL_API_KEY.get(Random.nextInt(Constants.MP3_API_ALL_API_KEY.size-1))
-        }
-        else {
-            return Constants.MP3_API_ALL_API_KEY.get(1)
+    val YOUTUBE_CONTENTDETAIL_PARTS = "contentDetails"
+    fun getRandomMp3Api(): String {
+        val randomy = true
+        if (randomy) {
+            return Constants.MP3_API_ALL_API_KEY.get(Random.nextInt(Constants.MP3_API_ALL_API_KEY.size - 1))
+        } else {
+            return Constants.MP3_API_ALL_API_KEY.get(0)
         }
     }
+
+    fun getRandomYoutubeDataKey(context: Context,randomy:Boolean=true): String {
+        if (randomy) {
+            val list = context.resources.getStringArray(R.array.api_keys);
+            return list.get(Random.nextInt(list.size))
+        } else {
+            val list = context.resources.getStringArray(R.array.api_keys);
+            return list.get(0)
+        }
+    }
+
     val YOUTUBE_MP3_RapidHost = "youtube-mp36.p.rapidapi.com"
 
     val HOME_FRAGMENT_TAG = "homeFragmentTag"

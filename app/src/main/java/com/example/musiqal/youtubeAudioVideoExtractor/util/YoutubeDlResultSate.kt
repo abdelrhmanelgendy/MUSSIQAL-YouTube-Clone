@@ -44,4 +44,23 @@ object YoutubeDlResultSate {
             YoutubeDlResultFormatIDs.IsVideoState.UNKNOWN.msg
         return false
     }
+
+    public fun assignAudioQualityToAudioFile(items: List<YouTubeDlExtractorResultDataItem>):
+            List<YouTubeDlExtractorResultDataItem> {
+        items.map { i ->
+          val formatType:Int=getFormateTypeByFormateId(i.format_id!!)
+            i.videoQualityId = formatType.toString()
+        }
+        return items
+    }
+
+    private fun getFormateTypeByFormateId(format: String): Int {
+        val formatId = format.toInt()
+        if (formatId in YoutubeDlResultFormatIDs.AUDIO_FORMATS_MAP.keys)
+        {
+            return YoutubeDlResultFormatIDs.AUDIO_FORMATS_MAP.getValue(formatId)
+        }
+        return YoutubeDlResultFormatIDs.AUDIO_NO_FORMATS
+
+    }
 }

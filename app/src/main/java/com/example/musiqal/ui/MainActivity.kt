@@ -48,13 +48,17 @@ import com.example.musiqal.lyrics.LyricsBottomSheet
 import com.example.musiqal.lyrics.LyricsUtil
 import com.example.musiqal.lyrics.util.OnLyricsFoundListener
 import com.example.musiqal.datamodels.youtubeItemInList.ItemTypeConverter
+import com.example.musiqal.downloadManager.data.DownloadInfo
+import com.example.musiqal.downloadManager.util.DownloadTrack
+import com.example.musiqal.lyrics.lyricsdatabase.LyricsSharedPreferences
+import com.example.musiqal.lyrics.lyricsdatabase.local.mvi.LyricsDatabaseViewModel
+import com.example.musiqal.lyrics.model.SharedPrefLyricsLocalDataModel
 import com.example.musiqal.search.SearchActivity.Companion.SEARCH_TITLE_KEY
 import com.example.musiqal.ui.slidingPan.SlidingUpDownPanel
 import com.example.musiqal.userPLaylists.dialogs.UserPLaylistsDialog
 import com.example.musiqal.util.MusicPlayerViewPagerAdapter
 import com.example.musiqal.viewModels.MainViewModel
 import com.example.musiqal.youtubeAudioVideoExtractor.YouTubeDurationConverter
-import com.example.musiqal.youtubeAudioVideoExtractor.database.local.YoutubeExtractedFileDao
 
 import com.example.musiqal.youtubeAudioVideoExtractor.mvi.YouTubeExtractorViewModel
 import kotlinx.coroutines.*
@@ -78,7 +82,10 @@ class MainActivity() :
     private val TAG = "MainActivity11"
 
 
+    private val lyricsDatabaseViewModel: LyricsDatabaseViewModel by lazy {
+        ViewModelProvider(this).get(LyricsDatabaseViewModel::class.java)
 
+    }
 
 
     val listOfReadyUrls =
@@ -131,8 +138,11 @@ class MainActivity() :
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setFragmentF(homeFragment)
-
-
+        changeVisiblityOfProgressBar(true)
+        lifecycleScope.launchWhenStarted {
+            delay(1000)
+            changeVisiblityOfProgressBar(false)
+        }
         musicPlayerPersistence = MusicPlayerPersistence(this)
         getMusicPlayerSavedSettings(musicPlayerPersistence)
 
@@ -156,6 +166,15 @@ class MainActivity() :
 //        mainViewModel.deleteAllSavedTrackItem()
     }
 
+    private fun downLoadCurrentItem(currentItem: Item) {
+        val trackTitle = currentItem.snippet.title
+        val trackDuration = "PT11H54M48S"
+        val trackId = currentItem.snippet.resourceId.videoId
+        Log.d(TAG, "downLoadCurrentItem: " + trackDuration + " " + trackTitle + " " + trackId)
+        DownloadTrack(this, DownloadInfo(trackTitle, trackDuration, trackId))
+
+    }
+
     private fun openAddingToPlaylistDialog() {
         val userPLaylistsDialog = UserPLaylistsDialog(this)
         userPLaylistsDialog.createDialog(this.currentItem)
@@ -172,9 +191,14 @@ class MainActivity() :
                 if (isViewed) {
 
                     Log.d(TAG, "onSuccess:12121 ")
-                    val lyricsBottomSheet = LyricsBottomSheet.newInstance(lyricsFilter(lyrics))
+                    val lyricsBottomSheet = LyricsBottomSheet.newInstance(
+                        lyricsFilter(lyrics),
+                        R.id.MainActiviyt_coordinatorLayout
+                    )
                     lyricsBottomSheet.show(supportFragmentManager, "lyricsBottomSheet")
                     isViewed = false
+                    saveLoadedLyricsIntoDatabase(lyrics, currentItem)
+
                 }
 
 
@@ -192,6 +216,59 @@ class MainActivity() :
         lyricsUtil.initialize(currentItem.snippet.resourceId.videoId, currentItem.snippet.title)
     }
 
+    private fun saveLoadedLyricsIntoDatabase(lyrics: String, currentItem: Item) {
+        Log.d(TAG, "adding01: "+lyrics)
+        Log.d(TAG, "adding01: "+currentItem)
+        val name = currentItem.snippet.title
+        val imgUrl = currentItem.snippet.thumbnails.default.url
+        val songDuration = currentItem.videoDuration
+        val videoId = currentItem.snippet.resourceId.videoId
+        val lyricsSharedPreferences = LyricsSharedPreferences(this)
+        val lyricsLocalDataModel = SharedPrefLyricsLocalDataModel(
+            name,
+            songDuration,
+            lyrics,
+            imgUrl,
+            videoId
+        )
+
+    try {
+        lyricsSharedPreferences.save(lyricsLocalDataModel)
+
+    }catch (e:Exception)
+    {
+        Log.d(TAG, "saveLoadedLyricsIntoDatabase: "+e.toString())
+    }
+    //        lyricsDatabaseViewModel.insertTrackLyrics(
+//            LyricsLocalDataModel(
+//                "name",
+//                "songDuration",
+//                "lyrics",
+//                "imgUrl",
+//                "videoId"
+//            )
+//        )
+//        val localLyricsDao =
+//            Room.databaseBuilder(this, LyricsDatabase::class.java, "database").build()
+//                .getLocalLyricsDao()
+//        lyricsDatabaseViewModel.
+//        lifecycleScope.launchWhenStarted {
+//
+////            localLyricsDao.insertNewTrackLyrics(
+////                LyricsLocalDataModel(
+////                    songName =name,
+////                    songDuration = songDuration,
+////                    songThumbnails = imgUrl,
+////                    songLyrics = lyrics,
+////                    videoId = videoId
+////
+////                )
+//            )
+
+
+//        }
+    }
+
     private fun lyricsFilter(lyrics: String): String {
         val Lyrics_CopyRight = "Paroles de la chanson"
 
@@ -205,16 +282,25 @@ class MainActivity() :
 
         val musicPlayerServiseState =
             ServiceState().isMyServiceRunning(NotificationService::class.java, this)
+        Log.d(TAG, "getLastPlayedSongData: static " + musicPlayerServiseState)
         if (musicPlayerServiseState) {
             try {
                 initializeLastPlayingDataFromStaticMediaPlayer()
 
             } catch (e: Exception) {
+                Log.d(TAG, "getLastPlayedSongData: " + e.message.toString())
 
             }
         } else {
+            Log.d(TAG, "getLastPlayedSongData: init")
             val lastPlayedList = musicPlayerPersistence.getLastPlayedList()
             val lastPlayedSong = musicPlayerPersistence.getLastPlayedSong()
+            Log.d(TAG, "getLastPlayedSongData: "+lastPlayedSong.item.etag)
+            Log.d(TAG, "getLastPlayedSongData: "+lastPlayedSong.item.snippet.title)
+            if (lastPlayedSong.item.snippet.position==-1)
+            {
+                return;
+            }
             val lastPlayedTrack = musicPlayerPersistence.getLastPlayedTrack()
             initializeLastPlayingDataFromSharedPreference(
                 lastPlayedList,
@@ -258,25 +344,27 @@ class MainActivity() :
         lastPlayedTrack: LastPlayedTrack
     ) {
 
+        Log.d(TAG, "initializeLastPlayingDataFromSharedPreference: ")
         val lastSavedTrackId = lastPlayedTrack.trackId
         val lastSavedItemTrackId = lastPlayedSong.item.snippet.resourceId.videoId
 
-        if (lastSavedTrackId.equals(lastSavedItemTrackId)) {
-            currentItemPosion = lastPlayedSong.itemPosition
-            currentListOfItems = lastPlayedList.toMutableList()
-            currentItem = lastPlayedSong.item
-            this.playListName = "lastPlayedList"
-            setupMainMediaPlayerViews()
-            setUpViewPagersView(lastPlayedList.toMutableList(), lastPlayedSong.itemPosition)
-            getVideoLinkWithSeeking(
-                "",
-                lastPlayedSong.item.snippet.resourceId.videoId,
-                lastPlayedTrack.currentDuration
-            )
-            isFromStaticPlayer = true
+//        if (lastSavedTrackId.equals(lastSavedItemTrackId)) {
+        currentItemPosion = lastPlayedSong.itemPosition
+        currentListOfItems = lastPlayedList.toMutableList()
+        currentItem = lastPlayedSong.item
+        this.playListName = "lastPlayedList"
+        setupMainMediaPlayerViews()
+        setUpViewPagersView(lastPlayedList.toMutableList(), lastPlayedSong.itemPosition)
+
+        getVideoLinkWithSeeking(
+            "",
+            lastPlayedSong.item.snippet.resourceId.videoId,
+            lastPlayedTrack.currentDuration
+        )
+        isFromStaticPlayer = true
 
 
-        }
+//        }
 
 
     }
@@ -284,7 +372,7 @@ class MainActivity() :
     private fun setUpMainViewsOfTheCurrentPlayingService(
         songItem: Item
     ) {
-        customeMusicPlayer.setUpViews(songItem, playListName)
+        customeMusicPlayer.setUpViews(songItem, playListName, true)
         if (isPlaying) {
             binding.mediaPlayerItemImgPlayPauseButtom.setImageResource(R.drawable.ic_baseline_pause_24)
         } else {
@@ -583,7 +671,9 @@ class MainActivity() :
     }
 
 
-    private fun downLoadCurrentAudio() {}
+    private fun downLoadCurrentAudio() {
+        downLoadCurrentItem(currentItem)
+    }
 
 
     override fun onBackPressed() {
@@ -719,6 +809,7 @@ class MainActivity() :
         setupMainMediaPlayerViews()
         setUpViewPagersView(_listOfYoutubeItemsInPlaylists, position)
         this.CurrentItemDuration = item.videoDuration
+
         Log.d(TAG, "onItemClick12121: " + item.videoDuration)
         if (position == 0) {
             firstTimeinitializeViewPager = true
@@ -741,7 +832,7 @@ class MainActivity() :
             applicationContext,
             binding.mediaPlayerItemImgPlayPause,
             binding.mainContainer,
-            binding.MainActiviytLinearLayout,
+            binding.MainActivityLinearLayoutMainContainer,
             binding.MainActiviytCoordinatorLayout,
             binding.mainActiviytSlidingLayout
         )
@@ -880,16 +971,21 @@ class MainActivity() :
     }
 
     var x = 0
+    var currentDuration = -1L
     override fun start(
         videoId: String,
         currentItem: Item,
         currentPlayList: List<Item>,
-        currentItemPosition: Int, playListName: String
+        currentItemPosition: Int, playListName: String,
+        currentDuration: Long
     ) {
 
 //        stop()
 
 //        checkFile -> video lenth in minutes
+        binding.mainActiviytSlidingLayout.isVisible=true
+
+
         val audioInSeconds = checkFileSize(currentItem)
         if (audioInSeconds <= ALLOWED_AUDIO_TIME_IN_SECCONDS) {
 
@@ -904,7 +1000,10 @@ class MainActivity() :
             //App is not designed for such  a big audio do you want to download it instead of playing it?
             Log.d(TAG, "start: find for Normal user")
             if (audioInSeconds > 600) {
-                MakingToast(applicationContext).toast("Video with more than 10 minutes are slow streaming\nplease be patient.",MakingToast.LENGTH_SHORT)
+                MakingToast(applicationContext).toast(
+                    "Video with more than 10 minutes are slow streaming\nplease be patient.",
+                    MakingToast.LENGTH_SHORT
+                )
             }
             VideoLinkToDirectUrlExtraction(
                 this,
@@ -936,9 +1035,10 @@ class MainActivity() :
                 currentItem,
                 currentListOfItems,
                 currentItemPosion,
-                playListName
+                playListName,
+                this.currentDuration
             )
-
+            this.currentDuration = -1
             savePlayingTrackIntoHistory(currentItem)
         }
     }
@@ -959,6 +1059,17 @@ class MainActivity() :
         playListName: String,
         currentDuration: Long
     ) {
+
+        Log.d(TAG, "startWithSeeking: " + currentDuration)
+        this.currentDuration = currentDuration
+        start(
+            videoId = currentItem.snippet.resourceId.videoId,
+            currentItem,
+            currentPlayList = currentListOfItems,
+            currentItemPosion,
+            playListName,
+            currentDuration
+        )
 //        customeMusicPlayer.startWithSeeking(
 //            url,
 //            currentItem,
@@ -974,6 +1085,7 @@ class MainActivity() :
 
         customeMusicPlayer.pause()
         Log.d(TAG, "pause: " + customeMusicPlayer.hashCode())
+        saveCurrentMusicPlayerDataInSharedPref()
     }
 
     override fun resume() {
@@ -1128,19 +1240,8 @@ class MainActivity() :
     }
 
     private fun getVideoLinkWithSeeking(s: String, videoId: String, currentDuration: Long) {
-        val dommyUrl =
-            listOfReadyUrls.get(
-                java.util.Random().nextInt(listOfReadyUrls.size - 1)
-            )
-        val item = YoutubeMp3ConverterData(
-            0.0,
-            dommyUrl,
-            "",
-            1,
-            "",
-            ""
-        )
-        nextTrackWithSeeking(item.link, currentDuration)
+
+        nextTrackWithSeeking(s, currentDuration)
 //        mainViewModel.getMp3VideoConvertedUrl(
 //            "youtube-mp36.p.rapidapi.com",
 //            rapidApiKey,
@@ -1274,6 +1375,7 @@ class MainActivity() :
     }
 
     override fun pausing() {
+        Log.d(TAG, "pausing: ")
         pause()
         isPlaying = false
     }
@@ -1329,6 +1431,9 @@ class MainActivity() :
 
     }
 
-
+    public fun changeVisiblityOfProgressBar(isVisible: Boolean) {
+        binding.mainActivityProgressBar.isVisible = isVisible
+        binding.MainActivityLinearLayoutMainContainer.isVisible = !isVisible
+    }
 }
 

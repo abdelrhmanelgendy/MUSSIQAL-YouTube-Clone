@@ -16,7 +16,7 @@
         android:foregroundGravity="bottom">
 
         <LinearLayout
-            android:id="@+id/MainActiviyt_linearLayout"
+            android:id="@+id/MainActivity_linearLayoutMainContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/black"
@@ -119,7 +119,7 @@
                             android:background="@color/black"
                             android:scaleType="centerCrop"
 
-                            android:src="@drawable/img_car_demmo" />
+                            android:src="@drawable/musiqal_com_ic_large" />
 
                     </androidx.cardview.widget.CardView>
 
@@ -148,7 +148,6 @@
                         android:paddingEnd="@dimen/_2sdp"
                         android:scrollHorizontally="true"
                         android:singleLine="true"
-                        android:text="@string/dummySongName"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_14sdp"
                         app:layout_constraintBottom_toTopOf="@id/mediaPlayerItem_mediaPlayerSeekBar"
@@ -307,6 +306,12 @@
                 app:menu="@menu/bottom_navigation_menu" />
 
         </LinearLayout>
+        <ProgressBar
+            android:id="@+id/mainActivity_progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

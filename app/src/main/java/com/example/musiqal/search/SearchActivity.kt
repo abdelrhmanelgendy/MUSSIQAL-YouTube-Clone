@@ -259,8 +259,7 @@ class SearchActivity : AppCompatActivity(), OnHistoryDataClickListener,
     }
 
     fun deleteItemDialog(position: Int) {
-        if (!youtubeSearchAdapter.listOfHistoryData.get(position).searchHistory.equals("-1"))
-        {
+        if (!youtubeSearchAdapter.listOfHistoryData.get(position).searchHistory.equals("-1")) {
             val searchHistoryData = savedLististoryData.get(position)
             simpleYesOrNoDialog.intialize(
                 searchHistoryData.searchTitle,
@@ -306,9 +305,8 @@ class SearchActivity : AppCompatActivity(), OnHistoryDataClickListener,
     }
 
     fun getRandomApiKey(): String {
-        val stringArray = resources.getStringArray(R.array.api_keys)
-//        return stringArray.get(Random().nextInt(stringArray.size))
-        return stringArray.get(0)
+        return Constants.getRandomYoutubeDataKey(this)
+
     }
 
     override fun onBackPressed() {

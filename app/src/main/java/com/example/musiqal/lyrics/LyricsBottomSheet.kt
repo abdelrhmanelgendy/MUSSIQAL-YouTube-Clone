@@ -30,7 +30,7 @@ import java.util.regex.Pattern
 
 
 
-class LyricsBottomSheet : BottomSheetDialogFragment() {
+class LyricsBottomSheet(val resourceOfCoordinatorLayoutId:Int) : BottomSheetDialogFragment() {
     lateinit var binding: LyricsBottomSheatLayoutBinding
     val ARG_LYRICS = "args_key"
     private val TAG = "LyricsBottomSheet"
@@ -111,7 +111,7 @@ class LyricsBottomSheet : BottomSheetDialogFragment() {
 
         Log.d(TAG, "onAttach: ")
         mainActivtyCoordinator =
-            requireActivity().findViewById<CoordinatorLayout>(R.id.MainActiviyt_coordinatorLayout)
+            requireActivity().findViewById<CoordinatorLayout>(resourceOfCoordinatorLayoutId)
         mainActivtyCoordinator.setBackgroundColor(Color.BLACK)
     }
 
@@ -119,9 +119,17 @@ class LyricsBottomSheet : BottomSheetDialogFragment() {
         super.onDetach()
         Log.d(TAG, "onDetach: ")
 
-        mainActivtyCoordinator.setBackgroundColor(
-            (requireActivity() as MainActivity).viewsColorEvaluter.evaluatedColor
-        )
+        if (requireActivity() is MainActivity)
+        {
+            mainActivtyCoordinator.setBackgroundColor(
+                (requireActivity() as MainActivity).viewsColorEvaluter.evaluatedColor
+            )
+
+        }
+        else
+        {
+            mainActivtyCoordinator.setBackgroundColor(Color.BLACK)
+        }
     }
 
     override fun onDestroy() {
@@ -132,8 +140,8 @@ class LyricsBottomSheet : BottomSheetDialogFragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(param1: String) =
-            LyricsBottomSheet().apply {
+        fun newInstance(param1: String,resourceOfCoordinatorLayoutId:Int) =
+            LyricsBottomSheet(resourceOfCoordinatorLayoutId).apply {
                 arguments = Bundle().apply {
                     putString(ARG_LYRICS, param1)
                 }

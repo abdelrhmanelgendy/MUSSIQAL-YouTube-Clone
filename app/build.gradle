@@ -60,6 +60,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        mostafadebug {
+            minifyEnabled true
+            shrinkResources true
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -177,7 +181,6 @@ dependencies {
 
 //Color Picker
     implementation 'com.github.duanhong169:colorpicker:1.1.5'
-
 
 
 }

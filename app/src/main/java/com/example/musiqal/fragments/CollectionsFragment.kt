@@ -179,7 +179,7 @@ class CollectionsFragment : Fragment(), OnTrackClickListener, OnPlayListClickLis
             it.adapter = historyOfPlayedTracksAdapter
             it.layoutManager = layoutManager
         }
-        historyOfPlayedTracksAdapter.setList(list)
+        historyOfPlayedTracksAdapter.setList(list.reversed())
     }
 
     override fun onVideoClick(

@@ -8,7 +8,8 @@ public interface MusicPlayerEvents {
         currentItem: Item,
         currentPlayList: List<Item>,
         currentItemPosition: Int
-    ,playListName:String
+    ,playListName:String,
+        currentDuration:Long=-1
 
     )
 

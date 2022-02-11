@@ -24,6 +24,7 @@ import java.util.*
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.musiqal.AttemptsActivity
 import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.Item
 import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.Snippet
 import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
@@ -31,6 +32,7 @@ import com.example.musiqal.search.SearchActivity
 import com.example.musiqal.ui.MainActivity
 import com.example.musiqal.util.OnPlayListItemClickListner
 import com.example.musiqal.viewModels.PlayListsViewModel
+import com.google.gson.Gson
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -71,10 +73,16 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
 
         initializeToolBar()
     }
+
     private fun initializeToolBar() {
-        val searchClickLitnerObject=object :View.OnClickListener{
+        val searchClickLitnerObject = object : View.OnClickListener {
             override fun onClick(v: View?) {
-                requireActivity().startActivityForResult(Intent(requireActivity(),SearchActivity::class.java),51)
+                requireActivity().startActivityForResult(
+                    Intent(
+                        requireActivity(),
+                        SearchActivity::class.java
+                    ), 51
+                )
             }
         }
         homeBinding.homeFragmentImgSearch.setOnClickListener(searchClickLitnerObject)
@@ -349,7 +357,8 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
     ) {
         //first chech if user first open app
         val specifyIfUpdateUserDataOfNotByRandomValues = Random().nextInt(50)
-        if (specifyIfUpdateUserDataOfNotByRandomValues > 60) {
+//        if (specifyIfUpdateUserDataOfNotByRandomValues > 60) {
+        if (!AttemptsActivity.isFirstTime) {
 
             Log.d(TAG, "searchForPlayList: ")
             playListsViewModel.serchForRandomPlaylists(
@@ -358,7 +367,7 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
                 searchQuery,
                 "20",
                 Constants.musicYoutubeId.toString(),
-                getRandomApiKey(),
+                Constants.getRandomYoutubeDataKey(requireContext()),
                 mutableStateFlow
             )
         } else {
@@ -396,10 +405,6 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
         return list.get(randomIndex)
     }
 
-    fun getRandomApiKey(): String {
-        val stringArray = resources.getStringArray(R.array.api_keys)
-        return stringArray.get(Random().nextInt(stringArray.size))
-    }
 
     companion object {
         var playListPreviewFragmen = PlayListPreviewFragment()
@@ -407,8 +412,9 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
 
 
     override fun onItemClick(item: Item) {
+
         playListPreviewFragmen = PlayListPreviewFragment()
-            .newInstance(item.id.playlistId)
+            .newInstance(item.id.playlistId, Gson().toJson(item))
         MainActivity.isFromPlayListPreview = true
         setFragment(playListPreviewFragmen, Constants.PLAYLIST_PREVIEW_FRAGMENT_TAG, 1)
     }
@@ -420,7 +426,6 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
         fm.beginTransaction().add(view.id, homeFragment, tag).commit();
         (activity as MainActivity).activeFragment = homeFragment;
     }
-
 
 
 }

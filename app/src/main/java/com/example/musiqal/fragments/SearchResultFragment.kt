@@ -34,9 +34,8 @@ import kotlinx.coroutines.flow.collectIndexed
 @AndroidEntryPoint
 class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
 
-    companion object
-    {
-        val LAST_SEARCH_QYERY_KEY="last_search_query"
+    companion object {
+        val LAST_SEARCH_QYERY_KEY = "last_search_query"
     }
 
     private val TAG = "SerarchResultFragment11"
@@ -116,9 +115,9 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
     }
 
     private fun startSearchingActivityWithLastSearching(searchTitle: String) {
-        val searchingIntent=Intent(requireActivity(),SearchActivity::class.java)
-        searchingIntent.putExtra(LAST_SEARCH_QYERY_KEY,searchTitle)
-        requireActivity().startActivityForResult(searchingIntent,51)
+        val searchingIntent = Intent(requireActivity(), SearchActivity::class.java)
+        searchingIntent.putExtra(LAST_SEARCH_QYERY_KEY, searchTitle)
+        requireActivity().startActivityForResult(searchingIntent, 51)
 
     }
 
@@ -155,10 +154,9 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
         Log.d(TAG, "onSearchResultClick: " + convertedItem.videoDuration)
 
 
-
     }
 
-    private fun mapNoralrItemToItemWithDuration(_listOfYoutubeItemsInPlaylists: MutableList<Item>){
+    private fun mapNoralrItemToItemWithDuration(_listOfYoutubeItemsInPlaylists: MutableList<Item>) {
 //
 
         getAllVideosDurationsInPLayList(_listOfYoutubeItemsInPlaylists)
@@ -171,7 +169,8 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
         mianViewModel.getVideoDuration(
             part = Constants.YOUTUBE_CONTENTDETAIL_PARTS,
             items.map { i -> i.id.videoId },
-            resources.getStringArray(R.array.api_keys).get(0)
+            Constants.getRandomYoutubeDataKey(requireContext())
+
         )
         lifecycleScope.launchWhenStarted {
             mianViewModel.youTubeVideoDurationStateFlow.collectIndexed { index, value ->
@@ -241,7 +240,7 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
                     title,
                     "-1",
                     "-1"
-                ), "",item.videoDuration
+                ), "", item.videoDuration
             )
         }
         return map
@@ -283,15 +282,14 @@ class SearchResultFragment : Fragment(), OnSearchedItemClickListner {
                 title,
                 "-1",
                 "-1"
-            ), "",item.videoDuration
+            ), "", item.videoDuration
         )
 
     }
 
     fun getRandomApiKey(): String {
-        val stringArray = resources.getStringArray(R.array.api_keys)
-//        return stringArray.get(Random().nextInt(stringArray.size))
-        return stringArray.get(1)
+        return Constants.getRandomYoutubeDataKey(requireContext())
+
     }
 
     private fun searForQuery(searchTitle: String) {

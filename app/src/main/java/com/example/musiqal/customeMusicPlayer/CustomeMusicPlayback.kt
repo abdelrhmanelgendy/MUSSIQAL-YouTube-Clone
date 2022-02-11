@@ -91,7 +91,8 @@ class CustomeMusicPlayback(
         currentItem: Item,
         currentPlayList: List<Item>,
         currentItemPosition: Int,
-        playListName: String
+        playListName: String,
+        currentDuration: Long
     ) {
 
         Log.d(TAG, "start playing123: " + url)
@@ -124,7 +125,8 @@ class CustomeMusicPlayback(
         emptyViews()
         CoroutineScope(Dispatchers.Unconfined).launch {
 //            try {
-            startPlayingSong(url, songItem, playListName)
+            Log.d(TAG, "start: current duration" + currentDuration)
+            startPlayingSong(url, songItem, playListName, currentDuration)
 //            } catch (e: java.lang.Exception) {
 //                Log.d(TAG, "start: " + e.message)
 //            }
@@ -132,12 +134,19 @@ class CustomeMusicPlayback(
         }
     }
 
-    private fun startPlayingSong(url: String, item: Item, playListName: String) {
-        Log.d(TAG, "VideoExtraction1122: "+url)
-        if (url.equals("-1")||url.isEmpty()||url.equals("null"))
-        {
+    private fun startPlayingSong(
+        url: String,
+        item: Item,
+        playListName: String,
+        currentDuration: Long
+    ) {
+        Log.d(TAG, "VideoExtraction1122: " + url)
+        if (url.equals("-1") || url.isEmpty() || url.equals("null")) {
             MakingToast(context)
-                .toast("sorry cant find an extraction to this video now\ntry again later",MakingToast.LENGTH_SHORT)
+                .toast(
+                    "sorry cant find an extraction to this video now\ntry again later",
+                    MakingToast.LENGTH_SHORT
+                )
             return
         }
         CoroutineScope(Dispatchers.Default)
@@ -146,23 +155,38 @@ class CustomeMusicPlayback(
 
 //                    val url=getAudioMP3EdURL(item)
 
-                try {
-                    mediaPlayer.stop()
-                    mediaPlayer.release()
-                } catch (e: Exception) {
+                    try {
+                        mediaPlayer.stop()
+                        mediaPlayer.release()
+                    } catch (e: Exception) {
 
-                }
+                    }
 
-                mediaPlayer =
-                    MediaPlayer.create(context, MusicPlayerUtil.convertVideoUrlToUri(url))
+                    mediaPlayer =
+                        MediaPlayer.create(context, MusicPlayerUtil.convertVideoUrlToUri(url))
 
-                mediaPlayer.start()
-                setPlayPauseButtonBackground(R.drawable.ic_baseline_pause_24)
-                setUpViews(item, playListName)
+                    if (currentDuration == -1L) {
+                        mediaPlayer.start()
+                        setPlayPauseButtonBackground(R.drawable.ic_baseline_pause_24)
+                        setUpViews(item, playListName,isPaused=false)
+
+                    } else {
+                        seekTo(currentDuration.toInt())
+                        setPlayPauseButtonBackground(R.drawable.ic_baseline_play_arrow_24)
+                        startPausingMediaService()
+                        setUpViews(item, playListName,isPaused=true)
+
+
+
+                    }
+
 
                 } catch (e: java.lang.Exception) {
                     MakingToast(context)
-                        .toast("sorry cant find an extraction to this video now\ntry again later",MakingToast.LENGTH_SHORT)
+                        .toast(
+                            "sorry cant find an extraction to this video now\ntry again later",
+                            MakingToast.LENGTH_SHORT
+                        )
                     Log.d(TAG, "start: " + e.message)
 
                 }
@@ -378,7 +402,7 @@ class CustomeMusicPlayback(
 
     }
 
-    fun setUpViews(item: Item, playListName: String) {
+    fun setUpViews(item: Item, playListName: String, isPaused: Boolean) {
         tottalSongDuration = mediaPlayer.duration
 
         CoroutineScope(Dispatchers.Main).launch {
@@ -386,7 +410,7 @@ class CustomeMusicPlayback(
                 createCustomeNotification(
                     mediaPlayer.duration.toLong(),
                     playListName,
-                    true
+                    !isPaused
                 )
             } catch (e: java.lang.Exception) {
                 Log.d(TAG, "start: service " + e.message)
@@ -551,7 +575,7 @@ class CustomeMusicPlayback(
                     mediaPlayer.seekTo(currentDuration.toInt())
 
                     setPlayPauseButtonBackground(R.drawable.ic_baseline_play_arrow_24)
-                    setUpViews(item, playListName)
+                    setUpViews(item, playListName, true)
                     startPlayingMediaService()
 
                 } catch (e: java.lang.Exception) {

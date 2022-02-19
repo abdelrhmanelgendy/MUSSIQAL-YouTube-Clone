@@ -2,7 +2,6 @@ package com.example.musiqal.downloadManager.downloadBottomSheet
 
 
 import DownLoadSheetAdapter
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 
@@ -11,8 +10,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.musiqal.R
 import com.example.musiqal.databinding.DownloadInfoBottomSheatLayoutBinding
 import com.example.musiqal.downloadManager.util.OnSelectedTrackClickedListener
@@ -21,7 +20,6 @@ import com.example.musiqal.youtubeAudioVideoExtractor.YouTubeDurationConverter
 import com.example.musiqal.youtubeAudioVideoExtractor.model.YouTubeDlExtractorResultDataItem
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.lang.IllegalArgumentException
 
 
 class DownLoadInfoBottomSheet(private val onSelectedTrackClickedListener: OnSelectedTrackClickedListener) : BottomSheetDialogFragment(), onExtractedItemClickListener {
@@ -47,10 +45,11 @@ class DownLoadInfoBottomSheet(private val onSelectedTrackClickedListener: OnSele
         getDeviceInfoAndDownloadPath()
         arguments?.let {
             val downLoadItemsInfo = it.getString(ARG_DOWNLOAD_ITEMS_INFO)!!
+            val imageUrl = it.getString(IMAGE_URL)!!
             Log.d(TAG, "onViewCreated: " + downLoadItemsInfo)
             val itemsList: List<YouTubeDlExtractorResultDataItem> =
                 convertItemsToListOfYouTubeDlExtractorDataItem(downLoadItemsInfo)
-            initializeAndSetupSongInfoViewsWithData(itemsList)
+            initializeAndSetupSongInfoViewsWithData(itemsList,imageUrl)
             setupDataIntoRecyclerView(itemsList)
 
 
@@ -80,12 +79,15 @@ class DownLoadInfoBottomSheet(private val onSelectedTrackClickedListener: OnSele
 
     }
 
-    private fun initializeAndSetupSongInfoViewsWithData(itemsList: List<YouTubeDlExtractorResultDataItem>) {
+    private fun initializeAndSetupSongInfoViewsWithData(
+        itemsList: List<YouTubeDlExtractorResultDataItem>,
+        imageUrl: String
+    ) {
         if (itemsList.size > 0) {
             val youTubeDlExtractorResultDataItem = itemsList.get(itemsList.size - 1)
             val downloadInfoBottomSheetTrackInfoConstraint =
                 binding.downloadInfoBottomSheetTrackInfo
-            initializeSongInfoViews(downloadInfoBottomSheetTrackInfoConstraint.rootView!!)
+            initializeSongInfoViews(downloadInfoBottomSheetTrackInfoConstraint.rootView!!,imageUrl)
             txtDuration.text =
                 YouTubeDurationConverter.getTimeInStringFormated(youTubeDlExtractorResultDataItem.videoDuration!!)
             txtSongName.text = youTubeDlExtractorResultDataItem.videoTitle
@@ -94,7 +96,10 @@ class DownLoadInfoBottomSheet(private val onSelectedTrackClickedListener: OnSele
 
     }
 
-    private fun initializeSongInfoViews(downloadInfoBottomSheetTrackInfoConstraint: View) {
+    private fun initializeSongInfoViews(
+        downloadInfoBottomSheetTrackInfoConstraint: View,
+        imageUrl: String
+    ) {
         txtDuration =
             downloadInfoBottomSheetTrackInfoConstraint.findViewById<TextView>(R.id.currentDownloadInfo_txtDuration)
         txtSongName =
@@ -102,6 +107,9 @@ class DownLoadInfoBottomSheet(private val onSelectedTrackClickedListener: OnSele
         imgSong =
             downloadInfoBottomSheetTrackInfoConstraint.findViewById<ImageView>(R.id.currentDownloadInfo_ImageView)
 
+        Glide.with(requireContext())
+            .load(imageUrl)
+            .into(imgSong)
     }
 
     lateinit var downloadSheetAdapter: DownLoadSheetAdapter
@@ -124,12 +132,18 @@ class DownLoadInfoBottomSheet(private val onSelectedTrackClickedListener: OnSele
 
     companion object {
         val ARG_DOWNLOAD_ITEMS_INFO = "items"
+        val IMAGE_URL = "image_url"
 
         @JvmStatic
-        fun newInstance(param1: String,onSelectedTrackClickedListener: OnSelectedTrackClickedListener) =
+        fun newInstance(
+            param1: String,
+            onSelectedTrackClickedListener: OnSelectedTrackClickedListener,
+            imageUrl: String
+        ) =
             DownLoadInfoBottomSheet(onSelectedTrackClickedListener).apply {
                 arguments = Bundle().apply {
                     putString(ARG_DOWNLOAD_ITEMS_INFO, param1)
+                    putString(IMAGE_URL, imageUrl)
                 }
             }
     }

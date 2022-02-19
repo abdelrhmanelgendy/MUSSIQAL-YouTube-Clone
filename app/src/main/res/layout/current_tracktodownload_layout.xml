@@ -28,6 +28,7 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@id/currentDownloadInfo_ImageView"
         android:layout_margin="@dimen/_5sdp"
+        android:visibility="gone"
         />
     <TextView
         android:id="@+id/currentDownloadInfo_txtSongName"

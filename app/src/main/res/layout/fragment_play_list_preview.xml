@@ -96,6 +96,7 @@
                     android:id="@+id/playListPreviewFragment_ImageDownload"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
+                    android:visibility="gone"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:src="@drawable/ic_baseline_arrow_downward_24"
                     android:background="?actionBarItemBackground"
@@ -106,7 +107,7 @@
         </RelativeLayout>
 
         <LinearLayout
-
+android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_32sdp"
             android:layout_marginTop="@dimen/_10sdp">

@@ -2,11 +2,9 @@ package com.example.musiqal.lyrics
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.example.musiqal.dialogs.SimpleYesOrNoDialog
 import com.example.musiqal.lyrics.util.OnDezzerLyricsListener
 import com.example.musiqal.lyrics.util.OnLyricsFoundListener
-import com.example.musiqal.lyrics.util.YoutubeLyricsListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.util.Log
+import com.example.musiqal.downloadManager.downloadNotification.MussiqalDownloadManagerChannels
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -18,10 +19,17 @@ class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         createNotificationCahnnel()
+        createDownloadNotificationChannel()
         Log.d("BaseApplication", "onCreate: ")
         createHeadSetReciever()
 //        customeMusicPlayback = CustomeMusicPlayback(this)
 
+    }
+
+    private fun createDownloadNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            MussiqalDownloadManagerChannels().createNotificationChannelAPI24(this)
+        }
     }
 
     private fun createHeadSetReciever() {

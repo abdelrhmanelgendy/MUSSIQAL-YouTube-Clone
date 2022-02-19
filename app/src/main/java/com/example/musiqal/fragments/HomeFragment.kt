@@ -3,6 +3,7 @@ package com.example.musiqal.fragments
 
 import SpecialUserItemsAdapter
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,6 +25,8 @@ import java.util.*
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.musiqal.AttemptsActivity
 import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.Item
 import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.Snippet
@@ -97,6 +100,7 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
 
     private fun setUpRamdomPlayList(playListsId: Int) {
         val randomSearchForUser = getRandomSearchForUser()
+
         searchForPlayList(
             randomSearchForUser.searchQuery,
             playListsViewModel._randomPlayLitsStateFlow,
@@ -237,6 +241,8 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
         homeBinding.playListAnySingerOneMusic.findViewById<TextView>(R.id.recyclerItemOfOtherRecycler_collectionName).text =
             singer
 
+        Log.d(TAG, "setUpSingerOnePlayList: "+singer)
+
         val circularImage =
             homeBinding.playListAnySingerOneMusic.findViewById<CircleImageView>(R.id.recyclerItemOfOtherRecycler_circularImage)
         lifecycleScope.launchWhenStarted {
@@ -282,7 +288,7 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
 
         homeBinding.playListAnySingerTwoMusic.findViewById<TextView>(R.id.recyclerItemOfOtherRecycler_collectionName).text =
             singer
-
+        Log.d(TAG, "setUpSingerTwoPlayList: 2  "+singer)
         val circularImage =
             homeBinding.playListAnySingerTwoMusic.findViewById<CircleImageView>(R.id.recyclerItemOfOtherRecycler_circularImage)
         lifecycleScope.launchWhenStarted {
@@ -387,6 +393,8 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
         val selectedListOfImage = Constants.mapOfYoutubeSearchs.get(ramdomIndexOfSearchQuery)
         val ramdomIndexOfSearchImage = Random().nextInt(selectedListOfImage.imageList.size)
         val randomSelectedImage = selectedListOfImage.imageList.get(ramdomIndexOfSearchImage)
+//        Log.d(TAG, "getRandomSearchForUser: "+)
+
         val randomSelectedQuery =
             Constants.mapOfYoutubeSearchs.get(ramdomIndexOfSearchQuery).searchQuery
         val imgList = listOf(randomSelectedImage)

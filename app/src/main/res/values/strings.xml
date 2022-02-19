@@ -41,6 +41,7 @@
     <string name="startDownload">Start Download</string>
     <string name="high_speed">High Speed</string>
     <string name="tracks_lyrics">Tracks Lyrics</string>
+    <string name="my_downloads">My Downloads</string>
 
 
 </resources>

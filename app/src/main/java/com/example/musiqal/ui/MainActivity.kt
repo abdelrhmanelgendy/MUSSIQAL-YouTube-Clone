@@ -17,6 +17,7 @@ import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.media.MediaPlayer
@@ -24,6 +25,7 @@ import android.os.Build
 import android.view.View
 import android.widget.Toast
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -65,6 +67,8 @@ import kotlinx.coroutines.*
 import okhttp3.*
 import java.lang.Exception
 import java.util.*
+import java.util.jar.Manifest
+import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 
@@ -94,6 +98,9 @@ class MainActivity() :
             "https://cdns-preview-6.dzcdn.net/stream/c-671b7c69e2c36d6ba666ade79b9b84de-6.mp3",
 
             )
+
+
+    val fragmentsList :ArrayList<Fragment> = arrayListOf()
 
     lateinit var binding: ActivityMainBinding
     val ALLOWED_AUDIO_TIME_IN_SECCONDS = 400
@@ -137,7 +144,7 @@ class MainActivity() :
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setFragmentF(homeFragment)
+        setFragment(homeFragment,"as")
         changeVisiblityOfProgressBar(true)
         lifecycleScope.launchWhenStarted {
             delay(1000)
@@ -166,13 +173,53 @@ class MainActivity() :
 //        mainViewModel.deleteAllSavedTrackItem()
     }
 
+    val REQUEST_STORAGE_PERMISSION=53
+
     private fun downLoadCurrentItem(currentItem: Item) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissions(
+                    arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    REQUEST_STORAGE_PERMISSION
+                )
+                return;
+            }
+        }
+
         val trackTitle = currentItem.snippet.title
-        val trackDuration = "PT11H54M48S"
+        val trackDuration = currentItem.videoDuration
         val trackId = currentItem.snippet.resourceId.videoId
         Log.d(TAG, "downLoadCurrentItem: " + trackDuration + " " + trackTitle + " " + trackId)
-        DownloadTrack(this, DownloadInfo(trackTitle, trackDuration, trackId))
+        DownloadTrack(
+            this,
+            DownloadInfo(trackTitle, trackDuration, trackId),
+            imageUrl = ImageUrlUtil.getMaxResolutionImageUrl(currentItem)
+        )
 
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode==REQUEST_STORAGE_PERMISSION)
+        {
+            if (permissions.isEmpty() ||grantResults[0]!=PackageManager.PERMISSION_GRANTED)
+            {
+                MakingToast(this).toast("Accept storage permission to start download",MakingToast.LENGTH_SHORT)
+            }
+            else
+            {
+                downLoadCurrentItem(currentItem)
+            }
+        }
     }
 
     private fun openAddingToPlaylistDialog() {
@@ -217,8 +264,8 @@ class MainActivity() :
     }
 
     private fun saveLoadedLyricsIntoDatabase(lyrics: String, currentItem: Item) {
-        Log.d(TAG, "adding01: "+lyrics)
-        Log.d(TAG, "adding01: "+currentItem)
+        Log.d(TAG, "adding01: " + lyrics)
+        Log.d(TAG, "adding01: " + currentItem)
         val name = currentItem.snippet.title
         val imgUrl = currentItem.snippet.thumbnails.default.url
         val songDuration = currentItem.videoDuration
@@ -232,14 +279,13 @@ class MainActivity() :
             videoId
         )
 
-    try {
-        lyricsSharedPreferences.save(lyricsLocalDataModel)
+        try {
+            lyricsSharedPreferences.save(lyricsLocalDataModel)
 
-    }catch (e:Exception)
-    {
-        Log.d(TAG, "saveLoadedLyricsIntoDatabase: "+e.toString())
-    }
-    //        lyricsDatabaseViewModel.insertTrackLyrics(
+        } catch (e: Exception) {
+            Log.d(TAG, "saveLoadedLyricsIntoDatabase: " + e.toString())
+        }
+        //        lyricsDatabaseViewModel.insertTrackLyrics(
 //            LyricsLocalDataModel(
 //                "name",
 //                "songDuration",
@@ -295,10 +341,9 @@ class MainActivity() :
             Log.d(TAG, "getLastPlayedSongData: init")
             val lastPlayedList = musicPlayerPersistence.getLastPlayedList()
             val lastPlayedSong = musicPlayerPersistence.getLastPlayedSong()
-            Log.d(TAG, "getLastPlayedSongData: "+lastPlayedSong.item.etag)
-            Log.d(TAG, "getLastPlayedSongData: "+lastPlayedSong.item.snippet.title)
-            if (lastPlayedSong.item.snippet.position==-1)
-            {
+            Log.d(TAG, "getLastPlayedSongData: " + lastPlayedSong.item.etag)
+            Log.d(TAG, "getLastPlayedSongData: " + lastPlayedSong.item.snippet.title)
+            if (lastPlayedSong.item.snippet.position == -1) {
                 return;
             }
             val lastPlayedTrack = musicPlayerPersistence.getLastPlayedTrack()
@@ -733,13 +778,13 @@ class MainActivity() :
                 }
             }
             (R.id.libraryFragment) -> {
-                setFragment(homeFragment, "0", 1)
+                setFragment(homeFragment, "0")
                 binding.mainActivityBottomNavigation.selectedItemId =
                     R.id.homeFragment
                 currentSettedFragment = homeFragment
             }
             (R.id.collectionsFragment) -> {
-                setFragment(homeFragment, "0", 1)
+                setFragment(homeFragment, "0")
                 binding.mainActivityBottomNavigation.selectedItemId =
                     R.id.homeFragment
                 currentSettedFragment = homeFragment
@@ -983,7 +1028,7 @@ class MainActivity() :
 //        stop()
 
 //        checkFile -> video lenth in minutes
-        binding.mainActiviytSlidingLayout.isVisible=true
+        binding.mainActiviytSlidingLayout.isVisible = true
 
 
         val audioInSeconds = checkFileSize(currentItem)
@@ -1308,23 +1353,23 @@ class MainActivity() :
 
                     R.id.homeFragment -> {
                         if (!isFromPlayListPreview) {
-                            setFragmentF(homeFragment)
+                            setFragment(homeFragment,"")
                             Log.d(TAG, "onNavigationItemSelected: isFromPlayListPreview")
                         } else {
-                            setFragment(HomeFragment.playListPreviewFragmen, "", 1)
+                            setFragment(HomeFragment.playListPreviewFragmen, "")
                             Log.d(TAG, "onNavigationItemSelected: not isFromPlayListPreview")
                         }
                     }
                     R.id.collectionsFragment -> {
                         if (IS_FROM_COLLECTIONFRAGMENT) {
-                            setFragment(OUTSIDE_FRAGMENT, "", 1)
+                            setFragment(OUTSIDE_FRAGMENT, "")
                         } else {
-                            setFragment(collectionFragment, "", 1)
+                            setFragment(collectionFragment, "")
                         }
                     }
 
                     R.id.libraryFragment -> setFragment(
-                        libraryFragment, "", 1
+                        libraryFragment, ""
                     )
 
                 }
@@ -1334,16 +1379,45 @@ class MainActivity() :
         })
     }
 
-    private fun setFragment(homeFragment1: Fragment, tag: String, i: Int) {
+    private fun setFragment(homeFragment1: Fragment, tag: String) {
+
+        Log.d(TAG, "setFragment: "+homeFragment1.javaClass.name)
+        if (!fragmentsList.contains(activeFragment))
+        {
+            fragmentsList.add(activeFragment)
+
+        }
+        if (!fragmentsList.contains(homeFragment1))
+        {
+
+            fragmentsList.add(homeFragment1)
+        }
         val fm = supportFragmentManager
+        hideAllFragments()
         if (homeFragment1.isAdded()) {
             fm.beginTransaction().hide(activeFragment).show(homeFragment1).commit();
         } else {
-            fm.beginTransaction()
+            fm.beginTransaction().hide(activeFragment)
                 .add(R.id.MainActiviyt_nav_host_fragment, homeFragment1, tag)
                 .commit();
         }
         activeFragment = homeFragment1;
+    }
+
+    private fun hideAllFragments() {
+        val fm1 = supportFragmentManager
+
+        Log.d(TAG, "hideAllFragments: "+fm1.hashCode())
+        for (fragment in fragmentsList)
+        {
+//            if (fragment.isAdded()) {
+                val fm = supportFragmentManager
+            Log.d(TAG, "hideAllFragments: "+fm.hashCode())
+
+            fm.beginTransaction().hide(fragment)
+
+//            }
+        }
     }
 
     override fun playPauseReciver() {

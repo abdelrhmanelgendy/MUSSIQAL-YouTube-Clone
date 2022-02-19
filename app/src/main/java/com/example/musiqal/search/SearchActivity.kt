@@ -15,7 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.musiqal.R
 import com.example.musiqal.databinding.ActivitySearchBinding
 import com.example.musiqal.dialogs.SimpleYesOrNoDialog
 import com.example.musiqal.dialogs.util.OnDialogButtonsClickListener
@@ -23,7 +22,6 @@ import com.example.musiqal.fragments.SearchResultFragment
 import com.example.musiqal.search.database.SearchHistoryData
 import com.example.musiqal.search.mvi.SearchViewModel
 import com.example.musiqal.search.mvi.SearchViewState
-import com.example.musiqal.search.mvi.YoutubeSearchViewState
 import com.example.musiqal.ui.MainActivity
 import com.example.musiqal.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
@@ -266,7 +264,8 @@ class SearchActivity : AppCompatActivity(), OnHistoryDataClickListener,
                 dialogSubText,
                 dialogPositiveText,
                 dialogNegativeText,
-                position
+                position,
+                true
             )
             simpleYesOrNoDialog.show(false)
         }

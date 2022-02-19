@@ -18,8 +18,11 @@
         android:theme="@style/Theme.MUSIQAL"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".downloadManager.ui.DownloadManagerActivity"
+            android:exported="true" />
+        <activity
             android:name=".AttemptsActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,19 +31,18 @@
         </activity>
         <activity
             android:name=".lyrics.activity.LyricsShowingActivity"
-            android:exported="true"
-            />
+            android:exported="true" />
         <activity
             android:name=".search.SearchActivity"
             android:exported="true" />
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".ui.Test"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
@@ -68,6 +70,10 @@
                 <!-- <action android:name="android.media.AUDIO_BECOMING_NOISY" /> -->
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".downloadManager.downloadNotification.MussiqalDownloadManager"
+            android:enabled="true" />
     </application>
 
 </manifest>

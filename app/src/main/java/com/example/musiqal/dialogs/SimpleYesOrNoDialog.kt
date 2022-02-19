@@ -8,7 +8,6 @@ import com.example.musiqal.R
 import com.example.musiqal.databinding.YesOrNoItemLayoutDialogBinding
 import com.example.musiqal.dialogs.util.OnDialogButtonsClickListener
 import android.view.WindowManager
-import androidx.core.view.isVisible
 
 
 class SimpleYesOrNoDialog(private val context: Context) {
@@ -41,7 +40,7 @@ class SimpleYesOrNoDialog(private val context: Context) {
         btnPositiveText: String,
         btnNegativeText: String,
         position: Int,
-        isButtonsVisible: Boolean =true
+        isButtonsVisible: Boolean = false,
     ) {
 
         val layoutParams=WindowManager.LayoutParams()
@@ -74,7 +73,15 @@ class SimpleYesOrNoDialog(private val context: Context) {
 
     fun show(cancelable: Boolean) {
         dialog.setCancelable(cancelable)
-        dialog.show()
+try {
+    dialog.show()
+
+}
+catch (e:Exception)
+{
+    dismis()
+}
+
     }
 
     fun dismis() {

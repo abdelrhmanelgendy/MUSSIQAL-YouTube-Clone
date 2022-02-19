@@ -1,20 +1,20 @@
 package com.example.musiqal.downloadManager.util
 
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Environment
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.musiqal.R
 import com.example.musiqal.downloadManager.data.DownloadInfo
 import com.example.musiqal.downloadManager.downloadBottomSheet.DownLoadInfoBottomSheet
-import com.example.musiqal.downloadManager.source.core.DownloadManagerPro
-import com.example.musiqal.downloadManager.source.core.enums.QueueSort
+import com.example.musiqal.downloadManager.downloadNotification.MussiqalDownloadManager
 import com.example.musiqal.downloadManager.source.report.listener.DownloadManagerListener
 import com.example.musiqal.youtubeAudioVideoExtractor.model.YouTubeDlExtractorResultDataItem
 import com.google.gson.Gson
 import java.io.File
 
-class DownloadTrack(val context: Context, val urlInfo: DownloadInfo) : OnFilterationSuccess,
+class DownloadTrack(val context: Context, val urlInfo: DownloadInfo, private val imageUrl: String) : OnFilterationSuccess,
     OnSelectedTrackClickedListener, DownloadManagerListener {
     private val TAG = "DownloadTrack11"
 
@@ -28,7 +28,8 @@ class DownloadTrack(val context: Context, val urlInfo: DownloadInfo) : OnFiltera
     }
 
     override fun onSuccess(dataItems: List<YouTubeDlExtractorResultDataItem>) {
-        val downloadFragment = DownLoadInfoBottomSheet.newInstance(Gson().toJson(dataItems), this)
+        Log.d(TAG, "onSuccess: "+dataItems.size)
+        val downloadFragment = DownLoadInfoBottomSheet.newInstance(Gson().toJson(dataItems), this,imageUrl)
         downloadFragment.show((context as AppCompatActivity).supportFragmentManager, "sx")
     }
 
@@ -37,32 +38,20 @@ class DownloadTrack(val context: Context, val urlInfo: DownloadInfo) : OnFiltera
         Log.d(TAG, "onTrackSeelcted: " + currentSelectedItem)
     }
 
-//    private fun startDownLoad(currentSelectedItem: YouTubeDlExtractorResultDataItem) {
+    //    private fun startDownLoad(currentSelectedItem: YouTubeDlExtractorResultDataItem) {
     private fun startDownLoad(songData: YouTubeDlExtractorResultDataItem) {
 
-    val link =
-        songData.url
-    val downloadManagerPro = DownloadManagerPro(context)
-    val cashFile =
-        File(Environment.DIRECTORY_DOWNLOADS + "/" + context.resources.getString(R.string.app_name))
-    if (!cashFile.exists()) {
-        Log.d(TAG, "onCreate: chash path ${cashFile.mkdir()}")
-    }
-    downloadManagerPro.init(cashFile.path, 1, this)
-    val addTask = downloadManagerPro.addTask(songData.videoTitle+".mp3", link, false, true)
-    val mTaskId = addTask
-    
-
-
-        downloadManagerPro.startQueueDownload(1, QueueSort.HighPriority)
-        downloadManagerPro.startDownload(
-            mTaskId
-        )
-        
-        
-        
-        
-        
+        val downloadIntent = Intent(context,MussiqalDownloadManager::class.java)
+        downloadIntent.putExtra(MussiqalDownloadManager.FILE_NAME,songData.videoTitle)
+        downloadIntent.putExtra(MussiqalDownloadManager.FILE_DOWNLOAD_URL,songData.url)
+        downloadIntent.putExtra(MussiqalDownloadManager.FILE_IMAGE_URL,imageUrl)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(downloadIntent)
+        }
+        else
+        {
+            context.startService(downloadIntent)
+        }
 
 
 ////        val fileName = getFileTitleWithExt(currentSelectedItem)

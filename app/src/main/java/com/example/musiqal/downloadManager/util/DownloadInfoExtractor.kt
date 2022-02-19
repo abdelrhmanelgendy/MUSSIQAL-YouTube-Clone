@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.musiqal.dialogs.SimpleYesOrNoDialog
 import com.example.musiqal.downloadManager.data.DownloadInfo
-import com.example.musiqal.util.UrlAvailability
 import com.example.musiqal.youtubeAudioVideoExtractor.model.LocalExtractedFileData
 import com.example.musiqal.youtubeAudioVideoExtractor.model.YouTubeDlExtractorResultData
 import com.example.musiqal.youtubeAudioVideoExtractor.model.YouTubeDlExtractorResultDataItem
@@ -57,12 +56,14 @@ class DownloadInfoExtractor(
     private fun showProgressDialog(urls: DownloadInfo) {
 
         val extractUrlMsg = "Extracting Track Streaming Url"
+        simpleYesOrNoDialog.dismis()
         simpleYesOrNoDialog.intialize(extractUrlMsg, urls.videoTitle, "", "", 0, false)
-        simpleYesOrNoDialog.show(false)
+        simpleYesOrNoDialog.show(true)
 
     }
 
     private fun dataRetrieved(youtubeUrl: YouTubeDlExtractorResultData, urls: DownloadInfo) {
+        Log.d(TAG, "dataRetrieved: ")
         val filterYoutubeExtractorData = filterYoutubeExtractorData(youtubeUrl)
         val assignAudioQualityToAudioFile =
             YoutubeDlResultSate.assignAudioQualityToAudioFile(filterYoutubeExtractorData)
@@ -89,16 +90,19 @@ class DownloadInfoExtractor(
                         "addVideoDownloadUrlFromDataBase: loading"
                     )
                     is SingleExtractedDataStateView.Success -> {
-                        Log.d(
-                            TAG,
-                            "addVideoDownloadUrlFromDataBase: " + value.localExtractedFileData
-                        )
-                        checkIfUrlIsWorking(
-                            value.localExtractedFileData,
-                            youtubeUrl,
-                            assignAudioQualityToAudioFile.toMutableList(),
-                            urls
-                        )
+                     if (index==1)
+                     {
+                         Log.d(
+                             TAG,
+                             "addVideoDownloadUrlFromDataBase: " + value.localExtractedFileData
+                         )
+                         checkIfUrlIsWorking(
+                             value.localExtractedFileData,
+                             youtubeUrl,
+                             assignAudioQualityToAudioFile.toMutableList(),
+                             urls
+                         )
+                     }
                     }
                     is SingleExtractedDataStateView.Failed->{
                         Log.d(TAG, "addVideoDownloadUrlFromDataBase: failed")

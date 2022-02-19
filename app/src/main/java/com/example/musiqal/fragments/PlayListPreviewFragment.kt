@@ -37,6 +37,7 @@ import kotlin.random.Random
 
 class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
     OnPlayListPreviewRecyclerViewListener {
+    private lateinit var currentPlayListItem: com.example.musiqal.datamodels.youtubeApiSearchForPlayList.Item
     private var currentPlayList: List<Item> = listOf()
     lateinit var onAudioInPlaylistClickListner: OnAudioInPlaylistClickListner
     private val PLAY_LIST_ID = "playListId"
@@ -166,9 +167,9 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
     private fun saveCurrentPLayList(currentPlayList: List<Item>) {
         val currentTimeInMillis = System.currentTimeMillis().toString()
         val currentUserPlayList = UserPlayList(
-            "name ${Random.nextInt(500)}",
+            currentPlayListItem.snippet.title,
             currentTimeInMillis,
-            ImageUrlUtil.getMaxResolutionImageUrl(currentPlayList.get(0)),
+            currentPlayListItem.snippet.thumbnails.high.url,
             currentPlayList
         )
         userPlayListViewModel.insertNewPLayList(currentUserPlayList)
@@ -212,6 +213,7 @@ class PlayListPreviewFragment : Fragment(), OnItemVideoInPlayListClickListner,
 
     private fun setUpViewsOfPlayListHeader(item: com.example.musiqal.datamodels.youtubeApiSearchForPlayList.Item) {
 
+        this.currentPlayListItem=item;
         Log.d(TAG, "setUpViewsOfPlayListHeader: " + item.snippet.thumbnails.high)
         Glide.with(requireContext())
             .load(item.snippet.thumbnails.high.url)

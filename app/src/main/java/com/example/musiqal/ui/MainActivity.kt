@@ -51,6 +51,8 @@ import com.example.musiqal.lyrics.LyricsUtil
 import com.example.musiqal.lyrics.util.OnLyricsFoundListener
 import com.example.musiqal.datamodels.youtubeItemInList.ItemTypeConverter
 import com.example.musiqal.downloadManager.data.DownloadInfo
+import com.example.musiqal.downloadManager.mvi.viewModels.DownloadableFilesViewModel
+import com.example.musiqal.downloadManager.util.DownloadMultipleTracks
 import com.example.musiqal.downloadManager.util.DownloadTrack
 import com.example.musiqal.lyrics.lyricsdatabase.LyricsSharedPreferences
 import com.example.musiqal.lyrics.lyricsdatabase.local.mvi.LyricsDatabaseViewModel
@@ -67,7 +69,6 @@ import kotlinx.coroutines.*
 import okhttp3.*
 import java.lang.Exception
 import java.util.*
-import java.util.jar.Manifest
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 
@@ -88,6 +89,10 @@ class MainActivity() :
 
     private val lyricsDatabaseViewModel: LyricsDatabaseViewModel by lazy {
         ViewModelProvider(this).get(LyricsDatabaseViewModel::class.java)
+
+    }
+    private val downloadableFilesViewModel: DownloadableFilesViewModel by lazy {
+        ViewModelProvider(this).get(DownloadableFilesViewModel::class.java)
 
     }
 
@@ -195,11 +200,20 @@ class MainActivity() :
         val trackDuration = currentItem.videoDuration
         val trackId = currentItem.snippet.resourceId.videoId
         Log.d(TAG, "downLoadCurrentItem: " + trackDuration + " " + trackTitle + " " + trackId)
-        DownloadTrack(
-            this,
-            DownloadInfo(trackTitle, trackDuration, trackId),
-            imageUrl = ImageUrlUtil.getMaxResolutionImageUrl(currentItem)
-        )
+//        DownloadTrack(
+//            this,
+            val listOfDownloads:MutableList<DownloadInfo> = mutableListOf()
+        listOfDownloads.add(DownloadInfo(trackTitle, trackDuration, trackId))
+        listOfDownloads.add(DownloadInfo(currentListOfItems.get(1).snippet.title, trackDuration, currentListOfItems.get(1).snippet.resourceId.videoId))
+        listOfDownloads.add(DownloadInfo(currentListOfItems.get(2).snippet.title, trackDuration, currentListOfItems.get(2).snippet.resourceId.videoId))
+        listOfDownloads.add(DownloadInfo(currentListOfItems.get(3).snippet.title, trackDuration, currentListOfItems.get(3).snippet.resourceId.videoId))
+        listOfDownloads.add(DownloadInfo(currentListOfItems.get(4).snippet.title, trackDuration, currentListOfItems.get(4).snippet.resourceId.videoId))
+        listOfDownloads.add(DownloadInfo(currentListOfItems.get(5).snippet.title, trackDuration, currentListOfItems.get(5).snippet.resourceId.videoId))
+        listOfDownloads.add(DownloadInfo(currentListOfItems.get(6).snippet.title, trackDuration, currentListOfItems.get(6).snippet.resourceId.videoId))
+
+//            imageUrl = ImageUrlUtil.getMaxResolutionImageUrl(currentItem))
+
+        DownloadMultipleTracks(this,listOfDownloads,listOfReadyUrls )
 
     }
 

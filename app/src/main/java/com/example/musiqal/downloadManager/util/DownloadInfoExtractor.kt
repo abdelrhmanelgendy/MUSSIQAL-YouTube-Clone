@@ -20,11 +20,15 @@ import java.net.URL
 
 class DownloadInfoExtractor(
     private val context: Context,
-    private val onFilterationSuccess: OnFilterationSuccess
+    private val onFilterationSuccess: OnFilterationSuccess,
+    val showProgress: Boolean = true
 ) {
     private val TAG = "DownloadInfoExtractor"
     fun extractVideosUrlsByVideoLink(urls: DownloadInfo) {
-        showProgressDialog(urls)
+        if (showProgress) {
+            showProgressDialog(urls)
+
+        }
         val youTubeExtractorViewModel =
             ViewModelProvider(context as AppCompatActivity).get(YouTubeExtractorViewModel::class.java)
         youTubeExtractorViewModel.getAudio(urls.videoId)
@@ -56,7 +60,7 @@ class DownloadInfoExtractor(
     private fun showProgressDialog(urls: DownloadInfo) {
 
         val extractUrlMsg = "Extracting Track Streaming Url"
-        simpleYesOrNoDialog.dismis()
+//        simpleYesOrNoDialog.dismis()
         simpleYesOrNoDialog.intialize(extractUrlMsg, urls.videoTitle, "", "", 0, false)
         simpleYesOrNoDialog.show(true)
 
@@ -90,21 +94,20 @@ class DownloadInfoExtractor(
                         "addVideoDownloadUrlFromDataBase: loading"
                     )
                     is SingleExtractedDataStateView.Success -> {
-                     if (index==1)
-                     {
-                         Log.d(
-                             TAG,
-                             "addVideoDownloadUrlFromDataBase: " + value.localExtractedFileData
-                         )
-                         checkIfUrlIsWorking(
-                             value.localExtractedFileData,
-                             youtubeUrl,
-                             assignAudioQualityToAudioFile.toMutableList(),
-                             urls
-                         )
-                     }
+                        if (index == 1) {
+                            Log.d(
+                                TAG,
+                                "addVideoDownloadUrlFromDataBase: " + value.localExtractedFileData
+                            )
+                            checkIfUrlIsWorking(
+                                value.localExtractedFileData,
+                                youtubeUrl,
+                                assignAudioQualityToAudioFile.toMutableList(),
+                                urls
+                            )
+                        }
                     }
-                    is SingleExtractedDataStateView.Failed->{
+                    is SingleExtractedDataStateView.Failed -> {
                         Log.d(TAG, "addVideoDownloadUrlFromDataBase: failed")
                     }
 
@@ -122,28 +125,40 @@ class DownloadInfoExtractor(
     ) {
 
 
- CoroutineScope(Dispatchers.Default).launch {
-     val audioUrl=URL(localExtractedFileData.mp3Url)
-     val openConnection = audioUrl.openConnection()!!
-     if (openConnection.contentLength>0) {
-         Log.d(TAG, "checkIfUrlIsWorking: "+openConnection.contentType+" "+openConnection.contentLength)
-         assignAudioQualityToAudioFile.add(YouTubeDlExtractorResultDataItem(url =localExtractedFileData.mp3Url,filesize = openConnection.contentLength.toLong(),ext = "mp3",videoQualityId = "128"))
-         assignDownLoadInfoDataToUrl(assignAudioQualityToAudioFile, urls)
+        CoroutineScope(Dispatchers.Default).launch {
+            val audioUrl = URL(localExtractedFileData.mp3Url)
+            val openConnection = audioUrl.openConnection()!!
+            if (openConnection.contentLength > 0) {
+                Log.d(
+                    TAG,
+                    "checkIfUrlIsWorking: " + openConnection.contentType + " " + openConnection.contentLength
+                )
+                assignAudioQualityToAudioFile.add(
+                    YouTubeDlExtractorResultDataItem(
+                        url = localExtractedFileData.mp3Url,
+                        filesize = openConnection.contentLength.toLong(),
+                        ext = "mp3",
+                        videoQualityId = "128"
+                    )
+                )
+                assignDownLoadInfoDataToUrl(assignAudioQualityToAudioFile, urls)
 
 
-     }
-     else
-     {
-         Log.d(TAG, "checkIfUrlIsWorking: non")
-         assignDownLoadInfoDataToUrl(assignAudioQualityToAudioFile, urls)
+            } else {
+                Log.d(TAG, "checkIfUrlIsWorking: non")
+                assignDownLoadInfoDataToUrl(assignAudioQualityToAudioFile, urls)
 
-     }
- }
+            }
+        }
 
     }
 
     private fun hideProgressDialog() {
-        simpleYesOrNoDialog.dismis()
+        if (showProgress)
+        {
+
+            simpleYesOrNoDialog.dismis()
+        }
     }
 
     private fun assignDownLoadInfoDataToUrl(
@@ -155,7 +170,7 @@ class DownloadInfoExtractor(
             i.videoDuration = urls.videoDuration.toString()
 
         }
-        Log.d(TAG, "assignDownLoadInfoDataToUrl: "+assignAudioQualityToAudioFile.size)
+        Log.d(TAG, "assignDownLoadInfoDataToUrl: " + assignAudioQualityToAudioFile.size)
         onFilterationSuccess.onSuccess(assignAudioQualityToAudioFile)
         hideProgressDialog()
 

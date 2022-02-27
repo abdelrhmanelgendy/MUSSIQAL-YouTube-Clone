@@ -19,7 +19,9 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".downloadManager.ui.DownloadManagerActivity"
-            android:exported="true" />
+            android:exported="true" >
+
+        </activity>
         <activity
             android:name=".AttemptsActivity"
             android:exported="true">
@@ -42,7 +44,10 @@
             android:name=".ui.Test"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+
+
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"

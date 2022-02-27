@@ -11,7 +11,7 @@ import android.view.WindowManager
 
 
 class SimpleYesOrNoDialog(private val context: Context) {
-  private  var yesOrNoItemLayoutDialogBinding: YesOrNoItemLayoutDialogBinding
+    private var yesOrNoItemLayoutDialogBinding: YesOrNoItemLayoutDialogBinding
     private var dialog: Dialog
     private lateinit var onDialogButtonsClickLister: OnDialogButtonsClickListener
 
@@ -31,7 +31,6 @@ class SimpleYesOrNoDialog(private val context: Context) {
         dialog.setContentView(yesOrNoItemLayoutDialogBinding.root)
 
 
-
     }
 
     public fun intialize(
@@ -43,10 +42,10 @@ class SimpleYesOrNoDialog(private val context: Context) {
         isButtonsVisible: Boolean = false,
     ) {
 
-        val layoutParams=WindowManager.LayoutParams()
-        layoutParams.width=WindowManager.LayoutParams.MATCH_PARENT
-        layoutParams.height =WindowManager.LayoutParams.WRAP_CONTENT
-        dialog.window?.attributes=layoutParams
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
+        dialog.window?.attributes = layoutParams
 
 
         yesOrNoItemLayoutDialogBinding.simpleYesNoDialofBtnOk.text = btnPositiveText
@@ -54,9 +53,12 @@ class SimpleYesOrNoDialog(private val context: Context) {
         yesOrNoItemLayoutDialogBinding.simpleYesNoDialofTVMainText.text = mainTextView
         yesOrNoItemLayoutDialogBinding.simpleYesNoDialofTVSubText.text = subTextView
 
-        yesOrNoItemLayoutDialogBinding.simpleYesNoDialofBtnOk.visibility=if (isButtonsVisible) View.VISIBLE else View.GONE
-        yesOrNoItemLayoutDialogBinding.simpleYesNoDialofBtnCancel.visibility=if (isButtonsVisible) View.VISIBLE else View.GONE
-        yesOrNoItemLayoutDialogBinding.simpleYesNoDialofProgressBar.visibility=if (isButtonsVisible) View.GONE else View.VISIBLE
+        yesOrNoItemLayoutDialogBinding.simpleYesNoDialofBtnOk.visibility =
+            if (isButtonsVisible) View.VISIBLE else View.GONE
+        yesOrNoItemLayoutDialogBinding.simpleYesNoDialofBtnCancel.visibility =
+            if (isButtonsVisible) View.VISIBLE else View.GONE
+        yesOrNoItemLayoutDialogBinding.simpleYesNoDialofProgressBar.visibility =
+            if (isButtonsVisible) View.GONE else View.VISIBLE
 
         initButtonsListeners(position)
     }
@@ -70,22 +72,30 @@ class SimpleYesOrNoDialog(private val context: Context) {
             onDialogButtonsClickLister.onNegativeButtonClick(position)
         }
     }
-
+    fun updateSubText(newText:String)
+    {
+        yesOrNoItemLayoutDialogBinding.simpleYesNoDialofTVSubText.setText(newText)
+    }
+    fun updateMain(newText:String)
+    {
+        yesOrNoItemLayoutDialogBinding.simpleYesNoDialofTVMainText.setText(newText)
+    }
     fun show(cancelable: Boolean) {
         dialog.setCancelable(cancelable)
-try {
-    dialog.show()
+        try {
+            dialog.show()
 
-}
-catch (e:Exception)
-{
-    dismis()
-}
+        } catch (e: Exception) {
+            dismis()
+        }
 
     }
 
     fun dismis() {
-        dialog.dismiss()
+      try {
+          dialog.dismiss()
+        } catch (e: Exception) {
+        }
     }
 
 }

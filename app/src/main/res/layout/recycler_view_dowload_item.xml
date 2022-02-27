@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/black">
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_3sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/recyclerViewDownloadItem_imgTrackThumb"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:scaleType="centerCrop"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/img_car_demmo" />
+
+        <TextView
+            android:id="@+id/recyclerViewDownloadItem_trackName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/recyclerViewDownloadItem_imgTrackThumb"
+            android:maxLines="1"
+            android:minLines="1"
+            android:padding="@dimen/_2sdp"
+            android:text="@string/dummySongName"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            android:textStyle="bold"
+
+            />
+
+        <TextView
+            android:id="@+id/recyclerViewDownloadItem_trackDownloadingDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recyclerViewDownloadItem_trackName"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/recyclerViewDownloadItem_imgTrackThumb"
+            android:maxLines="1"
+            android:minLines="1"
+            android:padding="@dimen/_2sdp"
+            android:text="150MB/200MB"
+            android:textColor="@color/white_gray"
+            android:textSize="@dimen/_8sdp"
+
+            />
+
+        <ProgressBar
+            android:id="@+id/recyclerViewDownloadItem_progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recyclerViewDownloadItem_trackDownloadingDetails"
+
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/recyclerViewDownloadItem_imgTrackThumb"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:progress="50" />
+
+        <TextView
+            android:id="@+id/recyclerViewDownloadItem_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/recyclerViewDownloadItem_progressBar"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/recyclerViewDownloadItem_imgTrackThumb"
+            android:paddingStart="@dimen/_2sdp"
+            android:paddingEnd="@dimen/_2sdp"
+            android:text="converting"
+            android:textColor="@color/white" />
+
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,6 +31,7 @@ import com.example.musiqal.AttemptsActivity
 import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.Item
 import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.Snippet
 import com.example.musiqal.datamodels.youtubeApiSearchForPlayList.YoutubeApiSearchForPlayListRequest
+import com.example.musiqal.downloadManager.ui.DownloadManagerActivity
 import com.example.musiqal.search.SearchActivity
 import com.example.musiqal.ui.MainActivity
 import com.example.musiqal.util.OnPlayListItemClickListner
@@ -73,8 +74,24 @@ class HomeFragment() : Fragment(R.layout.fragment_home), OnPlayListItemClickList
             }
         }
 
-
+initializeButtons()
         initializeToolBar()
+    }
+
+    private fun initializeButtons() {
+
+        homeBinding.homeFragmentImgDownlaodManager.setOnClickListener {
+            openDownloadManagerActivity()
+        }
+        homeBinding.homeFragmentImgDownlaodManager2.setOnClickListener {
+            openDownloadManagerActivity()
+
+        }
+    }
+
+    private fun openDownloadManagerActivity() {
+        val downloadingIntent = Intent(requireActivity(), DownloadManagerActivity::class.java)
+        startActivity(downloadingIntent)
     }
 
     private fun initializeToolBar() {

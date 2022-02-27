@@ -14,14 +14,17 @@ import com.example.musiqal.R
 import kotlin.random.Random
 import android.os.Environment
 import android.util.Log
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.BitmapImageViewTarget
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.musiqal.database.TracksImageSharedPref
 import com.example.musiqal.downloadManager.source.core.DownloadManagerPro
 import com.example.musiqal.downloadManager.source.core.enums.QueueSort
 import com.example.musiqal.downloadManager.source.core.enums.TaskStates
 import com.example.musiqal.downloadManager.source.report.listener.DownloadManagerListener
+import com.example.musiqal.downloadManager.util.OnDownloadListeners
+import com.example.musiqal.viewModels.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,7 +41,11 @@ class MussiqalDownloadManager() : Service(), DownloadManagerListener {
     lateinit var fileDownloadUrl: String
     lateinit var fileImageUrl: String
 
+
+    lateinit var downloadManagerPro: DownloadManagerPro
+
     companion object {
+         var downloadManagerListener: DownloadManagerListener?=null
         val FILE_NAME: String = "file_name"
         val FILE_IMAGE_URL: String = "file_image"
         val FILE_DOWNLOAD_URL: String = "file_url"
@@ -74,15 +81,24 @@ class MussiqalDownloadManager() : Service(), DownloadManagerListener {
             this.fileDownloadUrl = fileUrl!!
             this.fileImageUrl = imageUrl!!
             this.id = Random.nextInt(10160160)
-            initialize(fileName)
-            startForeground(id, notification.build())
-            downLoad(fileName, fileImageUrl, fileUrl)
-            getImageBitmapAndAssignToNotification(imageUrl)
-
+            startDownlaodingNotification(this.id, fileName, fileUrl, imageUrl)
 
         }
         return START_STICKY
 
+    }
+
+    private fun startDownlaodingNotification(
+        id: Int,
+        fileName: String,
+        fileUrl: String,
+        imageUrl: String
+    ) {
+
+        initialize(fileName)
+        startForeground(id, notification.build())
+        downLoad(fileName, fileImageUrl, fileUrl)
+        getImageBitmapAndAssignToNotification(imageUrl)
     }
 
     private fun getImageBitmapAndAssignToNotification(imageUrl: String) {
@@ -94,7 +110,6 @@ class MussiqalDownloadManager() : Service(), DownloadManagerListener {
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {
-                    TODO("Not yet implemented")
                 }
 
             })
@@ -133,7 +148,7 @@ class MussiqalDownloadManager() : Service(), DownloadManagerListener {
     }
 
     fun downLoad(fileName: String, fileImageUrl: String, fileUrl: String) {
-        val downloadManagerPro = DownloadManagerPro(context)
+        downloadManagerPro = DownloadManagerPro(context)
         val cashFile =
             File(Environment.DIRECTORY_DOWNLOADS + "/" + resources.getString(R.string.app_name))
         if (!cashFile.exists()) {
@@ -164,24 +179,31 @@ class MussiqalDownloadManager() : Service(), DownloadManagerListener {
         mTaskId = addTask
         downloadManagerPro.downloadTasksInSameState(TaskStates.INIT)
         downloadManagerPro.downloadTasksInSameState(TaskStates.DOWNLOADING)
-        downloadManagerPro.startQueueDownload(1, QueueSort.HighPriority)
+//        downloadManagerPro.startQueueDownload(1, QueueSort.HighPriority)
         downloadManagerPro.startDownload(
             mTaskId
         )
     }
 
     override fun OnDownloadStarted(taskId: Long) {
-        Log.d(TAG, "OnDownloadStarted: "+taskId)
+        Log.d(TAG, "OnDownloadStarted: " + taskId)
         update(100, 0, fileName, "", "0%", false)
+        if (downloadManagerListener!=null)
+        {
+            downloadManagerListener?.OnDownloadStarted(taskId)
+        }
     }
 
     override fun OnDownloadPaused(taskId: Long) {
+        update(0, 0, "pause01", "pause02", "pause03", true)
+
+
     }
 
     override fun onDownloadProcess(taskId: Long, percent: Double, downloadedLength: Long) {
 
         Log.d(TAG, "downLoad: size: " + downloadedLength)
-        Log.d(TAG, "onDownloadProcess: "+percent)
+        Log.d(TAG, "onDownloadProcess: " + percent)
         update(
             100,
             percent.toInt(),
@@ -190,22 +212,67 @@ class MussiqalDownloadManager() : Service(), DownloadManagerListener {
             percent.toInt().toString() + "%",
             false
         )
+
+        if (downloadManagerListener!=null)
+        {
+            downloadManagerListener?.onDownloadProcess(taskId,percent,downloadedLength)
+        }
     }
 
     override fun OnDownloadFinished(taskId: Long) {
+        if (downloadManagerListener!=null)
+        {
+            downloadManagerListener?.OnDownloadFinished(taskId)
+        }
     }
 
     override fun OnDownloadRebuildStart(taskId: Long) {
-
+        if (downloadManagerListener!=null)
+        {
+            downloadManagerListener?.OnDownloadRebuildStart(taskId)
+        }
     }
 
     override fun OnDownloadRebuildFinished(taskId: Long) {
-
+        if (downloadManagerListener!=null)
+        {
+            downloadManagerListener?.OnDownloadRebuildFinished(taskId)
+        }
     }
 
     override fun OnDownloadCompleted(taskId: Long) {
-        stopSelf()
+//        stopSelf()
         showCompleteNotification()
+        if (downloadManagerListener!=null)
+        {
+            downloadManagerListener?.OnDownloadCompleted(taskId)
+        }
+//        onDownloadListeners.complete(taskId)
+
+        val singleDownloadStatus = downloadManagerPro.singleDownloadStatus((taskId + 1).toInt())
+        if (singleDownloadStatus.name!=null)
+        {
+            val name = singleDownloadStatus.name
+            val url = singleDownloadStatus.url
+            val imageUrl = TracksImageSharedPref(context)
+                .getImageUrlByTaskId(taskId)
+            val nextInt = Random.nextInt(50505050)
+            this.id=nextInt
+            this.fileDownloadUrl=url
+            this.fileImageUrl=imageUrl
+            startDownlaodingNotification(nextInt,name,url,imageUrl)
+        }
+        else
+        {
+            stopSelf()
+        }
+
+//
+    }
+
+    private fun downloadTheNextFile(taskId: Long) {
+
+
     }
 
     private fun showCompleteNotification() {

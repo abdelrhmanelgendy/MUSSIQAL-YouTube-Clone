@@ -1,3 +1,0 @@
-package com.example.musiqal.datamodels.youtubeVideoDuaration
-
-class ContentRating
